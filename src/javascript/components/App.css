@@ -1,0 +1,8 @@
+.App-column {
+	display: flex;
+}
+
+.MapGis-map {
+	width: 50vmin;
+	height: 100vmin;
+}
