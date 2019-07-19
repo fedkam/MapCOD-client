@@ -1,4 +1,4 @@
-// src/js/components/App.jsx
+//App.jsx
 
 import React, {Component} from "react";
 import MapGis from "./MapGis.jsx";
