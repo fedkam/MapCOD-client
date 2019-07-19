@@ -18,7 +18,6 @@ class App extends Component {
             </div>
             <div>
               <h2>InfoTable</h2>
-              
             </div>
           </div>
       );
