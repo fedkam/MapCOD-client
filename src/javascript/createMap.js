@@ -77,7 +77,7 @@ export function createMap(){
     for(var lvl1 in _RascoData){
       let marker;
           marker = addMarker(_RascoData[lvl1][0], _RascoData[lvl1][1], _RascoData[lvl1][2], _RascoData[lvl1][3], _RascoData[lvl1][4], myIconRasco, true)
-          markerGroup.push(marker); //Аккамулирую объекты Marker в массив
+          markerGroup.push(marker); //Аккумулирую объекты Marker в массив
         }
 
         groupForMap = DG.featureGroup(markerGroup).addTo(map).on('click', function(e) { map.setView([e.latlng.lat, e.latlng.lng], 8);}); //Создается группа + обработчик любой на элемент Гр.
