@@ -1,4 +1,4 @@
-// src/javascript/createMap.jsx
+// createMap.jsx
 
 import DG from "2gis-maps";
 import pinRasco from "../images/RascoMsoKseon/pinRasco.png";
