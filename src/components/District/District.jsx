@@ -31,15 +31,15 @@ class District extends React.PureComponent {
       return (
         <Paper>
           <Grid
-            rows={rows}
-            columns={columns}
+            rows = {rows}
+            columns = {columns}
           >
             <TreeDataState />
             <CustomTreeData
-              getChildRows={getChildRows}
+              getChildRows = {getChildRows}
             />
             <Table
-              columnExtensions={tableColumnExtensions}
+              columnExtensions = {tableColumnExtensions}
             />
             <TableHeaderRow />
             <TableTreeColumn
