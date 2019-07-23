@@ -31,5 +31,11 @@ const initialDataState = {
 };
 
 export default function data(state = initialDataState, action){
+  if (action.type === 'INIT_DATA') {
+    return {
+      ...state,
+      data: [...state.data, action.data]
+    };
+  }
   return state;
 };

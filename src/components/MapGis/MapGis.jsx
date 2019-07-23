@@ -5,12 +5,6 @@ import {MainCreateMap} from "../createMap.js";
 
 
 class MapGis extends Component {
-  constructor() {
-    super();
-    this.state = {
-    };
-  }
-
   componentDidMount() {
     MainCreateMap();
   }

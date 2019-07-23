@@ -5,8 +5,10 @@ import MapGis from "./components/MapGis/MapGis.jsx";
 import District from "./components/District/District.jsx";
 import './App.css';
 
+
+
 class App extends Component {
-  render() {
+    render() {
       return (
           <div className="App-column">
             <div>
