@@ -9,18 +9,6 @@ const initialDataState = {
                 id:30201000001,
                 name:"A"
               },
-              { 
-                id:30201000002,
-                name:"B"
-              },
-              { 
-                id:30201000001,
-                name:"C"
-              },
-              { 
-                id:30201000002,
-                name:"D"
-              },
             ],
           },
           {
@@ -32,10 +20,10 @@ const initialDataState = {
 
 export default function data(state = initialDataState, action){
   if (action.type === 'INIT_DATA') {
-    return {
+    return [
       ...state,
-      data: [...state.data, action.data]
-    };
+      action.data
+    ];
   }
   return state;
 };
