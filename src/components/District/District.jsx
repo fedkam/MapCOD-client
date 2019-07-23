@@ -1,6 +1,7 @@
 // District.jsx
 
 import * as React from 'react';
+import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import {
   TreeDataState,
@@ -15,13 +16,21 @@ import {
 
 const getChildRows = (row, rootRows) => (row ? row.items : rootRows);
 
+
+const mapStateToProps = state => state.gridReducer;
+
+const mapDispatchToProps = dispatch => ({
+  //onSelectionChange: selection => dispatch(createGridAction('selection', selection)),
+});
+
+
 class District extends React.PureComponent {
   render() {
-      const { data, columns, tableColumnExtensions } = this.props;
+      const { rows, columns, tableColumnExtensions } = this.props;
       return (
         <Paper>
           <Grid
-            rows={data}
+            rows={rows}
             columns={columns}
           >
             <TreeDataState />
@@ -41,4 +50,7 @@ class District extends React.PureComponent {
   }
 }
 
-export default District;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(District);
