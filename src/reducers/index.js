@@ -1,7 +1,10 @@
 import { combineReducers } from 'redux'
 
-import districtReducer from './districtReducer';
+
+import data from './data';
+import districtTable from './districtTable';
 
 export default combineReducers({
-	districtReducer
+	data,
+	districtTable
 }) 

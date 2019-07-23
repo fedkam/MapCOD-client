@@ -1,5 +1,5 @@
 
-const initialState = {
+const initialDataState = {
   rows: [
           {
             id:30201,
@@ -27,21 +27,9 @@ const initialState = {
             id:722,
             name:"Елизовский район",
           }
-  ],
-  columns: [
-  	{ name: 'name', title: 'Территория' },
-  ],
-  tableColumnExtensions: [
-    { columnName: 'name', width: 200, wordWrapEnabled: true  },
   ]
 };
 
-export default function districtReducer(state = initialState, action){
-  if (action.type === 'GRID_STATE_CHANGE') {
-    return {
-      ...state,
-      [action.partialStateName]: action.partialStateValue,
-    };
-  }
+export default function data(state = initialDataState, action){
   return state;
 };

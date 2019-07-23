@@ -17,7 +17,7 @@ import {
 const getChildRows = (row, rootRows) => (row ? row.items : rootRows);
 
 
-const mapStateToProps = state => state.districtReducer;
+const mapStateToProps = state => state;
 
 
 const mapDispatchToProps = dispatch => ({
@@ -27,7 +27,8 @@ const mapDispatchToProps = dispatch => ({
 
 class District extends React.PureComponent {
   render() {
-      const { rows, columns, tableColumnExtensions } = this.props;
+      const { rows } = this.props.data;
+      const { columns, tableColumnExtensions } = this.props.districtTable;
       return (
         <Paper>
           <Grid
