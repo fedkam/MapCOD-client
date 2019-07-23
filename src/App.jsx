@@ -1,8 +1,8 @@
 //App.jsx
 
 import React, {Component} from "react";
-import MapGis from "./MapGis.jsx";
-import District from "./District.jsx";
+import MapGis from "./components/MapGis/MapGis.jsx";
+import District from "./components/District/District.jsx";
 import './App.css';
 
 class App extends Component {

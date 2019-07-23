@@ -1,4 +1,15 @@
+.App-column {
+	display: flex;
+}
+
 .MapGis-map {
-  width:30%;
-  height:100%;
+	width: 50vmin;
+	height: 100vmin;
+}
+
+.App-table{
+	width: 50vmin;
+}
+
+.App-info{
 }
