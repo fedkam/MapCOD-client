@@ -17,7 +17,8 @@ import {
 const getChildRows = (row, rootRows) => (row ? row.items : rootRows);
 
 
-const mapStateToProps = state => state.gridReducer;
+const mapStateToProps = state => state.districtReducer;
+
 
 const mapDispatchToProps = dispatch => ({
   //onSelectionChange: selection => dispatch(createGridAction('selection', selection)),

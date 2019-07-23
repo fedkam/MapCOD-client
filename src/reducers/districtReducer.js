@@ -1,5 +1,5 @@
 
-const gridInitialState = {
+const initialState = {
   rows: [
           {
             id:30201,
@@ -36,7 +36,7 @@ const gridInitialState = {
   ]
 };
 
-export default function gridReducer(state = gridInitialState, action){
+export default function districtReducer(state = initialState, action){
   if (action.type === 'GRID_STATE_CHANGE') {
     return {
       ...state,

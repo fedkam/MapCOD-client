@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 
-import gridReducer from './gridReducer';
+import districtReducer from './districtReducer';
 
 export default combineReducers({
-	gridReducer
+	districtReducer
 }) 
