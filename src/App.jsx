@@ -27,7 +27,7 @@ const initialDataState2 = {
 
 class App extends Component {
     render() {
-      //this.props.onTest(initialDataState2);
+      //this.props.onTest(initialDataState2)
       return (
           <div className="App-column">
             <div>
@@ -48,7 +48,7 @@ class App extends Component {
 export default connect(
   null,
   dispatch => ({
-    onTest: (tests) => {
-      dispatch({type: 'INIT_DATA', data: tests});
+    onTest: (rows) => {
+      dispatch({type: 'INIT_DATA', rows});
     }
   }))(App);
