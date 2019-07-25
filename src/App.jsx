@@ -7,6 +7,7 @@ import District from './components/District/District.jsx';
 import './App.css';
 import {ADD_DATA, addData} from './actions';
 
+
 const rowsData = [
           {
             id:1,
@@ -119,10 +120,12 @@ const rowsData = [
             ],
           },
 ];
+    
 
 
 class App extends Component {
-    
+
+
     componentDidMount() {
       rowsData.map((district) => {
          //console.log("componentDidMount()/dis=" + district.name);
@@ -153,5 +156,5 @@ export default connect(
   dispatch => ({
     onAddRow: (addrow) => {
       dispatch(addData(addrow));
-    }
-  }))(App);
+    },
+    }))(App);

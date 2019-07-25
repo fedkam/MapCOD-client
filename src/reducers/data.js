@@ -21,7 +21,7 @@ const initialDataState = {
 
 export default function data(state = initialDataState , action){
   if (action.type === ADD_DATA) {
-    console.log('reducer data()= ', action);
+    //console.log('reducer data()= ', action);
     return {
       ...state,
       rows: [...state.rows, action.adddata]
