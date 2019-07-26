@@ -124,12 +124,27 @@ const rowsData = [
 
 
 class App extends Component {
-
+    
+    getData(){
+      fetch('http://localhost:9000/transferData')
+        .then(res => res.json())
+        .then(res => {
+          rowsData = res.rowsData;
+          //RascoData = res.Rasco;
+          //MsoData = res.Mso;
+          //addMarkers(RascoData, puthIcons[0]);
+         // addMarkers(MsoData, puthIcons[1]);
+          //console.log(RascoData, MsoData);
+          console.log("getData()");
+        })
+        .catch(err => err);
+    }
 
     componentDidMount() {
+      this.getData();
       rowsData.map((district) => {
          //console.log("componentDidMount()/dis=" + district.name);
-         this.props.onAddRow(district);
+         //this.props.onAddRow(district);
       });
     }
 

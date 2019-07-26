@@ -19,18 +19,7 @@ const initialDataState = {
   ]
 };
 
-export function data(state = initialDataState , action){
-  if (action.type === ADD_DATA) {
-    //console.log('reducer data()= ', action);
-    return {
-      ...state,
-      rows: [...state.rows, action.adddata]
-    };
-  }
-  return state;
-};
-
-export function dataTest(state = initialDataState , action){
+export default function data(state = initialDataState , action){
   if (action.type === ADD_DATA) {
     //console.log('reducer data()= ', action);
     return {
