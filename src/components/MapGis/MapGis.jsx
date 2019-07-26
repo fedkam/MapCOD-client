@@ -27,17 +27,17 @@ class MapGis extends Component {
 	    }
   	}
 
-  	addMarker(_Latitude, _Longitude, _HeaderContent, _ContentVilladge, _ContentStreet, _Icon, _toReturn = true){
-	    let bindLabelAllArguments = "<h3>"+ _HeaderContent +" муниципальный район"+"</h3>"+ _ContentVilladge +", "+  _ContentStreet;
+  	addMarker(_latitude, _longitude, _headerContent, _contentVilladge, _contentStreet, _icon, _toReturn = true){
+	    let bindLabelAllArguments = "<h3>"+ _headerContent +" муниципальный район"+"</h3>"+ _contentVilladge +", "+  _contentStreet;
 	    if(_toReturn){
-	      return (DG.marker([ _Latitude, _Longitude], {icon: _Icon}).addTo(map).bindPopup(DG.popup().setLatLng([ _Latitude, _Longitude]).setHeaderContent( _HeaderContent).setContent( _ContentVilladge + "/n" + _ContentStreet)).bindLabel(bindLabelAllArguments));
+	      return (DG.marker([ _latitude, _longitude], {icon: _icon}).addTo(map).bindPopup(DG.popup().setLatLng([ _latitude, _longitude]).setHeaderContent( _headerContent).setContent( _contentVilladge + "/n" + _contentStreet)).bindLabel(bindLabelAllArguments));
 	    }else{
 	      //просто добавить 
-	      DG.marker([ _Latitude, _Longitude], {icon: _Icon}).addTo(map).bindPopup(DG.popup().setLatLng([ _Latitude, _Longitude]).setHeaderContent( _HeaderContent).setContent( _ContentVilladge + "/n" + _ContentStreet)).bindLabel(bindLabelAllArguments);
+	      DG.marker([ _latitude, _longitude], {icon: _icon}).addTo(map).bindPopup(DG.popup().setLatLng([ _latitude, _longitude]).setHeaderContent( _headerContent).setContent( _contentVilladge + "/n" + _contentStreet)).bindLabel(bindLabelAllArguments);
 	    }
 	}
 
-	addMarkers(_RascoData, _Icon){
+	addMarkers(_rascoData, _icon){
 	    let _iconSize = 32;     //Размер Иконки
 	    let _iconPin = _iconSize/2; //точка позиционирования Иконки на карте по оси X
 	    let markerGroup = [];     //Для аккамулирования объектов Marker
@@ -46,14 +46,14 @@ class MapGis extends Component {
 
 	    myIconRasco = DG.icon({
 	                    //Стиль иконки
-	                    iconUrl: _Icon,
+	                    iconUrl: _icon,
 	                    iconSize: [_iconSize, _iconSize],
 	                    iconAnchor: [_iconPin,_iconSize] //позиционирование
 	                });
 
-	    for(var lvl1 in _RascoData){
+	    for(var _lvl1 in _rascoData){
 	      let marker;
-	          marker = this.addMarker(_RascoData[lvl1][0], _RascoData[lvl1][1], _RascoData[lvl1][2], _RascoData[lvl1][3], _RascoData[lvl1][4], myIconRasco, true)
+	          marker = this.addMarker(_rascoData[_lvl1][0], _rascoData[_lvl1][1], _rascoData[_lvl1][2], _rascoData[_lvl1][3], _rascoData[_lvl1][4], myIconRasco, true)
 	          markerGroup.push(marker); //Аккумулирую объекты Marker в массив
 	        }
 
@@ -65,7 +65,6 @@ class MapGis extends Component {
 	  	console.log("MapGis/componentDidMount()/");
 	  	///MainCreateMap();
 	  	this.createMap();
-	    
 	}
 
 	render() {

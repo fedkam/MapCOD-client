@@ -8,7 +8,7 @@ import './App.css';
 import {ADD_DATA, addData} from './actions';
 
 
-const rowsData = [
+var rowsData = [
           /*{
             id:1,
             name:"Алеутский район",
@@ -130,26 +130,21 @@ class App extends Component {
         .then(res => res.json())
         .then(res => {
           rowsData = res.rowsData;
-          //RascoData = res.Rasco;
-          //MsoData = res.Mso;
-          //addMarkers(RascoData, puthIcons[0]);
-         // addMarkers(MsoData, puthIcons[1]);
-          //console.log(RascoData, MsoData);
-          console.log("getData()");
+          rowsData.map((district) => {
+	         console.log("componentDidMount()/dis=" + district.name);
+	         this.props.onAddRow(district);
+	      });
+          //console.log("getData()= " + rowsData[0].name);
         })
         .catch(err => err);
     }
 
     componentDidMount() {
       this.getData();
-      rowsData.map((district) => {
-         console.log("componentDidMount()/dis=" + district.name);
-         this.props.onAddRow(district);
-      });
     }
 
     render() {
-      return (
+    	return (
           <div className="App-column">
             <div>
               <MapGis/>
@@ -170,6 +165,8 @@ export default connect(
   state => state,
   dispatch => ({
     onAddRow: (addrow) => {
+    	console.log("onAddRow " + addrow);
       dispatch(addData(addrow));
     },
-    }))(App);
+  })
+)(App);
