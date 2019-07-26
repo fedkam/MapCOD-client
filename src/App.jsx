@@ -9,7 +9,7 @@ import {ADD_DATA, addData} from './actions';
 
 
 const rowsData = [
-          {
+          /*{
             id:1,
             name:"Алеутский район",
             items:[ 
@@ -118,7 +118,7 @@ const rowsData = [
                 name:"село"
               },
             ],
-          },
+          },*/
 ];
     
 
@@ -143,8 +143,8 @@ class App extends Component {
     componentDidMount() {
       this.getData();
       rowsData.map((district) => {
-         //console.log("componentDidMount()/dis=" + district.name);
-         //this.props.onAddRow(district);
+         console.log("componentDidMount()/dis=" + district.name);
+         this.props.onAddRow(district);
       });
     }
 
