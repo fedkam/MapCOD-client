@@ -95,6 +95,7 @@ export function MainCreateMap(){
       addMarkers(RascoData, puthIcons[0]);
       addMarkers(MsoData, puthIcons[1]);
       //console.log(RascoData, MsoData);
+      console.log("MainCreateMap()");
     })
     .catch(err => err);
   }
