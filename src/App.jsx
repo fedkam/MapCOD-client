@@ -8,8 +8,8 @@ import './App.css';
 import {ADD_DATA, addData} from './actions';
 
 
-var rowsData = [
-          /*{
+var rowsData = [/*
+          {
             id:1,
             name:"Алеутский район",
             items:[ 
@@ -81,7 +81,7 @@ var rowsData = [
           },
           {
             id:4,
-            name:"Соболевский район",
+            name:"Соболевский район", 
             items:[ 
               { 
                 id:4.1,
@@ -129,7 +129,7 @@ class App extends Component {
       fetch('http://localhost:9000/transferData')
         .then(res => res.json())
         .then(res => {
-          rowsData = res.rowsData;
+          //rowsData = res.rowsData;
           rowsData.map((district) => {
 	         console.log("componentDidMount()/dis=" + district.name);
 	         this.props.onAddRow(district);

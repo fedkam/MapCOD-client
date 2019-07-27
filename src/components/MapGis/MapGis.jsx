@@ -40,7 +40,7 @@ class MapGis extends Component {
 	addMarkers(_rascoData, _icon){
 	    let _iconSize = 32;     //Размер Иконки
 	    let _iconPin = _iconSize/2; //точка позиционирования Иконки на карте по оси X
-	    let markerGroup = [];     //Для аккамулирования объектов Marker
+	    let markerGroup = [];     //Для аккумулирования объектов Marker
 	    let groupForMap = [];     //Для добавления обработчика на markerGroup[]
 	    let myIconRasco;
 
@@ -49,7 +49,7 @@ class MapGis extends Component {
 	                    iconUrl: _icon,
 	                    iconSize: [_iconSize, _iconSize],
 	                    iconAnchor: [_iconPin,_iconSize] //позиционирование
-	                });
+	                }); 
 
 	    for(var _lvl1 in _rascoData){
 	      let marker;
