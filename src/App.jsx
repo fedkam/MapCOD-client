@@ -129,7 +129,7 @@ class App extends Component {
       fetch('http://localhost:9000/transferData')
         .then(res => res.json())
         .then(res => {
-          //rowsData = res.rowsData;
+          rowsData = res.rowsData;
           rowsData.map((district) => {
 	         console.log("componentDidMount()/dis=" + district.name);
 	         this.props.onAddRow(district);
