@@ -4,7 +4,7 @@ const initialStateDistrict = {
   	{ name: 'name', title: 'Территория' },
   ],
   tableColumnExtensions: [
-    { columnName: 'name', width: 200, wordWrapEnabled: true  },
+    { columnName: 'name', wordWrapEnabled: true  },
   ]
 };
 

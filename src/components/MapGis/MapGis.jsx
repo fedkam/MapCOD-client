@@ -41,26 +41,52 @@ class MapGis extends Component {
   	addMarker(_latitude, _longitude, _headerContent, _contentVilladge, _contentStreet, _icon, _toReturn = true){
 	    let bindLabelAllArguments = "<h3>"+ _headerContent +" муниципальный район"+"</h3>"+ _contentVilladge +", "+  _contentStreet;
 	    if(_toReturn){
-	      return (DG.marker([ _latitude, _longitude], {icon: _icon}).addTo(map).bindPopup(DG.popup().setLatLng([ _latitude, _longitude]).setHeaderContent( _headerContent).setContent( _contentVilladge + "/n" + _contentStreet)).bindLabel(bindLabelAllArguments));
+	     	return (
+	      		  DG.marker([ _latitude, _longitude], {icon: _icon})
+			      	.addTo(map)
+			      	.bindLabel(bindLabelAllArguments)
+			      	.bindPopup(
+			      		DG.popup()
+			      		  .setLatLng([ _latitude, _longitude])
+			      		  .setHeaderContent( _headerContent)
+			      		  .setContent( _contentVilladge + "/n" + _contentStreet)
+			      	)
+			);
+
 	    }else{
 	      //просто добавить 
-	      DG.marker([ _latitude, _longitude], {icon: _icon}).addTo(map).bindPopup(DG.popup().setLatLng([ _latitude, _longitude]).setHeaderContent( _headerContent).setContent( _contentVilladge + "/n" + _contentStreet)).bindLabel(bindLabelAllArguments);
+	      DG.marker([ _latitude, _longitude], {icon: _icon})
+	      	.addTo(map)
+	      	.bindLabel(bindLabelAllArguments)
+	      	.bindPopup(
+	      		DG.popup()
+	      		  .setLatLng([ _latitude, _longitude])
+	      		  .setHeaderContent( _headerContent)
+	      		  .setContent( _contentVilladge + "/n" + _contentStreet)
+	      	);
 	    }
 	}
 
-	addMarkers(_rascoData, _icon){
-	    let _iconSize = 32;     //Размер Иконки
+	setIcon(icon){
+		let _iconSize = 32;     //Размер Иконки
 	    let _iconPin = _iconSize/2; //точка позиционирования Иконки на карте по оси X
+	    return(	
+	    		DG.icon({
+	            //Стиль иконки
+	            iconUrl: icon,
+	            iconSize: [_iconSize, _iconSize],
+	            iconAnchor: [_iconPin, _iconSize] //позиционирование
+	      		})
+	    );
+	}
+
+	addMarkers(_rascoData, _icon){
+	    
 	    let markerGroup = [];     //Для аккумулирования объектов Marker
 	    let groupForMap = [];     //Для добавления обработчика на markerGroup[]
 	    let myIconRasco;
 
-	    myIconRasco = DG.icon({
-	                    //Стиль иконки
-	                    iconUrl: _icon,
-	                    iconSize: [_iconSize, _iconSize],
-	                    iconAnchor: [_iconPin,_iconSize] //позиционирование
-	                }); 
+	    myIconRasco =  this.setIcon(_icon);
 
 	    for(var _lvl1 in _rascoData){
 	      let marker;
@@ -74,12 +100,31 @@ class MapGis extends Component {
 	  	store.subscribe(() => console.log('MapGis/componentDidMount()/store.subscribe'));
 	  	///MainCreateMap();
 	  	this.createMap();
+	  	
+	  	let myIconRasco;
+
+	    myIconRasco = this.setIcon(pinRasco);
+
+	   	this.addMarker(52.824913, 156.283973, "Усть-Большерецкий район", "с. Усть-Большерецк", "Октябрьская, 14", myIconRasco, false);
 	}
 
 	render() {
-		if(this.props.rows.length){
+		const ROWW = this.props.rows;
+		if(ROWW.length){
 			console.log("render()= true");
-			console.log(this.props.rows[0].name);
+			console.log(ROWW[1]);
+
+			for(var district in this.props.rows){
+				console.log("1 "+ district.id);
+				for(let village in district.items){
+					console.log("2");
+					for(let street in village.items){
+						console.log("3");
+						console.log(district.name +" "+ village.name +" "+ street.name);	
+					}
+				}
+			}
+
 		}else{
 			console.log("render()= false");	
 		}
