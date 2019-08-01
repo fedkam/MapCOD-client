@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 import MapGis from './components/MapGis/MapGis.jsx';
 import District from './components/District/District.jsx';
 import './App.css';
-import {ADD_DATA, addData} from './actions';
+import {ADD_ROW_DISTRICT, ADD_ALL_DISTRICTS, addRowDistrict, addAllDistricts} from './actions';
 
 
-var rowsData = [/*
+var districtsData = {/*
           {
             id:1,
             name:"Алеутский район",
@@ -119,7 +119,7 @@ var rowsData = [/*
               },
             ],
           },*/
-];
+};
     
 
 
@@ -129,12 +129,12 @@ class App extends Component {
       fetch('http://localhost:9000/transferData')
         .then(res => res.json())
         .then(res => {
-          rowsData = res.rowsData;
-          rowsData.map((district) => {
+          districtsData = res.rowsData;
+          /*rowsData.map((district) => {
 	         console.log("componentDidMount()/dis=" + district.name);
 	         this.props.onAddRow(district);
-	      });
-          //console.log("getData()= " + rowsData[0].name);
+          });*/
+          this.props.onAddAllDistricts(districtsData);
         })
         .catch(err => err);
     }
@@ -164,9 +164,13 @@ class App extends Component {
 export default connect(
   state => state,
   dispatch => ({
-    onAddRow: (addrow) => {
-    	console.log("onAddRow " + addrow);
-      dispatch(addData(addrow));
+    onAddRowDistrict: (addrowdistrict) => {
+    	console.log("addrowdistrict " + addrowdistrict);
+      dispatch(addRowDistrict(addrowdistrict));
+    },
+    onAddAllDistricts: (addalldistricts) => {
+      console.log("onAddAllRow " + addalldistricts);
+      dispatch(addAllDistricts(addalldistricts));
     },
   })
 )(App);

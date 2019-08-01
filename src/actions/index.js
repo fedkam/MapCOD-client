@@ -1,6 +1,12 @@
-export const ADD_DATA = 'ADD_DATA';
+export const ADD_ROW_DISTRICT = 'ADD_ROW_DISTRICT';
+export const ADD_ALL_DISTRICTS = 'ADD_ALL_DISTRICTS';
 
-export const addData = adddata => ({
-	type: ADD_DATA,
-	adddata
+export const addRowDistrict = addRowDistrict => ({
+	type: ADD_ROW_DISTRICT,
+	addRowDistrict
+});
+
+export const addAllDistricts = addalldistricts => ({
+	type: ADD_ALL_DISTRICTS,
+	addalldistricts
 });

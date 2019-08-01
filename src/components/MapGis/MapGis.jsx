@@ -67,18 +67,23 @@ class MapGis extends Component {
 	          marker = this.addMarker(_rascoData[_lvl1][0], _rascoData[_lvl1][1], _rascoData[_lvl1][2], _rascoData[_lvl1][3], _rascoData[_lvl1][4], myIconRasco, true)
 	          markerGroup.push(marker); //Аккумулирую объекты Marker в массив
 	        }
-
-	        groupForMap = DG.featureGroup(markerGroup).addTo(map).on('click', function(e) { map.setView([e.latlng.lat, e.latlng.lng], 8);}); //Создается группа + обработчик любой на элемент Гр.
+			groupForMap = DG.featureGroup(markerGroup).addTo(map).on('click', function(e) { map.setView([e.latlng.lat, e.latlng.lng], 8);}); //Создается группа + обработчик любой на элемент Гр.
 	}
 
 	componentDidMount() {
 	  	store.subscribe(() => console.log('MapGis/componentDidMount()/store.subscribe'));
-	  	console.log("MapGis/componentDidMount()/");
 	  	///MainCreateMap();
 	  	this.createMap();
 	}
 
 	render() {
+		if(this.props.rows.length){
+			console.log("render()= true");
+			console.log(this.props.rows[0].name);
+		}else{
+			console.log("render()= false");	
+		}
+		
 	    return (
 	      <div id="map" className="MapGis-map"></div>
 	    );

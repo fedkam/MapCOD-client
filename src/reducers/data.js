@@ -1,4 +1,4 @@
-import {ADD_DATA} from '../actions';
+import {ADD_ROW_DISTRICT, ADD_ALL_DISTRICTS} from '../actions';
 
 const initialDataState = {
   rows: [
@@ -20,11 +20,16 @@ const initialDataState = {
 };
 
 export default function data(state = initialDataState , action){
-  if (action.type === ADD_DATA) {
+  if (action.type === ADD_ROW_DISTRICT) {
     //console.log('reducer data()= ', action);
     return {
       ...state,
-      rows: [...state.rows, action.adddata]
+      rows: [...state.rows, action.addrowdistrict]
+    };
+  }else if (action.type === ADD_ALL_DISTRICTS){
+    return {
+      ...state,
+      rows: action.addalldistricts
     };
   }
   return state;
