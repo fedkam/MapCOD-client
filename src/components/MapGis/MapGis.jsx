@@ -8,13 +8,24 @@ import pinRasco from "../../images/RascoMsoKseon/pinRasco.png";
 import pinMso from "../../images/RascoMsoKseon/pinMso.png";
 import pin from "../../images/RascoMsoKseon/pin.png";
 
+import { connect } from 'react-redux';
 import store from '../../store';
+
 
 var map;
 var readFile ="DefaultValue";
 var puthIcons = [pinRasco, pinMso, pin];
 var RascoData;
 var MsoData;
+
+
+const mapStateToProps = state => state.data;
+
+
+const mapDispatchToProps = dispatch => ({
+  //onSelectionChange: selection => dispatch(createGridAction('selection', selection)),
+});
+
 
 class MapGis extends Component {
 
@@ -74,4 +85,7 @@ class MapGis extends Component {
 	}
 }
 
-export default MapGis;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MapGis);

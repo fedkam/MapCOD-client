@@ -143,7 +143,7 @@ class App extends Component {
       this.getData();
     }
 
-    render() {
+    render() { 
     	return (
           <div className="App-column">
             <div>
