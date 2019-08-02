@@ -122,7 +122,6 @@ import {addRowDistrict, addAllDistricts} from './actions';
 };*/
     
 
-
 class App extends Component {
     
     getData(){

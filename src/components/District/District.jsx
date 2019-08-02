@@ -6,12 +6,15 @@ import Paper from '@material-ui/core/Paper';
 import {
   TreeDataState,
   CustomTreeData,
+  FilteringState,
+  IntegratedFiltering,
 } from '@devexpress/dx-react-grid';
 import {
   Grid,
   Table,
   TableTreeColumn,
   VirtualTable,
+  TableFilterRow,
 } from '@devexpress/dx-react-grid-material-ui';
 
 const getChildRows = (row, rootRows) => (row ? row.items : rootRows);
@@ -20,9 +23,7 @@ const getChildRows = (row, rootRows) => (row ? row.items : rootRows);
 const mapStateToProps = state => state;
 
 
-const mapDispatchToProps = dispatch => ({
-  //onSelectionChange: selection => dispatch(createGridAction('selection', selection)),
-});
+const mapDispatchToProps = dispatch => ({});
 
 
 class District extends React.PureComponent {
@@ -35,6 +36,9 @@ class District extends React.PureComponent {
             rows = {rows}
             columns = {columns}
           >
+            <FilteringState defaultFilters={[]} />
+            <IntegratedFiltering />
+            <TableFilterRow />
             <TreeDataState />
             <CustomTreeData
               getChildRows = {getChildRows}
