@@ -8,7 +8,7 @@ import './App.css';
 import {addRowDistrict, addAllDistricts} from './actions';
 
 
-var districtsData = {/*
+/*var districtsData = {
           {
             id:1,
             name:"Алеутский район",
@@ -118,8 +118,8 @@ var districtsData = {/*
                 name:"село"
               },
             ],
-          },*/
-};
+          },
+};*/
     
 
 
@@ -129,12 +129,11 @@ class App extends Component {
       fetch('http://localhost:9000/transferData')
         .then(res => res.json())
         .then(res => {
-          districtsData = res.rowsData;
-          /*districtsData.map((district) => {
+          /*res.rowsData.map((district) => {
 	         console.log("componentDidMount()/dis=" + district.name);
 	         this.props.onAddRow(district);
           });*/
-          this.props.onAddAllDistricts(districtsData);
+          this.props.onAddAllDistricts(res.rowsData);
         })
         .catch(err => err);
     }
