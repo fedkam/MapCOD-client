@@ -109,22 +109,24 @@ class MapGis extends Component {
 	}
 
 	render() {
-		const ROWW = this.props.rows;
-		if(ROWW.length){
-			console.log("render()= true");
-			console.log(ROWW[1]);
+		const districtData = this.props.rows;
 
-			for(var district in this.props.rows){
-				console.log("1 "+ district.id);
-				for(let village in district.items){
-					console.log("2");
-					for(let street in village.items){
-						console.log("3");
-						console.log(district.name +" "+ village.name +" "+ street.name);	
+		if(districtData.length){
+			for(let district of districtData){
+				//console.log("lvl_1 "+ district.name);
+				
+				if(district["items"]){
+					for(let village of district.items){
+						//console.log("lvl_2 "+ village.name);
+						
+						if(village["items"]){
+							for(let street of village.items){
+								console.log("lvl_1 "+ district.name + "lvl_2 "+ village.name + "lvl_3 "+ street.name);
+							}
+						}
 					}
 				}
 			}
-
 		}else{
 			console.log("render()= false");	
 		}
