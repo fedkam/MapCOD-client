@@ -38,7 +38,7 @@ class MapGis extends Component {
 	    }
   	}
 
-	setIcon(icon){
+	createIcon(icon){
 		let iconSize = 32;     //Размер Иконки
 	    let iconPin = iconSize/2; //точка позиционирования Иконки на карте по оси X
 	    return(	
@@ -51,32 +51,25 @@ class MapGis extends Component {
 	    );
 	}
 
-  	addMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon, toReturn = true){
-	    let bindLabelAllArguments = '<h3>'+ headerContent +'муниципальный район'+'</h3>'+ contentVilladge +', '+  contentStreet;
-	    if(toReturn){
-	     	return (
-	      		  DG.marker([ latitude, longitude], {icon: icon})
+	createMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon){
+		return  DG.marker([ latitude, longitude], {icon: icon})
 			      	.addTo(map)
-			      	.bindLabel(bindLabelAllArguments)
+			      	.bindLabel('<h3>'+ headerContent +'</h3>'+ contentVilladge +', '+  contentStreet)
 			      	.bindPopup(
 			      		DG.popup()
 			      		  .setLatLng([ latitude, longitude])
 			      		  .setHeaderContent( headerContent)
 			      		  .setContent( contentVilladge + ' ' + contentStreet)
 			      	)
-			);
+	}
 
-	    }else{
+
+  	addMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon, toReturn = true){
+		if(toReturn){
+	     	return this.createMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon);
+		}else{
 	      //просто добавить 
-	      DG.marker([ latitude, longitude], {icon: icon})
-	      	.addTo(map)
-	      	.bindLabel(bindLabelAllArguments)
-	      	.bindPopup(
-	      		DG.popup()
-	      		  .setLatLng([ latitude, longitude])
-	      		  .setHeaderContent( headerContent)
-	      		  .setContent( contentVilladge + '/n' + contentStreet)
-	      	);
+	      this.createMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon);
 	    }
 	}
 
@@ -87,8 +80,8 @@ class MapGis extends Component {
 	    let markerGroup = [];     //Для аккумулирования объектов Marker
 	    let onClickMarkerMap = [];     //Для добавления обработчика на markerGroup[]
 
-	    iconRasco =  this.setIcon(pinRasco);
-	    iconMSO	= this.setIcon(pinMso);
+	    iconRasco =  this.createIcon(pinRasco);
+	    iconMSO	= this.createIcon(pinMso);
 	    
 	    alertLevel = (level) => {
 	    	if(level === 'RASCO'){
@@ -126,17 +119,18 @@ class MapGis extends Component {
 							 }); //Создается группа + обработчик click на элемент группы
 	}
 
+
 	componentDidMount() {
 	  	store.subscribe(() => console.log('MapGis/componentDidMount()/store.subscribe'));
-	  	///MainCreateMap();
 	  	this.createMap();
 	  	
 	  	let myIconRasco;
 
-	    myIconRasco = this.setIcon(pinRasco);
+	    myIconRasco = this.createIcon(pinRasco);
 
 	   	this.addMarker(52.824913, 156.283973, 'Усть-Большерецкий район', 'с. Усть-Большерецк', 'Октябрьская, 14', myIconRasco, false);
 	}
+
 
 	render() {
 		const districtsData = this.props.rows;
@@ -144,7 +138,7 @@ class MapGis extends Component {
 		if(districtsData.length){
 			this.addMarkers(districtsData,)
 		}else{
-			console.log('render()= false');	
+			console.log('MapGis/render() loading data');	
 		}
 		
 	    return (
