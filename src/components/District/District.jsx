@@ -10,7 +10,6 @@ import {
 import {
   Grid,
   Table,
-  TableHeaderRow,
   TableTreeColumn,
   VirtualTable,
 } from '@devexpress/dx-react-grid-material-ui';

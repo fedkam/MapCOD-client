@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import MapGis from './components/MapGis/MapGis.jsx';
 import District from './components/District/District.jsx';
 import './App.css';
-import {ADD_ROW_DISTRICT, ADD_ALL_DISTRICTS, addRowDistrict, addAllDistricts} from './actions';
+import {addRowDistrict, addAllDistricts} from './actions';
 
 
 var districtsData = {/*
@@ -130,7 +130,7 @@ class App extends Component {
         .then(res => res.json())
         .then(res => {
           districtsData = res.rowsData;
-          /*rowsData.map((district) => {
+          /*districtsData.map((district) => {
 	         console.log("componentDidMount()/dis=" + district.name);
 	         this.props.onAddRow(district);
           });*/

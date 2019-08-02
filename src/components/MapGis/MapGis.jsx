@@ -6,18 +6,10 @@ import React, { Component } from 'react';
 import DG from '2gis-maps';
 import pinRasco from '../../images/RascoMsoKseon/pinRasco.png';
 import pinMso from '../../images/RascoMsoKseon/pinMso.png';
-import pin from '../../images/RascoMsoKseon/pin.png';
 
 import { connect } from 'react-redux';
-import store from '../../store';
 
-
-var map;
-var readFile ='DefaultValue';
-var puthIcons = [pinRasco, pinMso, pin];
-var districtsData;
-var MsoData;
-
+let map;
 
 const mapStateToProps = state => state.data;
 
@@ -38,6 +30,7 @@ class MapGis extends Component {
 	    }
   	}
 
+
 	createIcon(icon){
 		let iconSize = 32;     //Размер Иконки
 	    let iconPin = iconSize/2; //точка позиционирования Иконки на карте по оси X
@@ -50,6 +43,7 @@ class MapGis extends Component {
 	      		})
 	    );
 	}
+
 
 	createMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon){
 		return  DG.marker([ latitude, longitude], {icon: icon})
@@ -64,6 +58,16 @@ class MapGis extends Component {
 	}
 
 
+	createOnClickMarker(markerGroup){
+		//Создается группа + обработчик click на элементы группы
+		DG.featureGroup(markerGroup)
+		  .addTo(map)
+		  .on('click', function(e) {
+				map.setView([e.latlng.lat, e.latlng.lng], 8);
+		  }); 
+	}
+
+
   	addMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon, toReturn = true){
 		if(toReturn){
 	     	return this.createMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon);
@@ -71,6 +75,7 @@ class MapGis extends Component {
 	      //просто добавить 
 	      this.createMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon);
 	    }
+	    // пример: this.addMarker(52.824913, 156.283973, 'Усть-Большерецкий район', 'с. Усть-Большерецк', 'Октябрьская, 14', myIconRasco, false);
 	}
 
 
@@ -78,7 +83,6 @@ class MapGis extends Component {
 	    let iconRasco, iconMSO;
 		let alertLevel;
 	    let markerGroup = [];     //Для аккумулирования объектов Marker
-	    let onClickMarkerMap = [];     //Для добавления обработчика на markerGroup[]
 
 	    iconRasco =  this.createIcon(pinRasco);
 	    iconMSO	= this.createIcon(pinMso);
@@ -111,26 +115,13 @@ class MapGis extends Component {
 					}
 				}
 		}
-
-		onClickMarkerMap = DG.featureGroup(markerGroup)
-							 .addTo(map)
-							 .on('click', function(e) {
-							 	 map.setView([e.latlng.lat, e.latlng.lng], 8);
-							 }); //Создается группа + обработчик click на элемент группы
+		this.createOnClickMarker(markerGroup);
 	}
 
 
 	componentDidMount() {
-	  	store.subscribe(() => console.log('MapGis/componentDidMount()/store.subscribe'));
 	  	this.createMap();
-	  	
-	  	let myIconRasco;
-
-	    myIconRasco = this.createIcon(pinRasco);
-
-	   	this.addMarker(52.824913, 156.283973, 'Усть-Большерецкий район', 'с. Усть-Большерецк', 'Октябрьская, 14', myIconRasco, false);
 	}
-
 
 	render() {
 		const districtsData = this.props.rows;
