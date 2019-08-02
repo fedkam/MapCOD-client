@@ -1,21 +1,21 @@
 // src/js/components/MapGis.jsx
 
-import React, { Component } from "react";
-///import {MainCreateMap} from "../createMap.js";
+import React, { Component } from 'react';
+///import {MainCreateMap} from '../createMap.js';
 
-import DG from "2gis-maps";
-import pinRasco from "../../images/RascoMsoKseon/pinRasco.png";
-import pinMso from "../../images/RascoMsoKseon/pinMso.png";
-import pin from "../../images/RascoMsoKseon/pin.png";
+import DG from '2gis-maps';
+import pinRasco from '../../images/RascoMsoKseon/pinRasco.png';
+import pinMso from '../../images/RascoMsoKseon/pinMso.png';
+import pin from '../../images/RascoMsoKseon/pin.png';
 
 import { connect } from 'react-redux';
 import store from '../../store';
 
 
 var map;
-var readFile ="DefaultValue";
+var readFile ='DefaultValue';
 var puthIcons = [pinRasco, pinMso, pin];
-var RascoData;
+var districtsData;
 var MsoData;
 
 
@@ -38,62 +38,92 @@ class MapGis extends Component {
 	    }
   	}
 
-  	addMarker(_latitude, _longitude, _headerContent, _contentVilladge, _contentStreet, _icon, _toReturn = true){
-	    let bindLabelAllArguments = "<h3>"+ _headerContent +" муниципальный район"+"</h3>"+ _contentVilladge +", "+  _contentStreet;
-	    if(_toReturn){
+	setIcon(icon){
+		let iconSize = 32;     //Размер Иконки
+	    let iconPin = iconSize/2; //точка позиционирования Иконки на карте по оси X
+	    return(	
+	    		DG.icon({
+	            //Стиль иконки
+	            iconUrl: icon,
+	            iconSize: [iconSize, iconSize],
+	            iconAnchor: [iconPin, iconSize] //позиционирование
+	      		})
+	    );
+	}
+
+  	addMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon, toReturn = true){
+	    let bindLabelAllArguments = '<h3>'+ headerContent +'муниципальный район'+'</h3>'+ contentVilladge +', '+  contentStreet;
+	    if(toReturn){
 	     	return (
-	      		  DG.marker([ _latitude, _longitude], {icon: _icon})
+	      		  DG.marker([ latitude, longitude], {icon: icon})
 			      	.addTo(map)
 			      	.bindLabel(bindLabelAllArguments)
 			      	.bindPopup(
 			      		DG.popup()
-			      		  .setLatLng([ _latitude, _longitude])
-			      		  .setHeaderContent( _headerContent)
-			      		  .setContent( _contentVilladge + "/n" + _contentStreet)
+			      		  .setLatLng([ latitude, longitude])
+			      		  .setHeaderContent( headerContent)
+			      		  .setContent( contentVilladge + ' ' + contentStreet)
 			      	)
 			);
 
 	    }else{
 	      //просто добавить 
-	      DG.marker([ _latitude, _longitude], {icon: _icon})
+	      DG.marker([ latitude, longitude], {icon: icon})
 	      	.addTo(map)
 	      	.bindLabel(bindLabelAllArguments)
 	      	.bindPopup(
 	      		DG.popup()
-	      		  .setLatLng([ _latitude, _longitude])
-	      		  .setHeaderContent( _headerContent)
-	      		  .setContent( _contentVilladge + "/n" + _contentStreet)
+	      		  .setLatLng([ latitude, longitude])
+	      		  .setHeaderContent( headerContent)
+	      		  .setContent( contentVilladge + '/n' + contentStreet)
 	      	);
 	    }
 	}
 
-	setIcon(icon){
-		let _iconSize = 32;     //Размер Иконки
-	    let _iconPin = _iconSize/2; //точка позиционирования Иконки на карте по оси X
-	    return(	
-	    		DG.icon({
-	            //Стиль иконки
-	            iconUrl: icon,
-	            iconSize: [_iconSize, _iconSize],
-	            iconAnchor: [_iconPin, _iconSize] //позиционирование
-	      		})
-	    );
-	}
 
-	addMarkers(_rascoData, _icon){
-	    
+	addMarkers(districtsData){
+	    let iconRasco, iconMSO;
+		let alertLevel;
 	    let markerGroup = [];     //Для аккумулирования объектов Marker
-	    let groupForMap = [];     //Для добавления обработчика на markerGroup[]
-	    let myIconRasco;
+	    let onClickMarkerMap = [];     //Для добавления обработчика на markerGroup[]
 
-	    myIconRasco =  this.setIcon(_icon);
+	    iconRasco =  this.setIcon(pinRasco);
+	    iconMSO	= this.setIcon(pinMso);
+	    
+	    alertLevel = (level) => {
+	    	if(level === 'RASCO'){
+	    		return iconRasco;
+	    	}else if(level === 'MSO'){
+	    		return iconMSO;
+	    	}
+	    };
 
-	    for(var _lvl1 in _rascoData){
-	      let marker;
-	          marker = this.addMarker(_rascoData[_lvl1][0], _rascoData[_lvl1][1], _rascoData[_lvl1][2], _rascoData[_lvl1][3], _rascoData[_lvl1][4], myIconRasco, true)
-	          markerGroup.push(marker); //Аккумулирую объекты Marker в массив
-	        }
-			groupForMap = DG.featureGroup(markerGroup).addTo(map).on('click', function(e) { map.setView([e.latlng.lat, e.latlng.lng], 8);}); //Создается группа + обработчик любой на элемент Гр.
+		for(let district of districtsData){
+				if(district['items']){
+					for(let village of district.items){
+						if(village['items']){
+							for(let street of village.items){
+								let marker;
+									marker = this.addMarker(street.latitude,
+															street.longitude,
+															district.name,
+															village.name,
+															street.name,
+															alertLevel(street.level),
+															true);
+	          						markerGroup.push(marker);//Аккумулирую объекты Marker в массив
+	          						//console.log('lvl_1 '+ district.name + 'lvl_2 '+ village.name + 'lvl_3 '+ street.name);
+							}
+						}
+					}
+				}
+		}
+
+		onClickMarkerMap = DG.featureGroup(markerGroup)
+							 .addTo(map)
+							 .on('click', function(e) {
+							 	 map.setView([e.latlng.lat, e.latlng.lng], 8);
+							 }); //Создается группа + обработчик click на элемент группы
 	}
 
 	componentDidMount() {
@@ -105,34 +135,20 @@ class MapGis extends Component {
 
 	    myIconRasco = this.setIcon(pinRasco);
 
-	   	this.addMarker(52.824913, 156.283973, "Усть-Большерецкий район", "с. Усть-Большерецк", "Октябрьская, 14", myIconRasco, false);
+	   	this.addMarker(52.824913, 156.283973, 'Усть-Большерецкий район', 'с. Усть-Большерецк', 'Октябрьская, 14', myIconRasco, false);
 	}
 
 	render() {
-		const districtData = this.props.rows;
+		const districtsData = this.props.rows;
 
-		if(districtData.length){
-			for(let district of districtData){
-				//console.log("lvl_1 "+ district.name);
-				
-				if(district["items"]){
-					for(let village of district.items){
-						//console.log("lvl_2 "+ village.name);
-						
-						if(village["items"]){
-							for(let street of village.items){
-								console.log("lvl_1 "+ district.name + "lvl_2 "+ village.name + "lvl_3 "+ street.name);
-							}
-						}
-					}
-				}
-			}
+		if(districtsData.length){
+			this.addMarkers(districtsData,)
 		}else{
-			console.log("render()= false");	
+			console.log('render()= false');	
 		}
 		
 	    return (
-	      <div id="map" className="MapGis-map"></div>
+	      <div id='map' className='MapGis-map'></div>
 	    );
 	}
 }
