@@ -38,7 +38,6 @@ class District extends React.PureComponent {
           >
             <FilteringState defaultFilters={[]} />
             <IntegratedFiltering />
-            <TableFilterRow />
             <TreeDataState />
             <CustomTreeData
               getChildRows = {getChildRows}
