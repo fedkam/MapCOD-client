@@ -125,7 +125,7 @@ class MapGis extends Component {
 
 	render() {
 		const districtsData = this.props.rows;
-
+		
 		if(districtsData.length){
 			this.addMarkers(districtsData,)
 		}else{
