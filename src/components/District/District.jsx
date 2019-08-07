@@ -28,12 +28,31 @@ const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({});
 
 
+
+
+
 function District(props) {
   const { rows } = props.data;
   const { columns, tableColumnExtensions } = props.districtTable;
   const [selection, setSelection] = useState(rows);
-  
+  const styles = {
+    name: {
+      backgroundColor: '#a2e2a4',
+    },
+  };
+  const TableRow = ({ row, ...restProps }) => (
+    <Table.Row
+      {...restProps}
+      // eslint-disable-next-line no-alert
+      onClick={() => alert(JSON.stringify(row.id))}
+      style={{
+        cursor: 'pointer',
+        ...styles[row.name.toLowerCase()],
+      }}
+    />
+  );  
   console.log("District()= " + selection);
+
   return (
       <Paper >
           <Grid
@@ -47,10 +66,7 @@ function District(props) {
             getChildRows={getChildRows}
           />
           <Table
-            columnExtensions={tableColumnExtensions}
-          />
-          <VirtualTable 
-            height='100vmin'
+            rowComponent={TableRow}
           />
           <SelectionState
             selection={selection}
@@ -58,11 +74,6 @@ function District(props) {
           />
           <TableTreeColumn
             for="name"
-          />
-          <TableSelection
-            selectByRowClick
-            highlightRow
-            showSelectionColumn={false}
           />
         </Grid>
       </Paper>
