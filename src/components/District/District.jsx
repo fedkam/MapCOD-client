@@ -35,24 +35,23 @@ function District(props) {
   const { rows } = props.data;
   const { columns, tableColumnExtensions } = props.districtTable;
   const [selection, setSelection] = useState(rows);
-  const styles = {
-    name: {
-      backgroundColor: '#a2e2a4',
-    },
-  };
-  const TableRow = ({ row, ...restProps }) => (
-    <Table.Row
+  const styles = {backgroundColor: '#ffffff'};
+  const VirtualTableRow = ({ row, ...restProps }) => (
+    <VirtualTable.Row
       {...restProps}
-      // eslint-disable-next-line no-alert
-      onClick={() => alert(JSON.stringify(row.id))}
+      onClick={() => {
+        if(row.isClick){
+          delete row.isClick;
+        }else{
+          row.isClick = true;
+        }
+        console.log(row);
+      }}
       style={{
-        cursor: 'pointer',
-        ...styles[row.name.toLowerCase()],
+        cursor: 'pointer', styles,
       }}
     />
   );  
-  console.log("District()= " + selection);
-
   return (
       <Paper >
           <Grid
@@ -65,8 +64,9 @@ function District(props) {
           <CustomTreeData
             getChildRows={getChildRows}
           />
-          <Table
-            rowComponent={TableRow}
+          <VirtualTable
+            rowComponent={VirtualTableRow}
+            height='100vmin'
           />
           <SelectionState
             selection={selection}
