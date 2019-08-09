@@ -5,7 +5,7 @@ const initialStateDistrict = {
   ],
   tableColumnExtensions: [
     { columnName: 'name', wordWrapEnabled: true  },
-  ]
+  ],
 };
 
 export default function districtTable(state = initialStateDistrict, action){

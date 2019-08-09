@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
+import { useStyle } from '@material-ui/styles';
 import {
   TreeDataState,
   CustomTreeData,
@@ -28,15 +29,14 @@ const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({});
 
 
-
-
-
 function District(props) {
   const { rows } = props.data;
   const { columns, tableColumnExtensions } = props.districtTable;
-  const [selection, setSelection] = useState(rows);
-  const styles = {backgroundColor: '#ffffff'};
-  const VirtualTableRow = ({ row, ...restProps }) => (
+  const [ selection, setSelection ] = useState(rows);
+  const sty = {
+        cursor: 'pointer',
+      };
+  const VirtualTableRow = ({ row, ...restProps}) => (
     <VirtualTable.Row
       {...restProps}
       onClick={() => {
@@ -45,11 +45,11 @@ function District(props) {
         }else{
           row.isClick = true;
         }
-        console.log(row);
+        
       }}
-      style={{
-        cursor: 'pointer', styles,
-      }}
+      hover
+      selected={() =>  row.isClick == true }
+      style={sty}
     />
   );  
   return (
