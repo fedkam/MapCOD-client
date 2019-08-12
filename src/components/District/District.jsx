@@ -12,6 +12,10 @@ import {
   SelectionState,
 } from '@devexpress/dx-react-grid';
 import {
+  Template,
+  TemplateConnector,
+} from '@devexpress/dx-react-core'
+import {
   Grid,
   Table,
   TableTreeColumn,
@@ -29,52 +33,82 @@ const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({});
 
 
+
+
+
 function District(props) {
   const { rows } = props.data;
   const { columns, tableColumnExtensions } = props.districtTable;
-  const [ selection, setSelection ] = useState(rows);
-  const sty = {
-        cursor: 'pointer',
-      };
-  const VirtualTableRow = ({ row, ...restProps}) => (
-    <VirtualTable.Row
-      {...restProps}
-      onClick={() => {
-        if(row.isClick){
-          delete row.isClick;
-        }else{
-          row.isClick = true;
+  const Row = ({ tableRow, selected, onToggle, ...restProps }) => {
+    let timer = 0;
+    let delay = 200;
+    let prevent = false;
+
+    const handleClick = () => {
+      timer = setTimeout(() => {
+        if (!prevent) {
+          onToggle();
         }
-        
-      }}
-      hover
-      selected={() =>  row.isClick == true }
-      style={sty}
-    />
-  );  
+        prevent = false;
+      }, delay);
+    };
+
+    const handleDoubleClick = () => {
+      clearTimeout(timer);
+      prevent = true;
+      alert(JSON.stringify(tableRow.row));
+    }
+    
+    console.log("Row");
+
+    return (
+      <VirtualTable.Row
+        {...restProps}
+        className={selected ? 'active' : ''}
+        style={{ color: 'green' }}
+        onClick={handleClick}
+        onDoubleClick={handleDoubleClick}
+      />
+    );
+  };
   return (
       <Paper >
-          <Grid
-            rows={rows}
-            columns={columns}
-          >
-          <FilteringState defaultFilters={[]} />
-          <IntegratedFiltering />
+        <Grid
+          rows={rows}
+          columns={columns}
+        >
+          <SelectionState />
           <TreeDataState />
           <CustomTreeData
             getChildRows={getChildRows}
           />
           <VirtualTable
-            rowComponent={VirtualTableRow}
+            rowComponent={Row}
             height='100vmin'
           />
-          <SelectionState
-            selection={selection}
-            onSelectionChange={setSelection}
+          <TableSelection 
+            highlightSelected 
+            selectByRowClick 
           />
           <TableTreeColumn
-            for="name"
+            for='name'
           />
+          <Template
+            name='tableRow'
+            predicate={({ tableRow }) => tableRow.type === 'name'}
+          >
+            {params => (
+              <TemplateConnector>
+                {({ selection }, { toggleSelection }) => (
+                  <Row
+                    {...params}
+                    selected={selection.has(params.tableRow.rowId)}
+                    onToggle={() => toggleSelection({ rowIds: [params.tableRow.rowId] })}
+                  />
+                )}
+              </TemplateConnector>
+            )}
+          </Template>
         </Grid>
       </Paper>
     );
