@@ -7,8 +7,6 @@ import { useStyle } from '@material-ui/styles';
 import {
   TreeDataState,
   CustomTreeData,
-  FilteringState,
-  IntegratedFiltering,
   SelectionState,
 } from '@devexpress/dx-react-grid';
 import {
@@ -17,10 +15,9 @@ import {
 } from '@devexpress/dx-react-core'
 import {
   Grid,
-  Table,
   TableTreeColumn,
+  Table,
   VirtualTable,
-  TableFilterRow,
   TableSelection,
 } from '@devexpress/dx-react-grid-material-ui';
 
@@ -33,44 +30,41 @@ const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({});
 
 
-
+const Row = ({ tableRow, selected, onToggle, ...restProps }) => {
+  //ответ https://stackoverflow.com/questions/25777826/onclick-works-but-ondoubleclick-is-ignored-on-react-component
+  let timer = 0;
+  let delay = 200;
+  let prevent = false;
+  const handleClick = () => {
+    timer = setTimeout(() => {
+      if (!prevent) {
+        onToggle();
+      }
+      prevent = false;
+    }, delay);
+  };
+  const handleDoubleClick = () => {
+    clearTimeout(timer);
+    prevent = true;
+    alert(JSON.stringify(tableRow.row));
+  }
+  return (
+    <Table.Row
+      {...restProps}
+      style={{
+        backgroundColor: selected ? '#9de09d' : undefined,
+      }}
+      onClick={handleClick}
+      onDoubleClick={handleDoubleClick}
+    />
+  );
+};
 
 
 function District(props) {
   const { rows } = props.data;
   const { columns, tableColumnExtensions } = props.districtTable;
-  const Row = ({ tableRow, selected, onToggle, ...restProps }) => {
-    let timer = 0;
-    let delay = 200;
-    let prevent = false;
-
-    const handleClick = () => {
-      timer = setTimeout(() => {
-        if (!prevent) {
-          onToggle();
-        }
-        prevent = false;
-      }, delay);
-    };
-
-    const handleDoubleClick = () => {
-      clearTimeout(timer);
-      prevent = true;
-      alert(JSON.stringify(tableRow.row));
-    }
-    
-    console.log("Row");
-
-    return (
-      <VirtualTable.Row
-        {...restProps}
-        className={selected ? 'active' : ''}
-        style={{ color: 'green' }}
-        onClick={handleClick}
-        onDoubleClick={handleDoubleClick}
-      />
-    );
-  };
+  
   return (
       <Paper >
         <Grid
@@ -86,23 +80,24 @@ function District(props) {
             rowComponent={Row}
             height='100vmin'
           />
+          <TableTreeColumn
+            for='name'
+          />
           <TableSelection 
             highlightSelected 
             selectByRowClick 
           />
-          <TableTreeColumn
-            for='name'
-          />
+
           <Template
-            name='tableRow'
-            predicate={({ tableRow }) => tableRow.type === 'name'}
+            name="tableRow"
+            predicate={({ tableRow }) => tableRow.type === Table.ROW_TYPE}
           >
             {params => (
               <TemplateConnector>
                 {({ selection }, { toggleSelection }) => (
                   <Row
                     {...params}
-                    selected={selection.has(params.tableRow.rowId)}
+                    selected={selection.findIndex((i) => i === params.tableRow.rowId) > -1}
                     onToggle={() => toggleSelection({ rowIds: [params.tableRow.rowId] })}
                   />
                 )}
