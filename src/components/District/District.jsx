@@ -32,20 +32,10 @@ const mapDispatchToProps = dispatch => ({});
 
 const Row = ({ tableRow, selected, onToggle, ...restProps }) => {
   //ответ https://stackoverflow.com/questions/25777826/onclick-works-but-ondoubleclick-is-ignored-on-react-component
-  let timer = 0;
-  let delay = 200;
-  let prevent = false;
   const handleClick = () => {
-    timer = setTimeout(() => {
-      if (!prevent) {
-        onToggle();
-      }
-      prevent = false;
-    }, delay);
+    onToggle();
   };
   const handleDoubleClick = () => {
-    clearTimeout(timer);
-    prevent = true;
     alert(JSON.stringify(tableRow.row));
   }
   return (
@@ -86,6 +76,7 @@ function District(props) {
           <TableSelection 
             highlightSelected 
             selectByRowClick 
+            showSelectionColumn={false}
           />
 
           <Template
@@ -97,8 +88,19 @@ function District(props) {
                 {({ selection }, { toggleSelection }) => (
                   <Row
                     {...params}
+                    hover
                     selected={selection.findIndex((i) => i === params.tableRow.rowId) > -1}
-                    onToggle={() => {toggleSelection({ rowIds: [params.tableRow.rowId] }); console.log("params.tableRow.rowId = " + params.tableRow.rowId + " __selection = " + selection);}}
+                    onToggle={() => {
+                      if(selection.length){
+                        toggleSelection({
+                          rowIds: [selection[selection.length-1]] 
+                        });
+                      }
+                      toggleSelection({
+                        rowIds: [params.tableRow.rowId] 
+                      }); 
+                      console.log("params.tableRow.rowId = " + params.tableRow.rowId + " __selection = " + selection);
+                  }}
                   />
                 )
                 
