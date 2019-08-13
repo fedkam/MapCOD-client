@@ -98,9 +98,11 @@ function District(props) {
                   <Row
                     {...params}
                     selected={selection.findIndex((i) => i === params.tableRow.rowId) > -1}
-                    onToggle={() => toggleSelection({ rowIds: [params.tableRow.rowId] })}
+                    onToggle={() => {toggleSelection({ rowIds: [params.tableRow.rowId] }); console.log("params.tableRow.rowId = " + params.tableRow.rowId + " __selection = " + selection);}}
                   />
-                )}
+                )
+                
+              }
               </TemplateConnector>
             )}
           </Template>
