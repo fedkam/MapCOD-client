@@ -34,6 +34,7 @@ const Row = ({ tableRow, selected, onToggle, ...restProps }) => {
   //ответ https://stackoverflow.com/questions/25777826/onclick-works-but-ondoubleclick-is-ignored-on-react-component
   const handleClick = () => {
     onToggle();
+    //console.log(" Row = ",tableRow);
   };
   const handleDoubleClick = () => {
     alert(JSON.stringify(tableRow.row));
@@ -91,7 +92,7 @@ function District(props) {
                     hover
                     selected={selection.findIndex((i) => i === params.tableRow.rowId) > -1}
                     onToggle={() => {
-                      if(selection.length){
+                      if(selection.length && params.tableRow.rowId!=selection[selection.length-1]){
                         toggleSelection({
                           rowIds: [selection[selection.length-1]] 
                         });
