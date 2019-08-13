@@ -1,9 +1,8 @@
 // District.jsx
 
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
-import { useStyle } from '@material-ui/styles';
 import {
   TreeDataState,
   CustomTreeData,
@@ -94,7 +93,7 @@ function District(props) {
                     hover
                     selected={selection.findIndex((i) => i === params.tableRow.rowId) > -1}
                     onToggle={() => {
-                      if(selection.length && params.tableRow.rowId!=selection[selection.length-1]){
+                      if(selection.length && (params.tableRow.rowId !== selection[selection.length-1])) {
                         toggleSelection({
                           rowIds: [selection[selection.length-1]] 
                         });

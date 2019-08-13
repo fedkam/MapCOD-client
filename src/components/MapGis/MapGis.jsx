@@ -21,6 +21,11 @@ const mapDispatchToProps = dispatch => ({
 
 class MapGis extends Component {
 
+	setViewByCoordinates(lat, lng, sizeMap=8){
+		map.setView([lat, lng], sizeMap);
+	}
+
+
 	createMap(){
 	    if(!map){
 	      map = DG.map('map', {
@@ -62,13 +67,11 @@ class MapGis extends Component {
 		//Создается группа + обработчик click на элементы группы
 		DG.featureGroup(markerGroup)
 		  .addTo(map)
-		  .on('click', function(e) {
-				map.setView([e.latlng.lat, e.latlng.lng], 8);
-		  }); 
+		  .on('click', (e) => this.setViewByCoordinates(e.latlng.lat, e.latlng.lng, 8)); 
 	}
 
 
-  	addMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon, toReturn = true){
+  	addMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon, toReturn=true){
 		if(toReturn){
 	     	return this.createMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon);
 		}else{
