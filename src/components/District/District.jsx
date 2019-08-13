@@ -19,7 +19,7 @@ import {
   VirtualTable,
   TableSelection,
 } from '@devexpress/dx-react-grid-material-ui';
-
+import {setViewByCoordinates} from '../MapGis/MapGis.jsx'
 
 const getChildRows = (row, rootRows) => (row ? row.items : rootRows);
 
@@ -27,18 +27,24 @@ const getChildRows = (row, rootRows) => (row ? row.items : rootRows);
 const mapStateToProps = state => state;
 
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => {};
 
 
 const Row = ({ tableRow, selected, onToggle, ...restProps }) => {
-  //ответ https://stackoverflow.com/questions/25777826/onclick-works-but-ondoubleclick-is-ignored-on-react-component
   const handleClick = () => {
     onToggle();
-    //console.log(" Row = ",tableRow);
+    if(tableRow.row.latitude && tableRow.row.longitude && !selected){
+      setViewByCoordinates(tableRow.row.latitude, tableRow.row.longitude, 15);
+    }else{
+      setViewByCoordinates();
+    }
+    console.log(" Row = ",tableRow);
   };
+
   const handleDoubleClick = () => {
     alert(JSON.stringify(tableRow.row));
   }
+
   return (
     <Table.Row
       {...restProps}

@@ -1,42 +1,38 @@
 // src/js/components/MapGis.jsx
 
 import React, { Component } from 'react';
-///import {MainCreateMap} from '../createMap.js';
-
 import DG from '2gis-maps';
 import pinRasco from '../../images/RascoMsoKseon/pinRasco.png';
 import pinMso from '../../images/RascoMsoKseon/pinMso.png';
-
 import { connect } from 'react-redux';
 
 let map;
-
 const mapStateToProps = state => state.data;
 
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = dispatch => {
   //onSelectionChange: selection => dispatch(createGridAction('selection', selection)),
-});
+};
 
 
-class MapGis extends Component {
-
-	setViewByCoordinates(lat, lng, sizeMap=8){
-		map.setView([lat, lng], sizeMap);
-	}
+export const setViewByCoordinates = (latitude=58, longitude=162, sizeMap=5) => {
+		map.setView([latitude, longitude], sizeMap);
+};
 
 
-	createMap(){
+const createMap = (latitude=58, longitude=162, sizeMap=5) => {
 	    if(!map){
 	      map = DG.map('map', {
-	          center: [58, 162],
-	          zoom: 5
+	          center: [latitude, longitude],
+	          zoom: sizeMap,
+	          zoomControl: false,
+	          geoclicker: true,
 	          });
 	    }
-  	}
+};
 
 
-	createIcon(icon){
+const createIcon = (icon) => {
 		let iconSize = 32;     //Размер Иконки
 	    let iconPin = iconSize/2; //точка позиционирования Иконки на карте по оси X
 	    return(	
@@ -44,13 +40,13 @@ class MapGis extends Component {
 	            //Стиль иконки
 	            iconUrl: icon,
 	            iconSize: [iconSize, iconSize],
-	            iconAnchor: [iconPin, iconSize] //позиционирование
+	            iconAnchor: [iconPin, iconSize], //позиционирование
 	      		})
 	    );
-	}
+};
 
 
-	createMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon){
+const createMarker = (latitude, longitude, headerContent, contentVilladge, contentStreet, icon) => {
 		return  DG.marker([ latitude, longitude], {icon: icon})
 			      	.addTo(map)
 			      	.bindLabel('<h3>'+ headerContent +'</h3>'+ contentVilladge +', '+  contentStreet)
@@ -60,35 +56,35 @@ class MapGis extends Component {
 			      		  .setHeaderContent( headerContent)
 			      		  .setContent( contentVilladge + ' ' + contentStreet)
 			      	)
-	}
+};
 
 
-	createOnClickMarker(markerGroup){
+const createOnClickMarker = (markerGroup) => {
 		//Создается группа + обработчик click на элементы группы
 		DG.featureGroup(markerGroup)
 		  .addTo(map)
-		  .on('click', (e) => this.setViewByCoordinates(e.latlng.lat, e.latlng.lng, 8)); 
-	}
+		  .on('click', (e) => setViewByCoordinates(e.latlng.lat, e.latlng.lng, 8)); 
+};
 
 
-  	addMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon, toReturn=true){
+const addMarker = (latitude, longitude, headerContent, contentVilladge, contentStreet, icon, toReturn=true) => {
 		if(toReturn){
-	     	return this.createMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon);
+	     	return  createMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon);
 		}else{
 	      //просто добавить 
-	      this.createMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon);
+	       createMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon);
 	    }
-	    // пример: this.addMarker(52.824913, 156.283973, 'Усть-Большерецкий район', 'с. Усть-Большерецк', 'Октябрьская, 14', myIconRasco, false);
-	}
+	    // пример:  addMarker(52.824913, 156.283973, 'Усть-Большерецкий район', 'с. Усть-Большерецк', 'Октябрьская, 14', myIconRasco, false);
+};
 
 
-	addMarkers(districtsData){
+const addMarkers = (districtsData) => {
 	    let iconRasco, iconMSO;
 		let alertLevel;
-	    let markerGroup = [];     //Для аккумулирования объектов Marker
+	    let markerGroup = []; //Для аккумулирования объектов Marker
 
-	    iconRasco =  this.createIcon(pinRasco);
-	    iconMSO	= this.createIcon(pinMso);
+	    iconRasco = createIcon(pinRasco);
+	    iconMSO	= createIcon(pinMso);
 	    
 	    alertLevel = (level) => {
 	    	if(level === 'RASCO'){
@@ -104,13 +100,13 @@ class MapGis extends Component {
 						if(village['items']){
 							for(let street of village.items){
 								let marker;
-									marker = this.addMarker(street.latitude,
-															street.longitude,
-															district.name,
-															village.name,
-															street.name,
-															alertLevel(street.level),
-															true);
+									marker = addMarker(street.latitude,
+														street.longitude,
+														district.name,
+														village.name,
+														street.name,
+														alertLevel(street.level),
+														true);
 	          						markerGroup.push(marker);//Аккумулирую объекты Marker в массив
 	          						//console.log('lvl_1 '+ district.name + 'lvl_2 '+ village.name + 'lvl_3 '+ street.name);
 							}
@@ -118,28 +114,24 @@ class MapGis extends Component {
 					}
 				}
 		}
-		this.createOnClickMarker(markerGroup);
-	}
+		createOnClickMarker(markerGroup);
+};
 
 
-	componentDidMount() {
-	  	this.createMap();
+function MapGis(props){
+	const districtsData = props.rows;
+	
+	if(districtsData.length){
+		createMap();
+		addMarkers(districtsData);
+	}else{
+		console.log('MapGis/render() loading data');	
 	}
-
-	render() {
-		const districtsData = this.props.rows;
-		
-		if(districtsData.length){
-			this.addMarkers(districtsData,)
-		}else{
-			console.log('MapGis/render() loading data');	
-		}
-		
-	    return (
-	      <div id='map' className='MapGis-map'></div>
-	    );
-	}
-}
+	
+	return (
+		<div id='map' className='MapGis-map'></div>
+	);
+};
 
 export default connect(
   mapStateToProps,
