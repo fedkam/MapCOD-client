@@ -21,6 +21,7 @@ import {
   TableSelection,
 } from '@devexpress/dx-react-grid-material-ui';
 
+
 const getChildRows = (row, rootRows) => (row ? row.items : rootRows);
 
 
@@ -43,7 +44,8 @@ const Row = ({ tableRow, selected, onToggle, ...restProps }) => {
     <Table.Row
       {...restProps}
       style={{
-        backgroundColor: selected ? '#9de09d' : undefined,
+        backgroundColor: selected ? '#d4d4d4' : undefined,
+        cursor: 'pointer',
       }}
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
@@ -100,7 +102,7 @@ function District(props) {
                       toggleSelection({
                         rowIds: [params.tableRow.rowId] 
                       }); 
-                      console.log("params.tableRow.rowId = " + params.tableRow.rowId + " __selection = " + selection);
+                      //console.log("__params.tableRow.rowId = " + params.tableRow.rowId + " __selection = " + selection);
                   }}
                   />
                 )
