@@ -100,6 +100,7 @@ function District(props) {
                     selected={selection.findIndex((i) => i === params.tableRow.rowId) > -1}
                     onToggle={() => {
                       if(selection.length && (params.tableRow.rowId !== selection[selection.length-1])) {
+                        //блокировка от мультивыделения
                         toggleSelection({
                           rowIds: [selection[selection.length-1]] 
                         });
@@ -107,7 +108,7 @@ function District(props) {
                       toggleSelection({
                         rowIds: [params.tableRow.rowId] 
                       }); 
-                      //console.log("__params.tableRow.rowId = " + params.tableRow.rowId + " __selection = " + selection);
+                      console.log("__params.tableRow.rowId = " + params.tableRow.rowId + " __selection = " + selection);
                   }}
                   />
                 )

@@ -26,8 +26,10 @@ const createMap = (latitude=58, longitude=162, sizeMap=5) => {
 	          center: [latitude, longitude],
 	          zoom: sizeMap,
 	          zoomControl: false,
-	          geoclicker: true,
+	          geoclicker: false,
+	          prefix:'TestText',
 	          });
+	      DG.control.ruler({position: 'bottomleft'}).addTo(map);
 	    }
 };
 
