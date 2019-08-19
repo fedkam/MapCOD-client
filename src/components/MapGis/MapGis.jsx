@@ -1,6 +1,6 @@
 // src/js/components/MapGis.jsx
 
-import React, { Component } from 'react';
+import React from 'react';
 import DG from '2gis-maps';
 import pinRasco from '../../images/RascoMsoKseon/pinRasco.png';
 import pinMso from '../../images/RascoMsoKseon/pinMso.png';
@@ -37,7 +37,7 @@ const createMap = (latitude=58, longitude=162, sizeMap=5) => {
 const createIcon = (icon) => {
 		let iconSize = 32;     //Размер Иконки
 	    let iconPin = iconSize/2; //точка позиционирования Иконки на карте по оси X
-	    return(	
+	    return(
 	    		DG.icon({
 	            //Стиль иконки
 	            iconUrl: icon,
@@ -65,7 +65,7 @@ const createOnClickMarker = (markerGroup) => {
 		//Создается группа + обработчик click на элементы группы
 		DG.featureGroup(markerGroup)
 		  .addTo(map)
-		  .on('click', (e) => setViewByCoordinates(e.latlng.lat, e.latlng.lng, 8)); 
+		  .on('click', (e) => setViewByCoordinates(e.latlng.lat, e.latlng.lng, 8));
 };
 
 
@@ -73,7 +73,7 @@ const addMarker = (latitude, longitude, headerContent, contentVilladge, contentS
 		if(toReturn){
 	     	return  createMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon);
 		}else{
-	      //просто добавить 
+	      //просто добавить
 	       createMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon);
 	    }
 	    // пример:  addMarker(52.824913, 156.283973, 'Усть-Большерецкий район', 'с. Усть-Большерецк', 'Октябрьская, 14', myIconRasco, false);
@@ -87,7 +87,7 @@ const addMarkers = (districtsData) => {
 
 	    iconRasco = createIcon(pinRasco);
 	    iconMSO	= createIcon(pinMso);
-	    
+
 	    alertLevel = (level) => {
 	    	if(level === 'RASCO'){
 	    		return iconRasco;
@@ -122,14 +122,14 @@ const addMarkers = (districtsData) => {
 
 function MapGis(props){
 	const districtsData = props.rows;
-	
+
 	if(districtsData.length){
 		createMap();
 		addMarkers(districtsData);
 	}else{
-		console.log('MapGis/render() loading data');	
+		console.log('MapGis/render() loading data');
 	}
-	
+
 	return (
 		<div id='map' className='MapGis-map'></div>
 	);
