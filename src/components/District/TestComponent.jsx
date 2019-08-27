@@ -74,43 +74,57 @@ export default () =>
                   title: "Google",
                   items: [
                       {
-                          id: 1,
+                          id: 2,
                           name: "Android",
                           subitems: [
                               {
-                                  id: 1,
+                                  id: 3,
                                   name: "Nougat"
                               },
                               {
-                                  id: 2,
+                                  id: 4,
                                   name: "Lollipop"
                               }
                           ]
                       },
                       {
                           id: 2,
+                          name: "Android1",
+                          subitems: [
+                              {
+                                  id: 33,
+                                  name: "Nougat1"
+                              },
+                              {
+                                  id: 44,
+                                  name: "Lollipop1"
+                              }
+                          ]
+                      },
+                      {
+                          id: 5,
                           name: "Chrome"
                       }
                   ]
               },
               {
-                  id: 2,
+                  id: 6,
                   title: "Apple",
                   items: [
                       {
-                          id: 1,
+                          id: 7,
                           name: "Mac"
                       },
                       {
-                          id: 2,
+                          id: 8,
                           name: "Iphone",
                           subitems: [
                               {
-                                  id: 1,
+                                  id: 9,
                                   name: "Iphone 6"
                               },
                               {
-                                  id: 2,
+                                  id: 10,
                                   name: "Iphone 10"
                               }
                           ]
@@ -118,15 +132,15 @@ export default () =>
                   ]
               },
               {
-                  id: 3,
+                  id: 11,
                   title: "Uber",
                   items: [
                       {
-                          id: 1,
+                          id: 12,
                           name: "Eats"
                       },
                       {
-                          id: 2,
+                          id: 13,
                           name: "Freight"
                       }
                   ]
@@ -140,6 +154,7 @@ export default () =>
   class NestedList extends React.Component {
       state = {};
       handleClick = e => {
+        console.log(e,!this.state[e]);
           this.setState({ [e]: !this.state[e] });
       };
       render() {

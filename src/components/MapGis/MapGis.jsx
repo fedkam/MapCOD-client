@@ -81,7 +81,7 @@ const addMarker = (latitude, longitude, headerContent, contentVilladge, contentS
 
 
 const addMarkers = (districtsData) => {
-	    let iconRasco, iconMSO;
+	  let iconRasco, iconMSO;
 		let alertLevel;
 	    let markerGroup = []; //Для аккумулирования объектов Marker
 
