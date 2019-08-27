@@ -106,44 +106,6 @@ export default () =>
                           name: "Chrome"
                       }
                   ]
-              },
-              {
-                  id: 6,
-                  title: "Apple",
-                  items: [
-                      {
-                          id: 7,
-                          name: "Mac"
-                      },
-                      {
-                          id: 8,
-                          name: "Iphone",
-                          subitems: [
-                              {
-                                  id: 9,
-                                  name: "Iphone 6"
-                              },
-                              {
-                                  id: 10,
-                                  name: "Iphone 10"
-                              }
-                          ]
-                      }
-                  ]
-              },
-              {
-                  id: 11,
-                  title: "Uber",
-                  items: [
-                      {
-                          id: 12,
-                          name: "Eats"
-                      },
-                      {
-                          id: 13,
-                          name: "Freight"
-                      }
-                  ]
               }
           ]
       };

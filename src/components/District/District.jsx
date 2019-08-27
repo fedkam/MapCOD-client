@@ -104,13 +104,12 @@ const useStyles = makeStyles(theme => ({
 
 
 const RowDistrict = (props) => {
-  console.log(props.handleClick, props.id, props.open);
-
-  let {handleClick, open, id, child, classes} = props;
+  let {handleClick, open, id, child, classes, primary='Test'} = props;
+  //console.log(id, open);
   return(
       <div>
         <ListItem button onClick={handleClick}>
-          <ListItemText primary="component" className={classes}/>
+          <ListItemText primary={primary} className={classes}/>
           {child && (open ? <ExpandLess /> : <ExpandMore />)}
         </ListItem>
         {
@@ -135,39 +134,70 @@ const RowDistrict = (props) => {
 export default function Test(){
   const classes = useStyles();
   const items = getItems();
-  const [ open, setOpen] = useState([]);
+  const [ open, setOpen] = useState({});
 
-  const handleClick = e => {
-      console.log("____", e, open, !open[e]);
-      setOpen({[e]: !open[e]});
-      //setOpen({ ['3']: !open['3'], ['4']: !open['4'] });
+  const handleClickCollapse = e => {
+      console.log("____handleClickCollapse()", e, open, !open[e]);
+      if(e.length != 1){
+        setOpen({[e[0]]:open[e[0]], [e[1]]:!open[e[1]]});
+        //setOpen();
+      }else{
+        setOpen({[e]: !open[e]});
+      }
   };
 
+  const handleClickStreet = e => {
+      alert("НА нА " + e);
+  };
+
+  const test3 = <RowDistrict
+      handleClick = {handleClickStreet.bind(this,'103')}
+      id = {'103'}
+      open = {open['103']}
+      primary = "жопа"
+      classes = {useStyles().colapseLvl2}
+  />
+
   const test2 = <RowDistrict
-    handleClick = {handleClick.bind(this, '101')}
-    id = {'101'}
-    open = {open['101']}
+    handleClick = {handleClickCollapse.bind(this, ['1','2'])}
+    id = {'2'}
+    open = {open['1']&&open['2']}
+    primary = "ПК"
+    child = {test3}
     classes = {useStyles().colapseLvl1}
   />
 
+  const test4 = <RowDistrict
+    handleClick = {handleClickCollapse.bind(this, ['8','2'])}
+    id = {'2'}
+    open = {open['8']&&open['2']}
+    primary = "Зав"
+    child = {test3}
+    classes = {useStyles().colapseLvl1}
+  />
+
+
   return(
     <div>
-      <List
-        subheader={
-          <ListSubheader> 1 </ListSubheader>
-        }
-        className={classes.root}
-      >
+      <List className={classes.root}>
         <RowDistrict
-          handleClick = {handleClick.bind(this, '1')}
+          handleClick = {handleClickCollapse.bind(this, '1')}
           id = {'1'}
           open = {open['1']}
+          primary = "Камча"
           child = {test2}
         />
 
-        <ListItem button onClick={handleClick.bind(this,'3')}>
+        <RowDistrict
+          handleClick = {handleClickCollapse.bind(this, '8')}
+          id = {'8'}
+          open = {open['8']}
+          primary = "Вилюч"
+          child = {test4}
+        />
+        <ListItem button onClick={handleClickCollapse.bind(this,'3')}>
           <ListItemText primary="Inbox2" />
-          {open['3'] ? <ExpandLess /> : <ExpandMore />}
+          {!open['3'] && <ExpandMore />}
         </ListItem>
         <Collapse
             key={'3'}
@@ -177,11 +207,11 @@ export default function Test(){
             unmountOnExit
         >
           <List component="div" disablePadding>
-            <ListItem button onClick={handleClick.bind(
+            <ListItem button onClick={handleClickCollapse.bind(
                                           this,
                                           ['3','4']
                                       )}>
-              <ListItemText primary="Starred" />
+              <ListItemText primary="Starred" className={classes.colapseLvl1}/>
               {open['3']&&open['4'] ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse
@@ -191,7 +221,7 @@ export default function Test(){
                 unmountOnExit
             >
               <List component="div" disablePadding>
-                <ListItem button className={classes.nested}>
+                <ListItem button className={classes.colapseLvl2}>
                   <ListItemIcon>
                     <StarBorder />
                   </ListItemIcon>
