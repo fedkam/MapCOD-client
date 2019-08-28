@@ -183,6 +183,7 @@ function District(props){
           if(district['items']){
                 district.items.map((village) => {
                   villageId = String(village.id);
+                  streets=[];
                   if(village['items']){
                         village.items.map((street) => {
                           //console.log('lvl_district.name='+ district.name+" districtId="+districtId + ' lvl_2_village.name='+ village.name +" villageId="+villageId+ ' lvl_3 '+ street.name+" streetsId="+streetsId);
