@@ -170,7 +170,7 @@ export default function Test(){
       id={'105'}
       open={open['105']}
       primary="жопа2"
-      classes={useStyles().colapseLvl1}
+      classes={useStyles().colapseLvl2}
   />
   const test2 = <RowDistrict
     handleClick = {handleClickCollapse.bind(this, ['1','2'])}
@@ -180,21 +180,23 @@ export default function Test(){
     child = {test5}
     classes = {useStyles().colapseLvl1}
     />
+    const testMulti=[];
+    testMulti.push(test3);
+    testMulti.push(test5);
   const test4 =
     <RowDistrict
         handleClick = {handleClickCollapse.bind(this, ['8','2'])}
         id = {'2'}
         open = {open['8']&&open['2']}
         primary = "Зав"
-        child = {test3}
+        child = {
+          testMulti.map((test) => { return test})}
         classes = {useStyles().colapseLvl1}
       />
 
 
 
-    const testMulti=[];
-    testMulti.push(test4);
-    testMulti.push(test5);
+
 
   return(
     <div>
@@ -211,9 +213,7 @@ export default function Test(){
           id = {'8'}
           open = {open['8']}
           primary = "Вилюч"
-          child = {
-            testMulti.map((test) => { return test})
-          }
+          child = {test4}
         />
       </List>
     </div>

@@ -98,13 +98,13 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   colapseLvl1: {
-    paddingLeft: theme.spacing(2),
+    paddingLeft: theme.spacing(3),
   },
   colapseLvl2: {
-    paddingLeft: theme.spacing(4),
+    paddingLeft: theme.spacing(6),
   },
   colapseLvl3: {
-    paddingLeft: theme.spacing(6),
+    paddingLeft: theme.spacing(9),
   },
 }));
 
@@ -159,6 +159,8 @@ function District(props){
   };
 
   const handleClickStreet = (e, id) => {
+    console.log(" e=",e," id=",id," selectedIndex=",selectedIndex)
+
     if(selectedIndex !== id){
       //выделить
       setSelectedIndex(id);
@@ -181,25 +183,35 @@ function District(props){
           let streets=[];  //контенер для улиц
 
           if(district['items']){
-              district.items.map((village) => {
-                villageId = String(village.id);
-                //console.log("districtId=",districtId," villageId=",villageId);
-                /*if(village['items']){
-                    village.items.map((street) => {
-                      console.log('lvl_district.name='+ district.name+" districtId="+districtId + ' lvl_2_village.name='+ village.name +" villageId="+villageId+ ' lvl_3 '+ street.name);
-                    })
-                }*/
-                villages.push(
-                  <RowDistrict
-                      handleClick = {handleClickCollapse.bind(this, [districtId, villageId])}
-                      id = {villageId}
-                      open = {open[districtId]&&open[villageId]}
-                      primary = {village.name}
-                      child = {null}
-                      classes = {classes.colapseLvl1}
-                    />
-                );
-              })
+                district.items.map((village) => {
+                  villageId = String(village.id);
+                  if(village['items']){
+                        village.items.map((street) => {
+                          //console.log('lvl_district.name='+ district.name+" districtId="+districtId + ' lvl_2_village.name='+ village.name +" villageId="+villageId+ ' lvl_3 '+ street.name+" streetsId="+streetsId);
+                          streetsId = String(street.id);
+                          streets.push(
+                            <RowDistrict
+                                handleClick={e => handleClickStreet(e, streetsId)}
+                                selectedIndex={selectedIndex}
+                                id={streetsId}
+                                open={open[streetsId]}
+                                primary={street.name}
+                                classes={classes.colapseLvl2}
+                            />
+                          );
+                        })
+                  }
+                  villages.push(
+                    <RowDistrict
+                        handleClick = {handleClickCollapse.bind(this, [districtId, villageId])}
+                        id = {villageId}
+                        open = {open[districtId]&&open[villageId]}
+                        primary = {village.name}
+                        classes = {classes.colapseLvl1}
+                        child = {streets.map((stree) => { return stree})}
+                      />
+                  );
+                })
         }
         return(
           <RowDistrict
