@@ -195,7 +195,6 @@ export default function Test(){
     const testMulti=[];
     testMulti.push(test4);
     testMulti.push(test5);
-    testMulti.map((test)=>{console.log(test)});
 
   return(
     <div>

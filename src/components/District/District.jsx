@@ -149,10 +149,10 @@ function District(props){
   //console.log(districtsData);
 
   const handleClickCollapse = e => {
-      console.log("____handleClickCollapse()", e, open, !open[e]);
+      //console.log("____handleClickCollapse()"," event=", e," open=", open," !open=", !open[e]);
+      //console.log("e",e,e.length);
       if(e.length != 1){
         setOpen({[e[0]]:open[e[0]], [e[1]]:!open[e[1]]});
-        //setOpen();
       }else{
         setOpen({[e]: !open[e]});
       }
@@ -175,21 +175,23 @@ function District(props){
     return(
       districtsData.map((district) => {
           let districtId = String(district.id);
-          let villageId;
-          let streetsId;
+          let villageId=null;
+          let streetsId=null;
           let villages=[]; //контенер для сел
           let streets=[];  //контенер для улиц
+
           if(district['items']){
               district.items.map((village) => {
                 villageId = String(village.id);
-                if(village['items']){
+                //console.log("districtId=",districtId," villageId=",villageId);
+                /*if(village['items']){
                     village.items.map((street) => {
-                      //console.log('lvl_1 '+ district.name + 'lvl_2 '+ village.name + 'lvl_3 '+ street.name);
+                      console.log('lvl_district.name='+ district.name+" districtId="+districtId + ' lvl_2_village.name='+ village.name +" villageId="+villageId+ ' lvl_3 '+ street.name);
                     })
-                }
+                }*/
                 villages.push(
                   <RowDistrict
-                      handleClick = {handleClickCollapse.bind(this, villageId)}
+                      handleClick = {handleClickCollapse.bind(this, [districtId, villageId])}
                       id = {villageId}
                       open = {open[districtId]&&open[villageId]}
                       primary = {village.name}
@@ -201,7 +203,7 @@ function District(props){
         }
         return(
           <RowDistrict
-            handleClick = {handleClickCollapse.bind(this, districtId)}
+            handleClick = {handleClickCollapse.bind(this, [districtId])}
             id = {districtId}
             open = {open[districtId]}
             primary = {district.name}
