@@ -174,32 +174,43 @@ function District(props){
  const addRowsDistricts = districtsData => {
     return(
       districtsData.map((district) => {
-        let id = String(district.id);
-        let villages; //контенер для сел
-        let streets;  //контенер для улиц
-
-        if(district['items']){
-          district.items.map((village) => {
-            if(village['items']){
-              village.items.map((street) => {
-                //console.log('lvl_1 '+ district.name + 'lvl_2 '+ village.name + 'lvl_3 '+ street.name);
+          let districtId = String(district.id);
+          let villageId;
+          let streetsId;
+          let villages=[]; //контенер для сел
+          let streets=[];  //контенер для улиц
+          if(district['items']){
+              district.items.map((village) => {
+                villageId = String(village.id);
+                if(village['items']){
+                    village.items.map((street) => {
+                      //console.log('lvl_1 '+ district.name + 'lvl_2 '+ village.name + 'lvl_3 '+ street.name);
+                    })
+                }
+                villages.push(
+                  <RowDistrict
+                      handleClick = {handleClickCollapse.bind(this, villageId)}
+                      id = {villageId}
+                      open = {open[districtId]&&open[villageId]}
+                      primary = {village.name}
+                      child = {null}
+                      classes = {classes.colapseLvl1}
+                    />
+                );
               })
-            }
-          })
-
         }
         return(
           <RowDistrict
-            handleClick = {handleClickCollapse.bind(this, id)}
-            id = {id}
-            open = {open[id]}
+            handleClick = {handleClickCollapse.bind(this, districtId)}
+            id = {districtId}
+            open = {open[districtId]}
             primary = {district.name}
-            child = {null}
+            child = {villages.map((vill) => { return vill})}
             />
           );
       })
-  );
-}
+    );
+  }
 
   return(
     <div>
