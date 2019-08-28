@@ -158,9 +158,7 @@ function District(props){
       }
   };
 
-  const handleClickStreet = (e, id) => {
-    console.log(" e=",e," id=",id," selectedIndex=",selectedIndex)
-
+  const handleClickStreet = (id) => {
     if(selectedIndex !== id){
       //выделить
       setSelectedIndex(id);
@@ -191,7 +189,7 @@ function District(props){
                           streetsId = String(street.id);
                           streets.push(
                             <RowDistrict
-                                handleClick={e => handleClickStreet(e, streetsId)}
+                                handleClick={handleClickStreet.bind(this, streetsId)}
                                 selectedIndex={selectedIndex}
                                 id={streetsId}
                                 open={open[streetsId]}
