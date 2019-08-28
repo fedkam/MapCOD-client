@@ -8,7 +8,7 @@ const initialStateDistrict = {
   ],
 };
 
-export default function districtTable(state = initialStateDistrict, action){
+export default function selectedDistrict(state = initialStateDistrict, action){
   if (action.type === 'GRID_STATE_CHANGE') {
     return {
       ...state,

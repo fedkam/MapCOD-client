@@ -4,7 +4,8 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import MapGis from './components/MapGis/MapGis.jsx';
 import District from './components/District/District.jsx';
-import TestComponents from './components/District/TestComponent.jsx';
+import TestComponent from './components/District/TestComponent.jsx';
+import TestComponent2 from './components/District/TestComponent2.jsx';
 import './App.css';
 import {addRowDistrict, addAllDistricts} from './actions';
 
@@ -152,7 +153,8 @@ class App extends Component {
               <District/>
             </div>
             <div  className="App-info">
-              <TestComponents/>
+              <TestComponent/>
+              <TestComponent2/>
             </div>
           </div>
       );

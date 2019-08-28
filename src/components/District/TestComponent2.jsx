@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -10,7 +10,6 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
-import { connect } from 'react-redux';
 
 function getItems() {
     var json = {
@@ -83,14 +82,6 @@ function getItems() {
 }
 
 
-const mapStateToProps = state => state.data;
-
-
-const mapDispatchToProps = dispatch => {
-  //onSelectionChange: selection => dispatch(createGridAction('selection', selection)),
-};
-
-
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
@@ -110,43 +101,40 @@ const useStyles = makeStyles(theme => ({
 
 
 const RowDistrict = (props) => {
-  let {handleClick, open, id, child, classes, primary='Test', selectedIndex} = props;
-  //console.log(id, open);
-  return(
-      <div>
-        <ListItem
-          button
-          selected={selectedIndex === id}
-          onClick={handleClick}>
-          <ListItemText primary={primary} className={classes}/>
-          {child && !open && <ExpandMore/>}
-        </ListItem>
-        { //если prop child = true рисуем tree
-          child &&
-            <Collapse
-                key={id}
-                component="li"
-                in={open}
-                timeout="auto"
-                unmountOnExit
-            >
-              <List component="div" disablePadding>
-                {child}
-              </List>
-            </Collapse>
-        }
-      </div>
-  );
+    let {handleClick, open, id, child, classes, primary='Test', selectedIndex} = props;
+    //console.log(id, open);
+    return(
+        <div>
+          <ListItem
+            button
+            selected={selectedIndex === id}
+            onClick={handleClick}>
+            <ListItemText primary={primary} className={classes}/>
+            {child && !open && <ExpandMore/>}
+          </ListItem>
+          { //если prop child = true рисуем tree
+            child &&
+              <Collapse
+                  key={id}
+                  component="li"
+                  in={open}
+                  timeout="auto"
+                  unmountOnExit
+              >
+                <List component="div" disablePadding>
+                  {child}
+                </List>
+              </Collapse>
+          }
+        </div>
+    );
 }
 
-
-function District(props){
+export default function Test(){
   const classes = useStyles();
-  //const items = getItems();
-  const districtsData = props.rows;
+  const items = getItems();
   const [open, setOpen] = useState({});
   const [selectedIndex, setSelectedIndex] = useState({});
-  //console.log(districtsData);
 
   const handleClickCollapse = e => {
       console.log("____handleClickCollapse()", e, open, !open[e]);
@@ -160,58 +148,73 @@ function District(props){
 
   const handleClickStreet = (e, id) => {
     if(selectedIndex !== id){
-      //выделить
       setSelectedIndex(id);
     }else{
-      //снять выделение
       setSelectedIndex(null);
     }
       //alert("НА нА " + e + id);
   };
 
 
+  const test3 = <RowDistrict
+      handleClick={e => handleClickStreet(e, '103')}
+      selectedIndex={selectedIndex}
+      id={'103'}
+      open={open['103']}
+      primary="жопа"
+      classes={useStyles().colapseLvl2}
+  />
+  const test5 = <RowDistrict
+      handleClick={e => handleClickStreet(e, '105')}
+      selectedIndex={selectedIndex}
+      id={'105'}
+      open={open['105']}
+      primary="жопа2"
+      classes={useStyles().colapseLvl1}
+  />
+  const test2 = <RowDistrict
+    handleClick = {handleClickCollapse.bind(this, ['1','2'])}
+    id = {'2'}
+    open = {open['1']&&open['2']}
+    primary = "ПК"
+    child = {test5}
+    classes = {useStyles().colapseLvl1}
+    />
+  const test4 =
+    <RowDistrict
+        handleClick = {handleClickCollapse.bind(this, ['8','2'])}
+        id = {'2'}
+        open = {open['8']&&open['2']}
+        primary = "Зав"
+        child = {test3}
+        classes = {useStyles().colapseLvl1}
+      />
 
- const addRowsDistricts = districtsData => {
-    return(
-      districtsData.map((district) => {
-        let id = String(district.id);
-        let villages; //контенер для сел
-        let streets;  //контенер для улиц
 
-        if(district['items']){
-          district.items.map((village) => {
-            if(village['items']){
-              village.items.map((street) => {
-                //console.log('lvl_1 '+ district.name + 'lvl_2 '+ village.name + 'lvl_3 '+ street.name);
-              })
-            }
-          })
 
-        }
-        return(
-          <RowDistrict
-            handleClick = {handleClickCollapse.bind(this, id)}
-            id = {id}
-            open = {open[id]}
-            primary = {district.name}
-            child = {null}
-            />
-          );
-      })
-  );
-}
+    const testMulti=[test4, test5]
+    testMulti.map((test)=>{console.log(test)});
 
   return(
     <div>
       <List className={classes.root}>
-        {addRowsDistricts(districtsData)}
+        <RowDistrict
+          handleClick = {handleClickCollapse.bind(this, '1')}
+          id = {'1'}
+          open = {open['1']}
+          primary = "Камча"
+          child = {test2}
+        />
+      <RowDistrict
+          handleClick = {handleClickCollapse.bind(this, '8')}
+          id = {'8'}
+          open = {open['8']}
+          primary = "Вилюч"
+          child = {
+            testMulti.map((test) => { return test})
+          }
+        />
       </List>
     </div>
   )
 }
-
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(District);
