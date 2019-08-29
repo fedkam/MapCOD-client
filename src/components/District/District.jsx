@@ -11,6 +11,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
 import { connect } from 'react-redux';
+import {setViewByCoordinates} from '../MapGis/MapGis.jsx'
 
 function getItems() {
     var json = {
@@ -92,150 +93,203 @@ const mapDispatchToProps = dispatch => {
 
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-  },
-  colapseLvl1: {
-    paddingLeft: theme.spacing(3),
-  },
-  colapseLvl2: {
-    paddingLeft: theme.spacing(6),
-  },
-  colapseLvl3: {
-    paddingLeft: theme.spacing(9),
-  },
+    root: {
+      width: '100%',
+      maxWidth: 360,
+      backgroundColor: theme.palette.background.paper,
+    },
+    colapseLvl1: {
+      paddingLeft: theme.spacing(3),
+    },
+    colapseLvl2: {
+      paddingLeft: theme.spacing(6),
+    },
+    colapseLvl3: {
+      paddingLeft: theme.spacing(9),
+    },
 }));
 
 
 const RowDistrict = (props) => {
-  let {handleClick, open, id, child, classes, primary='Test', selectedIndex} = props;
-  //console.log(id, open);
-  return(
-      <div>
-        <ListItem
-          button
-          selected={selectedIndex === id}
-          onClick={handleClick}>
-          <ListItemText primary={primary} className={classes}/>
-          {child && !open && <ExpandMore/>}
-        </ListItem>
-        { //если prop child = true рисуем tree
-          child &&
-            <Collapse
-                key={id}
-                component="li"
-                in={open}
-                timeout="auto"
-                unmountOnExit
-            >
-              <List component="div" disablePadding>
-                {child}
-              </List>
-            </Collapse>
-        }
-      </div>
-  );
+    let {handleClick, open, id, child, classes, primary='Test', selectedIndex} = props;
+    //console.log(id, open);
+    return(
+        <div>
+          <ListItem
+            button
+            selected={selectedIndex === id}
+            onClick={handleClick}>
+            <ListItemText primary={primary} className={classes}/>
+            {child && !open && <ExpandMore/>}
+          </ListItem>
+          { //если prop child = true рисуем tree
+            child &&
+              <Collapse
+                  key={id}
+                  component="li"
+                  in={open}
+                  timeout="auto"
+                  unmountOnExit
+              >
+                <List component="div" disablePadding>
+                  {child}
+                </List>
+              </Collapse>
+          }
+        </div>
+    );
 }
 
 
 function District(props){
-  const classes = useStyles();
-  //const items = getItems();
-  const districtsData = props.rows;
-  const [open, setOpen] = useState({});
-  const [selectedIndex, setSelectedIndex] = useState({});
-  //console.log(districtsData);
+    const classes = useStyles();
+    //const items = getItems();
+    const districtsData = props.rows;
+    const [open, setOpen] = useState({});
+    const [selectedIndex, setSelectedIndex] = useState({});
+    //console.log(districtsData);
 
-  const handleClickCollapse = e => {
-      //console.log("____handleClickCollapse()"," event=", e," open=", open," !open=", !open[e]);
-      //console.log("e",e,e.length);
-      if(e.length != 1){
-        setOpen({[e[0]]:open[e[0]], [e[1]]:!open[e[1]]});
-      }else{
-        setOpen({[e]: !open[e]});
-      }
-  };
-
-  const handleClickStreet = (id) => {
-    if(selectedIndex !== id){
-      //выделить
-      setSelectedIndex(id);
-    }else{
-      //снять выделение
-      setSelectedIndex(null);
-    }
-      //alert("НА нА " + e + id);
-  };
-
-
-
- const addRowsDistricts = districtsData => {
-    return(
-      districtsData.map((district) => {
-          let districtId = String(district.id);
-          let villageId=null;
-          let streetsId=null;
-          let villages=[]; //контенер для сел
-          let streets=[];  //контенер для улиц
-
-          if(district['items']){
-                district.items.map((village) => {
-                  villageId = String(village.id);
-                  streets=[];
-                  if(village['items']){
-                        village.items.map((street) => {
-                          //console.log('lvl_district.name='+ district.name+" districtId="+districtId + ' lvl_2_village.name='+ village.name +" villageId="+villageId+ ' lvl_3 '+ street.name+" streetsId="+streetsId);
-                          streetsId = String(street.id);
-                          streets.push(
-                            <RowDistrict
-                                handleClick={handleClickStreet.bind(this, streetsId)}
-                                selectedIndex={selectedIndex}
-                                id={streetsId}
-                                open={open[streetsId]}
-                                primary={street.name}
-                                classes={classes.colapseLvl2}
-                            />
-                          );
-                        })
-                  }
-                  villages.push(
-                    <RowDistrict
-                        handleClick = {handleClickCollapse.bind(this, [districtId, villageId])}
-                        id = {villageId}
-                        open = {open[districtId]&&open[villageId]}
-                        primary = {village.name}
-                        classes = {classes.colapseLvl1}
-                        child = {streets.map((stree) => { return stree})}
-                      />
-                  );
-                })
+    const handleClickCollapse = e => {
+        //console.log("____handleClickCollapse()"," event=", e," open=", open," !open=", !open[e]);
+        //console.log("e",e,e.length);
+        if(e.length != 1){
+          setOpen({[e[0]]:open[e[0]], [e[1]]:!open[e[1]]});
+        }else{
+          setOpen({[e]: !open[e]});
         }
-        return(
-          <RowDistrict
-            handleClick = {handleClickCollapse.bind(this, [districtId])}
-            id = {districtId}
-            open = {open[districtId]}
-            primary = {district.name}
-            child = {villages.map((vill) => { return vill})}
-            />
-          );
-      })
-    );
-  }
+    };
 
-  return(
-    <div>
-      <List className={classes.root}>
-        {addRowsDistricts(districtsData)}
-      </List>
-    </div>
-  )
+    const handleClickStreet = (id) => {
+
+      if(selectedIndex !== id){
+        //выделить
+        const street = findStreetInDistrictsData(id);
+        setSelectedIndex(id);
+        console.log(street);
+      //  setViewByCoordinates(street.latitude, street.longitude, 15);
+      }else{
+        //снять выделение
+        setSelectedIndex(null);
+      }
+        //alert("НА нА " + e + id);
+    };
+
+
+
+   const addRowsDistricts = districtsData => {
+      return(
+            districtsData.map((district) => {
+                let districtId = String(district.id);
+                let villageId=null;
+                let streetsId=null;
+                let villages=[]; //контенер для сел
+                let streets=[];  //контенер для улиц
+
+                if(district['items']){
+                      district.items.map((village) => {
+                        villageId = String(village.id);
+                        streets=[];
+                        if(village['items']){
+                              village.items.map((street) => {
+                                //console.log('lvl_district.name='+ district.name+" districtId="+districtId + ' lvl_2_village.name='+ village.name +" villageId="+villageId+ ' lvl_3 '+ street.name+" streetsId="+streetsId);
+                                streetsId = String(street.id);
+                                streets.push(
+                                  <RowDistrict
+                                      handleClick={handleClickStreet.bind(this, streetsId)}
+                                      selectedIndex={selectedIndex}
+                                      id={streetsId}
+                                      open={open[streetsId]}
+                                      primary={street.name}
+                                      classes={classes.colapseLvl2}
+                                  />
+                                );
+                              })
+                        }
+                        villages.push(
+                          <RowDistrict
+                              handleClick = {handleClickCollapse.bind(this, [districtId, villageId])}
+                              id = {villageId}
+                              open = {open[districtId]&&open[villageId]}
+                              primary = {village.name}
+                              classes = {classes.colapseLvl1}
+                              child = {streets.map((stree) => { return stree})}
+                            />
+                        );
+                      })
+              }
+              return(
+                <RowDistrict
+                  handleClick = {handleClickCollapse.bind(this, [districtId])}
+                  id = {districtId}
+                  open = {open[districtId]}
+                  primary = {district.name}
+                  child = {villages.map((vill) => { return vill})}
+                  />
+                );
+            })
+      );
+    }
+
+    const findStreetInDistrictsData = id => {
+      console.log(id);
+      districtsData.map((district) => {
+                if(district['items']){
+                        district.items.map((village) => {
+                          if(village['items']){
+                                village.items.map((street) => {
+                                  if(street.id == id){
+                                    console.log(street);
+                                    return(street);
+                                  }
+                                })
+                          }
+                        })
+                }else{
+                  if(district.id == id){
+                    console.log(district);
+                    return(district);
+                  }
+                  //здесь ПК итп
+                }
+      })
+    }
+
+    return(
+      <div>
+        <List className={classes.root}>
+          {addRowsDistricts(districtsData)}
+        </List>
+      </div>
+    )
 }
+
+
 
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(District);
+
+
+
+/*
+import {setViewByCoordinates} from '../MapGis/MapGis.jsx'
+const getChildRows = (row, rootRows) => (row ? row.items : rootRows);
+const mapStateToProps = state => state;
+const mapDispatchToProps = dispatch => {};
+const Row = ({ tableRow, selected, onToggle, ...restProps }) => {
+  const handleClick = () => {
+    onToggle();
+    if(tableRow.row.latitude && tableRow.row.longitude && !selected){
+      setViewByCoordinates(tableRow.row.latitude, tableRow.row.longitude, 15);
+    }else{
+      setViewByCoordinates();
+    }
+    console.log(" Row = ",tableRow);
+  };8*/
+
+
+
+
+//избавиться от преобразования в String

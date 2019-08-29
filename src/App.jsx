@@ -123,9 +123,21 @@ import {addRowDistrict, addAllDistricts} from './actions';
           },
 };*/
 
+const mapStateToProps = state => state.data;
+
+
+const mapDispatchToProps = dispatch => ({
+  onAddRowDistrict: (addrowdistrict) => {
+    console.log("addrowdistrict " + addrowdistrict);
+    dispatch(addRowDistrict(addrowdistrict));
+  },
+  onAddAllDistricts: (addalldistricts) => {
+    //console.log("onAddAllRow " + addalldistricts);
+    dispatch(addAllDistricts(addalldistricts));
+  },
+});
 
 class App extends Component {
-
     getData(){
       fetch('http://localhost:9000/transferData')
         .then(res => res.json())
@@ -163,15 +175,6 @@ class App extends Component {
 
 
 export default connect(
-  state => state,
-  dispatch => ({
-    onAddRowDistrict: (addrowdistrict) => {
-    	console.log("addrowdistrict " + addrowdistrict);
-      dispatch(addRowDistrict(addrowdistrict));
-    },
-    onAddAllDistricts: (addalldistricts) => {
-      console.log("onAddAllRow " + addalldistricts);
-      dispatch(addAllDistricts(addalldistricts));
-    },
-  })
+  mapStateToProps,
+  mapDispatchToProps
 )(App);

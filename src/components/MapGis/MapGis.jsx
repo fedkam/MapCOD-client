@@ -15,8 +15,10 @@ const mapDispatchToProps = dispatch => {
 };
 
 
-export const setViewByCoordinates = (latitude=58, longitude=162, sizeMap=5) => {
-		map.setView([latitude, longitude], sizeMap);
+export const setViewByCoordinates = (props) => {
+		//map.setView([latitude, longitude], sizeMap);
+		console.log(props.rows);
+		//console.log("find= " + props.rows.find(row => row.id === 3));
 };
 
 
