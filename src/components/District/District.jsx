@@ -10,8 +10,9 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
+import { setViewByCoordinates } from '../MapGis/MapGis.jsx'
 import { connect } from 'react-redux';
-import {setViewByCoordinates} from '../MapGis/MapGis.jsx'
+import { addSelectedDistrict } from '../../actions';
 
 function getItems() {
     var json = {
@@ -81,15 +82,18 @@ function getItems() {
         ]
     };
     return json;
-}
-
-
-const mapStateToProps = state => state.data;
-
-
-const mapDispatchToProps = dispatch => {
-  //onSelectionChange: selection => dispatch(createGridAction('selection', selection)),
 };
+
+
+const mapStateToProps = state => state;
+
+
+const mapDispatchToProps = dispatch => ({
+  onAddSelectedDistrict: addselecteddistrict => {
+    console.log("addSelectedDistrict " + addselecteddistrict);
+    dispatch(addSelectedDistrict(addselecteddistrict));
+  }
+});
 
 
 const useStyles = makeStyles(theme => ({
@@ -144,9 +148,10 @@ const RowDistrict = (props) => {
 function District(props){
     const classes = useStyles();
     //const items = getItems();
-    const districtsData = props.rows;
+    const districtsData = props.data.rows;
+    const selectedIndex = props.selectedDistrict.selectedIndex;
     const [open, setOpen] = useState({});
-    const [selectedIndex, setSelectedIndex] = useState({});
+    //const [selectedIndex, onAddSelectedDistrict] = useState({});
     //console.log(districtsData);
 
     const handleClickCollapse = e => {
@@ -164,12 +169,12 @@ function District(props){
       if(selectedIndex !== id){
         //выделить
         const street = findStreetInDistrictsData(id);
-        setSelectedIndex(id);
+        props.onAddSelectedDistrict(id);
         console.log(street);
       //  setViewByCoordinates(street.latitude, street.longitude, 15);
       }else{
         //снять выделение
-        setSelectedIndex(null);
+        props.onAddSelectedDistrict(null);
       }
         //alert("НА нА " + e + id);
     };

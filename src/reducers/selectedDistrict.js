@@ -1,18 +1,13 @@
 
 const initialStateDistrict = {
-  columns: [
-  	{ name: 'name', title: 'Территория' },
-  ],
-  tableColumnExtensions: [
-    { columnName: 'name', wordWrapEnabled: true  },
-  ],
+  selectedIndex: undefined,
 };
 
 export default function selectedDistrict(state = initialStateDistrict, action){
-  if (action.type === 'GRID_STATE_CHANGE') {
+  if (action.type === 'ADD_SELECTED_DISTRICT') {
     return {
       ...state,
-      [action.partialStateName]: action.partialStateValue,
+      selectedIndex: action.addselecteddistrict,
     };
   }
   return state;
