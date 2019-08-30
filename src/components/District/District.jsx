@@ -147,13 +147,10 @@ const RowDistrict = (props) => {
 
 function District(props){
     const classes = useStyles();
-    //const items = getItems();
     const districtsData = props.data.rows;
     const selectedIndex = props.selectedDistrict.selectedIndex;
     const [open, setOpen] = useState({});
-    //const [selectedIndex, onAddSelectedDistrict] = useState({});
     //console.log(districtsData);
-
     const handleClickCollapse = e => {
         //console.log("____handleClickCollapse()"," event=", e," open=", open," !open=", !open[e]);
         //console.log("e",e,e.length);
@@ -267,8 +264,6 @@ function District(props){
       </div>
     )
 }
-
-
 
 
 export default connect(
