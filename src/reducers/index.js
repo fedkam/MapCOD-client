@@ -2,9 +2,9 @@ import { combineReducers } from 'redux'
 
 
 import data from './data';
-import selectedDistrict from './selectedDistrict';
+import selectedStreet from './selectedStreet';
 
 export default combineReducers({
 	data,
-	selectedDistrict
+	selectedStreet
 })

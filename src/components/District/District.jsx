@@ -12,7 +12,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
 import { setViewByCoordinates } from '../MapGis/MapGis.jsx'
 import { connect } from 'react-redux';
-import { addSelectedDistrict } from '../../actions';
+import { addSelectedStreet } from '../../actions';
 
 function getItems() {
     var json = {
@@ -89,9 +89,9 @@ const mapStateToProps = state => state;
 
 
 const mapDispatchToProps = dispatch => ({
-  onAddSelectedDistrict: addselecteddistrict => {
-    console.log("addSelectedDistrict " + addselecteddistrict);
-    dispatch(addSelectedDistrict(addselecteddistrict));
+  onAddSelectedStreet: (addselectedstreet, latitude, longitude) => {
+    console.log(addselectedstreet, latitude, longitude);
+    dispatch(addSelectedStreet(addselectedstreet, latitude, longitude));
   }
 });
 
@@ -148,7 +148,7 @@ const RowDistrict = (props) => {
 function District(props){
     const classes = useStyles();
     const districtsData = props.data.rows;
-    const selectedIndex = props.selectedDistrict.selectedIndex;
+    const selectedIndex = String(props.selectedStreet.selectedIndex);
     const [open, setOpen] = useState({});
     //console.log(districtsData);
     const handleClickCollapse = e => {
@@ -162,16 +162,13 @@ function District(props){
     };
 
     const handleClickStreet = (id) => {
-
       if(selectedIndex !== id){
         //выделить
         const street = findStreetInDistrictsData(id);
-        props.onAddSelectedDistrict(id);
-        console.log(street);
-      //  setViewByCoordinates(street.latitude, street.longitude, 15);
+        //setViewByCoordinates(street.latitude, street.longitude, 15);
       }else{
         //снять выделение
-        props.onAddSelectedDistrict(null);
+        props.onAddSelectedStreet(null, null, null);
       }
         //alert("НА нА " + e + id);
     };
@@ -233,27 +230,23 @@ function District(props){
     }
 
     const findStreetInDistrictsData = id => {
-      console.log(id);
-      districtsData.map((district) => {
-                if(district['items']){
-                        district.items.map((village) => {
-                          if(village['items']){
-                                village.items.map((street) => {
-                                  if(street.id == id){
-                                    console.log(street);
-                                    return(street);
-                                  }
-                                })
+          districtsData.map((district) => {
+            if(district['items']){
+                    district.items.map((village) => {
+                      if(village['items']){
+                            village.items.map((street) => {
+                              if(street.id == id){
+                                props.onAddSelectedStreet(street.id, street.latitude, street.longitude);
+                              }
+                            })
                           }
                         })
-                }else{
-                  if(district.id == id){
-                    console.log(district);
-                    return(district);
-                  }
-                  //здесь ПК итп
-                }
-      })
+                      }else{  //здесь ПК итп
+                        if(district.id == id){
+                          props.onAddSelectedStreet(district.id, district.latitude, district.longitude);
+                        }
+                      }
+          })
     }
 
     return(

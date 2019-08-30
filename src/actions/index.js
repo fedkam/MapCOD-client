@@ -1,6 +1,6 @@
 export const ADD_ROW_DISTRICT = 'ADD_ROW_DISTRICT';
 export const ADD_ALL_DISTRICTS = 'ADD_ALL_DISTRICTS';
-export const ADD_SELECTED_DISTRICT = 'ADD_SELECTED_DISTRICT';
+export const ADD_SELECTED_STREET = 'ADD_SELECTED_STREET';
 
 export const addRowDistrict = addRowDistrict => ({
 	type: ADD_ROW_DISTRICT,
@@ -12,7 +12,9 @@ export const addAllDistricts = addalldistricts => ({
 	addalldistricts
 });
 
-export const addSelectedDistrict = addselecteddistrict => ({
-	type: ADD_SELECTED_DISTRICT,
-	addselecteddistrict
+export const addSelectedStreet = (addselectedstreet, latitude, longitude) => ({
+	type: ADD_SELECTED_STREET,
+	addselectedstreet,
+	latitude,
+	longitude,
 });
