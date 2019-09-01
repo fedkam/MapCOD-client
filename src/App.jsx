@@ -2,10 +2,9 @@
 
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import MapGis from './components/MapGis/MapGis.jsx';
-import District from './components/District/District.jsx';
-import TestComponent from './components/District/TestComponent.jsx';
-import TestComponent2 from './components/District/TestComponent2.jsx';
+import MapGis from './components/MapGis';
+import District from './components/District';
+import Info from './components/Info';
 import './App.css';
 import {addRowDistrict, addAllDistricts} from './actions';
 
@@ -165,8 +164,7 @@ class App extends Component {
               <District/>
             </div>
             <div  className="App-info">
-              <TestComponent/>
-              <TestComponent2/>
+
             </div>
           </div>
       );
@@ -178,3 +176,6 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(App);
+
+
+// сделать правильный запрос   fetch('http://localhost:9000/transferData')

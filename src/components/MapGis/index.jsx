@@ -2,11 +2,14 @@
 
 import React from 'react';
 import DG from '2gis-maps';
-import pinRasco from '../../images/RascoMsoKseon/pinRasco.png';
-import pinMso from '../../images/RascoMsoKseon/pinMso.png';
+import pinRasco from '../../images/pins/pinRasco.png';
+import pinMso from '../../images/pins/pinMso.png';
+import pinKseon from '../../images/pins/pinKseon.png';
+import pinLso from '../../images/pins/pinLso.png';
 import { connect } from 'react-redux';
-
 let map;
+
+//state
 const mapStateToProps = state => state.data;
 
 
@@ -14,7 +17,7 @@ const mapDispatchToProps = dispatch => {
   //onSelectionChange: selection => dispatch(createGridAction('selection', selection)),
 };
 
-
+//Maps methods
 export const setViewByCoordinates = (latitude=58, longitude=162, sizeMap=5) => {
 		map.setView([latitude, longitude], sizeMap);
 };
@@ -81,18 +84,18 @@ const addMarker = (latitude, longitude, headerContent, contentVilladge, contentS
 
 
 const addMarkers = (districtsData) => {
-	  let iconRasco, iconMSO;
-		let alertLevel;
-	    let markerGroup = []; //Для аккумулирования объектов Marker
-
-	    iconRasco = createIcon(pinRasco);
-	    iconMSO	= createIcon(pinMso);
+	  let alertLevel;
+	  let markerGroup = []; //Для аккумулирования объектов Marker, ПРОТЕСТИТЬ/УДАЛИТЬ
 
 	    alertLevel = (level) => {
 	    	if(level === 'RASCO'){
-	    		return iconRasco;
+	    		return createIcon(pinRasco);
+	    	}else if(level === 'KSEON'){
+	    		return createIcon(pinKseon);
 	    	}else if(level === 'MSO'){
-	    		return iconMSO;
+	    		return createIcon(pinMso)
+	    	}else if(level === 'LSO'){
+	    		return createIcon(pinLso);
 	    	}
 	    };
 
@@ -119,7 +122,7 @@ const addMarkers = (districtsData) => {
 		createOnClickMarker(markerGroup);
 };
 
-
+//Main
 function MapGis(props){
 	const districtsData = props.rows;
 
@@ -135,7 +138,11 @@ function MapGis(props){
 	);
 };
 
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(MapGis);
+
+
+//продумать тройной перебор(обощить)

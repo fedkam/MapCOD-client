@@ -10,79 +10,9 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
-import { setViewByCoordinates } from '../MapGis/MapGis.jsx'
+import { setViewByCoordinates } from '../MapGis'
 import { connect } from 'react-redux';
 import { addSelectedStreet } from '../../actions';
-
-function getItems() {
-    var json = {
-        list: [
-            {
-                id: 1,
-                title: "Google",
-                items: [
-                    {
-                        id: 1,
-                        name: "Android",
-                        subitems: [
-                            {
-                                id: 1,
-                                name: "Nougat"
-                            },
-                            {
-                                id: 2,
-                                name: "Lollipop"
-                            }
-                        ]
-                    },
-                    {
-                        id: 2,
-                        name: "Chrome"
-                    }
-                ]
-            },
-            {
-                id: 2,
-                title: "Apple",
-                items: [
-                    {
-                        id: 1,
-                        name: "Mac"
-                    },
-                    {
-                        id: 2,
-                        name: "Iphone",
-                        subitems: [
-                            {
-                                id: 1,
-                                name: "Iphone 6"
-                            },
-                            {
-                                id: 2,
-                                name: "Iphone 10"
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 3,
-                title: "Uber",
-                items: [
-                    {
-                        id: 1,
-                        name: "Eats"
-                    },
-                    {
-                        id: 2,
-                        name: "Freight"
-                    }
-                ]
-            }
-        ]
-    };
-    return json;
-};
 
 
 const mapStateToProps = state => state;
@@ -150,7 +80,7 @@ function District(props){
     const districtsData = props.data.rows;
     const selectedIndex = String(props.selectedStreet.selectedIndex);
     const [open, setOpen] = useState({});
-    
+
     const handleClickCollapse = e => {
         //console.log("____handleClickCollapse()"," event=", e," open=", open," !open=", !open[e]);
         //console.log("e",e,e.length);
