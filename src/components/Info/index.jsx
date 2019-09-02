@@ -10,6 +10,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
+import IconButton from '@material-ui/core/IconButton';
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+
 const mapStateToProps = state => state;
 
 
@@ -23,12 +26,10 @@ const getInfoData = () => {
 const useStyles = makeStyles(theme => ({
   root: {
     width: '50%',
+    height: '100%',
     margin: theme.spacing(4),
     padding: theme.spacing(4),
     overflowX: 'auto',
-  },
-  tableBody:{
-    width: 20,
   },
   districtLogo: {
    marginRight: 30,
@@ -70,16 +71,73 @@ function Info(props){
                       <TableCell align="left">Наименование</TableCell>
                     </TableRow>
                     <TableRow >
-                      <TableCell component="th" scope="row"><b>Дата монтажа:</b></TableCell>
+                      <TableCell component="th" scope="row">
+                        <b>Дата монтажа: </b>
+                        <IconButton size='small'>
+                          <FolderOpenIcon fontSize="inherit" />
+                        </IconButton></TableCell>
                       <TableCell align="left">dd/mm/yy</TableCell>
                     </TableRow>
                     <TableRow >
-                      <TableCell component="th" scope="row"><b>Дата ввода в эксплуатацию:</b></TableCell>
+                      <TableCell component="th" scope="row">
+                        <b>Дата ввода в эксплуатацию:</b>
+                        <IconButton size='small'>
+                          <FolderOpenIcon fontSize="inherit" />
+                        </IconButton>
+                    </TableCell>
                       <TableCell align="left">dd/mm/yy</TableCell>
                     </TableRow>
                     <TableRow >
-                      <TableCell component="th" scope="row"><b>Дата ввода в эксплуатацию:</b></TableCell>
+                      <TableCell component="th" scope="row"><b>Контактное лицо:</b></TableCell>
+                      <TableCell align="left">ФИО/Должность</TableCell>
+                    </TableRow>
+                    <TableRow >
+                      <TableCell component="th" scope="row"><b>Контактный телефон:</b></TableCell>
+                      <TableCell align="left">+7(***)***-**-**</TableCell>
+                    </TableRow>
+                    <TableRow >
+                      <TableCell component="th" scope="row"><b>Контактный E-Mail:</b></TableCell>
+                      <TableCell align="left">*@Mail.ru</TableCell>
+                    </TableRow>
+                </TableBody>
+
+              <h1></h1>
+
+                <Grid container direction='row'>
+                  <h2>Настройки подключения </h2>
+                  <IconButton size='small'>
+                    <FolderOpenIcon  />
+                  </IconButton>
+                </Grid>
+                <TableBody >
+                    <TableRow >
+                      <TableCell component="th" scope="row"><b>Провайдер:</b></TableCell>
+                      <TableCell align="left">Наименование</TableCell>
+                    </TableRow>
+                    <TableRow >
+                      <TableCell component="th" scope="row">
+                        <b>Лицевой счет:</b>
+                        <IconButton size='small'>
+                          <FolderOpenIcon fontSize="inherit" />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="left">************</TableCell>
+                    </TableRow>
+                    <TableRow >
+                      <TableCell component="th" scope="row"><b>Модель модема:</b></TableCell>
                       <TableCell align="left">dd/mm/yy</TableCell>
+                    </TableRow>
+                    <TableRow >
+                      <TableCell component="th" scope="row"><b>Логин:</b></TableCell>
+                      <TableCell align="left">********</TableCell>
+                    </TableRow>
+                    <TableRow >
+                      <TableCell component="th" scope="row"><b>Пароль:</b></TableCell>
+                      <TableCell align="left">********</TableCell>
+                    </TableRow>
+                    <TableRow >
+                      <TableCell component="th" scope="row"><b>Внешний Ip:</b></TableCell>
+                      <TableCell align="left">77.82.75.23</TableCell>
                     </TableRow>
                 </TableBody>
               </Table>
