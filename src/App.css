@@ -4,14 +4,16 @@
 }
 
 .MapGis-map {
-	width: 50vmin;
-	height: 100vmin;
+	width: 25vw;
+	height: 100vh;
 }
 
 .App-table{
-	width: 35vmin;
-	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+	width: 22vw;
+	height: 100vh;
 }
 
 .App-info{
+	width: 50vw;
+	height: 100vh;
 }

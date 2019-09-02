@@ -164,7 +164,7 @@ class App extends Component {
               <District/>
             </div>
             <div  className="App-info">
-
+              <Info/>
             </div>
           </div>
       );

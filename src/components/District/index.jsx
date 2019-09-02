@@ -2,14 +2,10 @@ import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListSubheader from '@material-ui/core/ListSubheader';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import StarBorder from '@material-ui/icons/StarBorder';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { setViewByCoordinates } from '../MapGis'
 import { connect } from 'react-redux';
 import { addSelectedStreet } from '../../actions';
@@ -198,9 +194,13 @@ function District(props){
 
     return(
       <div>
-        <List className={classes.root}>
-          {addRowsDistricts(districtsData)}
-        </List>
+        {districtsData.length ?(
+          <List className={classes.root}>
+            {addRowsDistricts(districtsData)}
+          </List>
+        ):(
+          <div>Опять косяк с передачей данных</div>
+        )}
       </div>
     )
 }
@@ -218,3 +218,4 @@ export default connect(
 
 //избавиться от преобразования в String
 //продумать общую функц тройного цикла
+//Переделать ожидание на App
