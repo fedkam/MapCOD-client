@@ -2,9 +2,8 @@
 
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import MapGis from './components/MapGis';
-import District from './components/District';
-import Info from './components/Info';
+import MapGis from './components/MapGis/MapGis.jsx';
+import District from './components/District/District.jsx';
 import './App.css';
 import {addRowDistrict, addAllDistricts} from './actions';
 
@@ -13,8 +12,8 @@ import {addRowDistrict, addAllDistricts} from './actions';
           {
             id:1,
             name:"Алеутский район",
-            items:[
-              {
+            items:[ 
+              { 
                 id:1.1,
                 name:"село"
               },
@@ -23,8 +22,8 @@ import {addRowDistrict, addAllDistricts} from './actions';
           {
             id:2,
             name:"Быстринский район",
-            items:[
-              {
+            items:[ 
+              { 
                 id:2.1,
                 name:"село"
               },
@@ -33,8 +32,8 @@ import {addRowDistrict, addAllDistricts} from './actions';
           {
             id:3,
             name:"Елизовский район",
-            items:[
-              {
+            items:[ 
+              { 
                 id:3.1,
                 name:"село"
               },
@@ -43,8 +42,8 @@ import {addRowDistrict, addAllDistricts} from './actions';
           {
             id:4,
             name:"Карагинский район",
-            items:[
-              {
+            items:[ 
+              { 
                 id:4.1,
                 name:"село"
               },
@@ -53,8 +52,8 @@ import {addRowDistrict, addAllDistricts} from './actions';
           {
             id:4,
             name:"Мильковский район",
-            items:[
-              {
+            items:[ 
+              { 
                 id:4.1,
                 name:"село"
               },
@@ -63,8 +62,8 @@ import {addRowDistrict, addAllDistricts} from './actions';
           {
             id:4,
             name:"Олюторский район",
-            items:[
-              {
+            items:[ 
+              { 
                 id:4.1,
                 name:"село"
               },
@@ -73,8 +72,8 @@ import {addRowDistrict, addAllDistricts} from './actions';
           {
             id:4,
             name:"Пенжинский район",
-            items:[
-              {
+            items:[ 
+              { 
                 id:4.1,
                 name:"село"
               },
@@ -82,9 +81,9 @@ import {addRowDistrict, addAllDistricts} from './actions';
           },
           {
             id:4,
-            name:"Соболевский район",
-            items:[
-              {
+            name:"Соболевский район", 
+            items:[ 
+              { 
                 id:4.1,
                 name:"село"
               },
@@ -93,8 +92,8 @@ import {addRowDistrict, addAllDistricts} from './actions';
           {
             id:4,
             name:"Тигильский район",
-            items:[
-              {
+            items:[ 
+              { 
                 id:4.1,
                 name:"село"
               },
@@ -103,8 +102,8 @@ import {addRowDistrict, addAllDistricts} from './actions';
           {
             id:4,
             name:"Усть-Большерецкий район",
-            items:[
-              {
+            items:[ 
+              { 
                 id:4.1,
                 name:"село"
               },
@@ -113,30 +112,18 @@ import {addRowDistrict, addAllDistricts} from './actions';
           {
             id:4,
             name:"Усть-Камчатский район",
-            items:[
-              {
+            items:[ 
+              { 
                 id:4.1,
                 name:"село"
               },
             ],
           },
 };*/
-
-const mapStateToProps = state => state.data;
-
-
-const mapDispatchToProps = dispatch => ({
-  onAddRowDistrict: (addrowdistrict) => {
-    console.log("addrowdistrict " + addrowdistrict);
-    dispatch(addRowDistrict(addrowdistrict));
-  },
-  onAddAllDistricts: (addalldistricts) => {
-    //console.log("onAddAllRow " + addalldistricts);
-    dispatch(addAllDistricts(addalldistricts));
-  },
-});
+    
 
 class App extends Component {
+    
     getData(){
       fetch('http://localhost:9000/transferData')
         .then(res => res.json())
@@ -154,7 +141,7 @@ class App extends Component {
       this.getData();
     }
 
-    render() {
+    render() { 
     	return (
           <div className="App-column">
             <div>
@@ -164,7 +151,7 @@ class App extends Component {
               <District/>
             </div>
             <div  className="App-info">
-              <Info/>
+              <h2>InfoTable</h2>
             </div>
           </div>
       );
@@ -173,9 +160,15 @@ class App extends Component {
 
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  state => state,
+  dispatch => ({
+    onAddRowDistrict: (addrowdistrict) => {
+    	console.log("addrowdistrict " + addrowdistrict);
+      dispatch(addRowDistrict(addrowdistrict));
+    },
+    onAddAllDistricts: (addalldistricts) => {
+      console.log("onAddAllRow " + addalldistricts);
+      dispatch(addAllDistricts(addalldistricts));
+    },
+  })
 )(App);
-
-
-// сделать правильный запрос   fetch('http://localhost:9000/transferData')
