@@ -100,12 +100,12 @@ const addMarkers = (districtsData) => {
 	    };
 
 		for(let district of districtsData){
+				let marker;
 				if(district['items']){
 					for(let village of district.items){
 						if(village['items']){
 							for(let street of village.items){
-								let marker;
-									marker = addMarker(street.latitude,
+												marker = addMarker(street.latitude,
 														street.longitude,
 														district.name,
 														village.name,
@@ -115,6 +115,15 @@ const addMarkers = (districtsData) => {
 	          						markerGroup.push(marker);//Аккумулирую объекты Marker в массив
 	          						//console.log('lvl_1 '+ district.name + 'lvl_2 '+ village.name + 'lvl_3 '+ street.name);
 							}
+						}else{  //здесь ПК итп
+							marker = addMarker(village.latitude,
+									village.longitude,
+									district.name,
+									village.name,
+									village.name,
+									alertLevel(village.level),
+									true);
+							markerGroup.push(marker);//Аккумулирую объекты Marker в массив
 						}
 					}
 				}

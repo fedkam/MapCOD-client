@@ -132,17 +132,28 @@ function District(props){
                                     />
                                   );
                                 })
+                                villages.push(
+                                  <RowDistrict
+                                      handleClick = {handleClickCollapse.bind(this, [districtId, villageId])}
+                                      id = {villageId}
+                                      open = {open[districtId]&&open[villageId]}
+                                      primary = {village.name}
+                                      classes = {classes.colapseLvl1}
+                                      child = {streets.map((stree) => { return stree})}
+                                    />
+                                );
+                          }else{
+                            villages.push(
+                              <RowDistrict
+                                  handleClick = {handleClickStreet.bind(this, villageId)}
+                                  selectedIndex={selectedIndex}
+                                  id = {villageId}
+                                  open = {open[districtId]&&open[villageId]}
+                                  primary = {village.name}
+                                  classes = {classes.colapseLvl1}
+                                />
+                            );
                           }
-                          villages.push(
-                            <RowDistrict
-                                handleClick = {handleClickCollapse.bind(this, [districtId, villageId])}
-                                id = {villageId}
-                                open = {open[districtId]&&open[villageId]}
-                                primary = {village.name}
-                                classes = {classes.colapseLvl1}
-                                child = {streets.map((stree) => { return stree})}
-                              />
-                          );
                         })
                 }
                 return(
@@ -169,13 +180,17 @@ function District(props){
                                 findedStreet = street;
                               }
                             })
+                          }else{  //здесь ПК итп
+                            if(village.id == id){
+                              findedStreet = village;
+                            }
                           }
                         })
-                      }else{  //здесь ПК итп
-                        if(district.id == id){
-                          findedStreet = district;
-                        }
-                      }
+            }else{  //здесь ПК итп
+              if(district.id == id){
+                findedStreet = district;
+              }
+            }
           })
           return findedStreet;
     }
