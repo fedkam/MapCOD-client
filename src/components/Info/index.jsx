@@ -95,10 +95,6 @@ function Info(props){
                       <TableCell component="th" scope="row"><b>Контактный телефон:</b></TableCell>
                       <TableCell align="left">+7(***)***-**-**</TableCell>
                     </TableRow>
-                    <TableRow >
-                      <TableCell component="th" scope="row"><b>Контактный E-Mail:</b></TableCell>
-                      <TableCell align="left">*@Mail.ru</TableCell>
-                    </TableRow>
                 </TableBody>
 
               <h1></h1>
@@ -129,10 +125,6 @@ function Info(props){
                     </TableRow>
                     <TableRow >
                       <TableCell component="th" scope="row"><b>Логин:</b></TableCell>
-                      <TableCell align="left">********</TableCell>
-                    </TableRow>
-                    <TableRow >
-                      <TableCell component="th" scope="row"><b>Пароль:</b></TableCell>
                       <TableCell align="left">********</TableCell>
                     </TableRow>
                     <TableRow >
