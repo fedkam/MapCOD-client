@@ -29,7 +29,8 @@ const mapDispatchToProps = dispatch => ({
 const useStyles = makeStyles(theme => ({
     root: {
       width: '100%',
-      maxWidth: 360,
+      maxHeight: '97vmin',
+      overflow: 'auto',
       backgroundColor: theme.palette.background.paper,
     },
     colapseLvl1: {
