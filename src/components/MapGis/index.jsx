@@ -20,7 +20,6 @@ const mapDispatchToProps = dispatch => {
 //Maps methods
 export const setViewByCoordinates = (latitude=58, longitude=162, sizeMap=5) => {
 		map.setView([latitude, longitude], sizeMap);
-
 };
 
 
@@ -54,7 +53,7 @@ const createIcon = (icon) => {
 
 const createMarker = (latitude, longitude, headerContent, contentVilladge, contentStreet, icon) => {
 		return  DG.marker([ latitude, longitude], {icon: icon})
-							.addTo(map)
+							//.addTo(map)
 							.bindLabel('<h3>'+ headerContent +'</h3>'+ contentVilladge +', '+  contentStreet)
 			      	.bindPopup(
 			      		DG.popup()
@@ -69,9 +68,7 @@ const createOnClickMarker = (markerGroup) => {
 		//обработка событий на группу маркеров
 		DG.featureGroup(markerGroup)
 		  .addTo(map)
-		  .on('click', (e) => {
-					setViewByCoordinates(e.latlng.lat, e.latlng.lng, 8)
-			});
+		  .on('click', (e) => {setViewByCoordinates(e.latlng.lat, e.latlng.lng, 15)});
 };
 
 
@@ -131,6 +128,8 @@ const addMarkers = (districtsData) => {
 				}
 		}
 		createOnClickMarker(markerGroup);
+
+		//markerGroup['0'].setIcon(alertLevel('MSO'));
 };
 
 //Main
