@@ -72,12 +72,12 @@ function MapGis(props){
 	};
 
 
-	const createFeatureGroup = (markerGroup) => {
+const createFeatureGroup = (markerGroup) => {
 			//обработка событий на группу маркеров
-			console.log(DG.featureGroup(markerGroup).hasLayer(markerGroup[0]));
-
+			
 			DG.featureGroup(markerGroup)
 			  .addTo(map);
+			console.log(DG.featureGroup(markerGroup).hasLayer(map));
 
 
 	};
