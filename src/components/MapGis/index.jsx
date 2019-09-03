@@ -20,6 +20,7 @@ const mapDispatchToProps = dispatch => {
 //Maps methods
 export const setViewByCoordinates = (latitude=58, longitude=162, sizeMap=5) => {
 		map.setView([latitude, longitude], sizeMap);
+
 };
 
 
@@ -53,8 +54,8 @@ const createIcon = (icon) => {
 
 const createMarker = (latitude, longitude, headerContent, contentVilladge, contentStreet, icon) => {
 		return  DG.marker([ latitude, longitude], {icon: icon})
-			      	.addTo(map)
-			      	.bindLabel('<h3>'+ headerContent +'</h3>'+ contentVilladge +', '+  contentStreet)
+							.addTo(map)
+							.bindLabel('<h3>'+ headerContent +'</h3>'+ contentVilladge +', '+  contentStreet)
 			      	.bindPopup(
 			      		DG.popup()
 			      		  .setLatLng([ latitude, longitude])
@@ -65,10 +66,12 @@ const createMarker = (latitude, longitude, headerContent, contentVilladge, conte
 
 
 const createOnClickMarker = (markerGroup) => {
-		//Создается группа + обработчик click на элементы группы
+		//обработка событий на группу маркеров
 		DG.featureGroup(markerGroup)
 		  .addTo(map)
-		  .on('click', (e) => setViewByCoordinates(e.latlng.lat, e.latlng.lng, 8));
+		  .on('click', (e) => {
+					setViewByCoordinates(e.latlng.lat, e.latlng.lng, 8)
+			});
 };
 
 
@@ -112,8 +115,7 @@ const addMarkers = (districtsData) => {
 														street.name,
 														alertLevel(street.level),
 														true);
-	          						markerGroup.push(marker);//Аккумулирую объекты Marker в массив
-	          						//console.log('lvl_1 '+ district.name + 'lvl_2 '+ village.name + 'lvl_3 '+ street.name);
+	          							//console.log('lvl_1 '+ district.name + 'lvl_2 '+ village.name + 'lvl_3 '+ street.name);
 							}
 						}else{  //здесь ПК итп
 							marker = addMarker(village.latitude,
@@ -123,8 +125,8 @@ const addMarkers = (districtsData) => {
 									village.name,
 									alertLevel(village.level),
 									true);
-							markerGroup.push(marker);//Аккумулирую объекты Marker в массив
 						}
+						markerGroup.push(marker);//Аккумулирую объекты Marker в массив
 					}
 				}
 		}
