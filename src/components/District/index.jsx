@@ -93,11 +93,11 @@ function District(props){
           //выделить
           const street = findStreetInDistrictsData(id);
           props.onAddSelectedStreet(street.id, street.latitude, street.longitude);
-          setViewByCoordinates(street.latitude, street.longitude, 15);
+//  setViewByCoordinates(street.latitude, street.longitude, 15);
         }else{
           //снять выделение
           props.onAddSelectedStreet(undefined, undefined, undefined);
-          setViewByCoordinates(undefined, undefined, undefined);
+//  setViewByCoordinates(undefined, undefined, undefined);
         }
     };
 

@@ -9,10 +9,8 @@ import pinLso from '../../images/pins/pinLso.png';
 import pinSelect from '../../images/pins/pinSelect.png';
 import { connect } from 'react-redux';
 let map;
-let markerGroup; //Для аккумулирования объектов Marker, ПРОТЕСТИТЬ/УДАЛИТЬ
 
 
-//state
 const mapStateToProps = state => state;
 
 
@@ -21,52 +19,13 @@ const mapDispatchToProps = dispatch => {
 };
 
 
-export const setViewByCoordinates = (latitude=58, longitude=162, sizeMap=5) => {
-		map.setView([latitude, longitude], sizeMap);
-};
-
-
-export const setIconSelectedPin = (selectedIndex) => {
-	if(markerGroup.find( marker => marker.districtId == selectedIndex)){
-		markerGroup.find( marker => marker.districtId == selectedIndex).setIcon(alertLevel('SELECT'));
-	}
-};
-
-
-const createIcon = (icon) => {
-		let iconSize = 32;     //Размер Иконки
-		let iconPin = iconSize / 2; //точка позиционирования Иконки на карте по оси X
-		return(
-					DG.icon({
-							//Стиль иконки
-							iconUrl: icon,
-							iconSize: [iconSize, iconSize],
-							iconAnchor: [iconPin, iconSize], //позиционирование
-					})
-		);
-};
-
-
-const alertLevel = (level) => {
-	if(level === 'RASCO'){
-		return createIcon(pinRasco);
-	}else if(level === 'KSEON'){
-		return createIcon(pinKseon);
-	}else if(level === 'MSO'){
-		return createIcon(pinMso)
-	}else if(level === 'LSO'){
-		return createIcon(pinLso);
-	}else if(level === 'SELECT'){
-		return createIcon(pinSelect);
-	}
-};
-
-
 //Main
 function MapGis(props){
+	let markerGroup = [];
 	const districtsData = props.data.rows;
-	const selectedIndex = String(props.selectedStreet.selectedIndex);
-	markerGroup = [];
+	const selectedStreet = String(props.selectedStreet);
+
+
 
 	const createMap = (latitude=58, longitude=162, sizeMap=5) => {
 		    if(!map){
@@ -81,14 +40,27 @@ function MapGis(props){
 		    }
 	};
 
-	const handleClickStreet = (e) => {
-		setIconSelectedPin(selectedIndex);
-		setViewByCoordinates(e.latlng.lat, e.latlng.lng, 15);
+
+	const setViewByCoordinates = (latitude=58, longitude=162, sizeMap=5) => {
+			map.setView([latitude, longitude], sizeMap);
+	};
+
+
+	const setIconSelectedPin = (selectedStreet) => {
+		if(markerGroup.find( marker => marker.districtId == selectedStreet.selectedIndex)){
+			markerGroup.find( marker => marker.districtId == selectedStreet.selectedIndex).setIcon(alertLevel('SELECT'));
+		}
+	};
+
+
+	const handleClickStreet = () => {
+		setIconSelectedPin(selectedStreet);
+		setViewByCoordinates(selectedStreet.latitude, selectedStreet.longitude, 15);
 	}
 
 	const createMarker = (latitude, longitude, headerContent, contentVilladge, contentStreet, icon) => {
-			return  DG.marker([ latitude, longitude], {icon: icon}, {interactive:false})
-								.addTo(map)
+			return  DG.marker([ latitude, longitude], {icon: icon})
+								//.addTo(map)
 								.on('click', handleClickStreet)
 								.bindLabel('<h3>'+ headerContent +'</h3>'+ contentVilladge +', '+  contentStreet)
 				      	/*.bindPopup(
@@ -100,12 +72,44 @@ function MapGis(props){
 	};
 
 
-	/*const createOnClickMarker = (markerGroup) => {
+	const createFeatureGroup = (markerGroup) => {
 			//обработка событий на группу маркеров
-			DG.featureGroup(markerGroup)
-			  .addTo(map)
+			console.log(DG.featureGroup(markerGroup).hasLayer(markerGroup[0]));
 
-	};*/
+			DG.featureGroup(markerGroup)
+			  .addTo(map);
+
+
+	};
+
+
+const createIcon = (icon) => {
+			let iconSize = 32;     //Размер Иконки
+			let iconPin = iconSize / 2; //точка позиционирования Иконки на карте по оси X
+			return(
+						DG.icon({
+								//Стиль иконки
+								iconUrl: icon,
+								iconSize: [iconSize, iconSize],
+								iconAnchor: [iconPin, iconSize], //позиционирование
+						})
+			);
+	};
+
+
+	const alertLevel = (level) => {
+		if(level === 'RASCO'){
+			return createIcon(pinRasco);
+		}else if(level === 'KSEON'){
+			return createIcon(pinKseon);
+		}else if(level === 'MSO'){
+			return createIcon(pinMso)
+		}else if(level === 'LSO'){
+			return createIcon(pinLso);
+		}else if(level === 'SELECT'){
+			return createIcon(pinSelect);
+		}
+	};
 
 
 	const addMarker = (latitude, longitude, headerContent, contentVilladge, contentStreet, icon, toReturn=true) => {
@@ -120,8 +124,7 @@ function MapGis(props){
 
 
 	const addMarkers = (districtsData) => {
-		let test = {};
-		  for(let district of districtsData){
+		for(let district of districtsData){
 					let marker;
 					if(district['items']){
 						for(let village of district.items){
@@ -149,10 +152,10 @@ function MapGis(props){
 								marker['districtId'] = village.id;
 								markerGroup.push(marker);
 							}
-
 						}
 					}
 			}
+			createFeatureGroup(markerGroup);
 			//markerGroup.find(x=>x.districtId==3).setIcon(alertLevel('MSO'));
 			console.log("m",markerGroup.find(x=>x.districtId==3));
 			//markerGroup['3'].setIcon(alertLevel('MSO'));
