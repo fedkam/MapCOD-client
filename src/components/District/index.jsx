@@ -194,7 +194,7 @@ function District(props){
 
     return(
       <div>
-        {districtsData.length ?(
+        {districtsData.length ? (
           <List className={classes.root}>
             {addRowsDistricts(districtsData)}
           </List>
