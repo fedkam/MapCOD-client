@@ -67,12 +67,9 @@ function MapGis(props){
 
 	const createFeatureGroup = (markerGroup) => {
 			//обработка событий на группу маркеров
-
 			DG.featureGroup(markerGroup)
 			  .addTo(map);
 			console.log(DG.featureGroup(markerGroup).hasLayer(map));
-
-
 	};
 
 
@@ -139,7 +136,6 @@ function MapGis(props){
 															street,
 															alertLevel(street.level),
 															false);
-													//markerGroup.push(marker);
 													//console.log('lvl_1 '+ district.name + 'lvl_2 '+ village.name + 'lvl_3 '+ street.name);
 								}
 							}else{  //здесь ПК итп
@@ -147,17 +143,10 @@ function MapGis(props){
 														village,
 														alertLevel(village.level),
 														false);
-									//markerGroup.push(marker);
 							}
 						}
 					}
 			}
-			createFeatureGroup(markerGroup);
-
-
-			//markerGroup.find(x=>x.districtId==3).setIcon(alertLevel('MSO'));
-			console.log("m",markerGroup.find(x=>x.districtId==3));
-			//markerGroup['3'].setIcon(alertLevel('MSO'));
 	};
 
 
