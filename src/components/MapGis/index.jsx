@@ -50,6 +50,13 @@ function MapGis(props){
 		if(markerGroup.find( marker => marker.districtId == selectedStreet.selectedIndex)){
 			markerGroup.find( marker => marker.districtId == selectedStreet.selectedIndex).setIcon(alertLevel('SELECT'));
 		}
+
+		map.eachLayer( (layer) =>{
+				if(layer.districtId == selectedStreet.selectedIndex){
+					console.log("select layer.districtId=",layer.districtId);
+				}
+		});
+
 	};
 
 
@@ -58,23 +65,9 @@ function MapGis(props){
 		setViewByCoordinates(selectedStreet.latitude, selectedStreet.longitude, 15);
 	}
 
-	const createMarker = (latitude, longitude, headerContent, contentVilladge, contentStreet, icon) => {
-			return  DG.marker([ latitude, longitude], {icon: icon})
-								//.addTo(map)
-								.on('click', handleClickStreet)
-								.bindLabel('<h3>'+ headerContent +'</h3>'+ contentVilladge +', '+  contentStreet)
-				      	/*.bindPopup(
-				      		DG.popup()
-				      		  .setLatLng([ latitude, longitude])
-				      		  .setHeaderContent( headerContent)
-				      		  .setContent( contentVilladge + ' ' + contentStreet)
-				      	);*/
-	};
-
-
-const createFeatureGroup = (markerGroup) => {
+	const createFeatureGroup = (markerGroup) => {
 			//обработка событий на группу маркеров
-			
+
 			DG.featureGroup(markerGroup)
 			  .addTo(map);
 			console.log(DG.featureGroup(markerGroup).hasLayer(map));
@@ -83,7 +76,7 @@ const createFeatureGroup = (markerGroup) => {
 	};
 
 
-const createIcon = (icon) => {
+	const createIcon = (icon) => {
 			let iconSize = 32;     //Размер Иконки
 			let iconPin = iconSize / 2; //точка позиционирования Иконки на карте по оси X
 			return(
@@ -111,51 +104,57 @@ const createIcon = (icon) => {
 		}
 	};
 
-
-	const addMarker = (latitude, longitude, headerContent, contentVilladge, contentStreet, icon, toReturn=true) => {
-			if(toReturn){
-		     	return  createMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon);
-			}else{
-		      //просто добавить
-		       createMarker(latitude, longitude, headerContent, contentVilladge, contentStreet, icon);
-		    }
-		    // пример:  addMarker(52.824913, 156.283973, 'Усть-Большерецкий район', 'с. Усть-Большерецк', 'Октябрьская, 14', myIconRasco, false);
+	const createMarker = (village, street, icon) => {
+		let marker;
+		marker = DG.marker([ street.latitude, street.longitude], {icon: icon})
+								.addTo(map)
+								.on('click', handleClickStreet)
+								.bindLabel('<h3>'+  village.name +'</h3>'+', '+  street.name)
+				      	/*.bindPopup(
+				      		DG.popup()
+				      		  .setLatLng([ latitude, longitude])
+				      		  .setHeaderContent( headerContent)
+				      		  .setContent( contentVilladge + ' ' + contentStreet)
+				      	);*/
+		marker['districtId'] = street.id;
+		return marker;
 	};
 
+	const addMarker = (village, street, icon, toReturn=false) => {
+			if(toReturn){
+		     	return  createMarker(village, street, icon);
+			}else{
+		      //просто добавить
+		      markerGroup.push(createMarker(village, street, icon));
+		    }
+	};
 
 	const addMarkers = (districtsData) => {
 		for(let district of districtsData){
-					let marker;
 					if(district['items']){
 						for(let village of district.items){
 							if(village['items']){
 								for(let street of village.items){
-													marker = addMarker(street.latitude,
-															street.longitude,
-															district.name,
-															village.name,
-															street.name,
+										addMarker(village,
+															street,
 															alertLevel(street.level),
-															true);
-													marker['districtId'] = street.id;
-													markerGroup.push(marker);
+															false);
+													//markerGroup.push(marker);
 													//console.log('lvl_1 '+ district.name + 'lvl_2 '+ village.name + 'lvl_3 '+ street.name);
 								}
 							}else{  //здесь ПК итп
-								marker = addMarker(village.latitude,
-										village.longitude,
-										district.name,
-										village.name,
-										village.name,
-										alertLevel(village.level),
-										true);
-								marker['districtId'] = village.id;
-								markerGroup.push(marker);
+									addMarker(district,
+														village,
+														alertLevel(village.level),
+														false);
+									//markerGroup.push(marker);
 							}
 						}
 					}
 			}
 			createFeatureGroup(markerGroup);
+
+
 			//markerGroup.find(x=>x.districtId==3).setIcon(alertLevel('MSO'));
 			console.log("m",markerGroup.find(x=>x.districtId==3));
 			//markerGroup['3'].setIcon(alertLevel('MSO'));
