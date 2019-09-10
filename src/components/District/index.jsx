@@ -78,7 +78,7 @@ function District(props){
     const [open, setOpen] = useState({});
 
     const handleClickCollapse = e => {
-        //console.log("____handleClickCollapse()"," event=", e," open=", open," !open=", !open[e]);
+        console.log("____handleClickCollapse()"," event=", e," open=", open," !open=", !open[e]);
         //console.log("e",e,e.length);
         if(e.length != 1){
           setOpen({[e[0]]:open[e[0]], [e[1]]:!open[e[1]]});
