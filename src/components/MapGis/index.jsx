@@ -30,7 +30,7 @@ function MapGis(props){
 
 	//установка координат и масштаба на карте
 	const setViewByCoordinates = (latitude=58, longitude=164, sizeMap=5) => {
-			if(map.getZoom() > sizeMap){
+			if(map.getZoom() > sizeMap && sizeMap!==5){
 				sizeMap=map.getZoom();
 			}
 			map.setView([latitude, longitude], sizeMap);
@@ -55,7 +55,11 @@ function MapGis(props){
 	}
 	//обработчик нажатия, обновление Store
 	const handleClickStreet = (e) => {
-		props.onAddSelectedStreet(e.target.districtId, e.latlng.lat, e.latlng.lng);
+			if(selectedStreet.selectedIndex !== e.target.districtId){
+					props.onAddSelectedStreet(e.target.districtId, e.latlng.lat, e.latlng.lng);
+			}else{
+					props.onAddSelectedStreet(undefined, undefined, undefined);
+			}
 	}
 	//определение района для иконки мркера
 	const alertLevelIcon = (level) => {
@@ -179,3 +183,4 @@ export default connect(
 
 
 //продумать тройной перебор(обощить)
+//оптимизировать с useMemo
