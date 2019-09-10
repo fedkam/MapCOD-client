@@ -23,12 +23,11 @@ const mapDispatchToProps = dispatch => {
 function MapGis(props){
 	let markerGroup = [];
 	const districtsData = props.data.rows;
-	const selectedStreet = String(props.selectedStreet);
-
-
+	const selectedStreet = props.selectedStreet;
 
 	const createMap = (latitude=58, longitude=162, sizeMap=5) => {
-		    if(!map){
+				//map && map.remove();
+				if(!map){
 		      map = DG.map('map', {
 		          center: [latitude, longitude],
 		          zoom: sizeMap,
@@ -37,14 +36,13 @@ function MapGis(props){
 		          prefix:'TestText',
 		          });
 		      DG.control.ruler({position: 'bottomleft'}).addTo(map);
-		    }
-	};
+				}
 
+	};
 
 	const setViewByCoordinates = (latitude=58, longitude=162, sizeMap=5) => {
 			map.setView([latitude, longitude], sizeMap);
 	};
-
 
 	const setIconSelectedPin = (selectedStreet) => {
 		if(markerGroup.find( marker => marker.districtId == selectedStreet.selectedIndex)){
@@ -59,19 +57,10 @@ function MapGis(props){
 
 	};
 
-
-	const handleClickStreet = () => {
+	const handleClickStreet = (selectedStreet) => {
 		setIconSelectedPin(selectedStreet);
-		setViewByCoordinates(selectedStreet.latitude, selectedStreet.longitude, 15);
+		setViewByCoordinates(selectedStreet.latitude, selectedStreet.longitude, 5);
 	}
-
-	const createFeatureGroup = (markerGroup) => {
-			//обработка событий на группу маркеров
-			DG.featureGroup(markerGroup)
-			  .addTo(map);
-			console.log(DG.featureGroup(markerGroup).hasLayer(map));
-	};
-
 
 	const createIcon = (icon) => {
 			let iconSize = 32;     //Размер Иконки
@@ -85,7 +74,6 @@ function MapGis(props){
 						})
 			);
 	};
-
 
 	const alertLevel = (level) => {
 		if(level === 'RASCO'){
@@ -105,7 +93,7 @@ function MapGis(props){
 		let marker;
 		marker = DG.marker([ street.latitude, street.longitude], {icon: icon})
 								.addTo(map)
-								.on('click', handleClickStreet)
+								.on('click', handleClickStreet.bind(this, selectedStreet))
 								.bindLabel('<h3>'+  village.name +'</h3>'+', '+  street.name)
 				      	/*.bindPopup(
 				      		DG.popup()
@@ -156,6 +144,7 @@ function MapGis(props){
 	}else{
 		console.log('MapGis/render() loading data');
 	}
+	console.log("selectedStreet",selectedStreet);
 	return (
 		<div id='map' className='MapGis-map'></div>
 	);
