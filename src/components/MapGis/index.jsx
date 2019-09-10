@@ -140,12 +140,20 @@ function MapGis(props){
 			}
 	};
 
+	/*const test = (districtsData) => {
+		console.log("run useMemo",districtsData);
+	}
+	if(districtsData.length){
+		useMemo(() => test(districtsData),districtsData);
+	}*/
+
 	return (
 		<>
 			<div id='map' className='MapGis-map'></div>
 			{districtsData.length && !map && createMap()}
 			{districtsData.length && clearMap()}
 			{districtsData.length && addMarkers(districtsData)}
+			{districtsData.length && selectedStreet.selectedIndex!==undefined && setIconSelectedPin(selectedStreet)}
 		</>
 	);
 };
