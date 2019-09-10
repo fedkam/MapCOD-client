@@ -35,15 +35,19 @@ function MapGis(props){
 					console.log("select layer.districtId=",layer.districtId);
 					layer.setIcon(alertLevelIcon('SELECT'));
 					layer.setZIndexOffset(1000);
-					console.log(layer);
+					console.log(layer.getLatLng());
 				}
 		});
 
 	};
 	//обработчик нажатия
 	const handleClickStreet = (selectedStreet) => {
-		setIconSelectedPin(selectedStreet);
-		setViewByCoordinates(selectedStreet.latitude, selectedStreet.longitude, 5);
+		if(selectedStreet.selectedIndex !== undefined){
+			setIconSelectedPin(selectedStreet);
+			setViewByCoordinates(selectedStreet.latitude, selectedStreet.longitude, 7);
+		}else{
+			setViewByCoordinates(selectedStreet.latitude, selectedStreet.longitude, 5);
+		}
 	}
 	//определение района для иконки мркера
 	const alertLevelIcon = (level) => {
@@ -155,7 +159,7 @@ function MapGis(props){
 			{districtsData.length && !map && createMap()}
 			{districtsData.length && clearMap()}
 			{districtsData.length && addMarkers(districtsData)}
-			{districtsData.length && selectedStreet.selectedIndex!==undefined && setIconSelectedPin(selectedStreet)}
+			{districtsData.length && handleClickStreet(selectedStreet)}
 		</>
 	);
 };
