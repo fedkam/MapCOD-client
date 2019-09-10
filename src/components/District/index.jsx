@@ -90,12 +90,12 @@ function District(props){
 
     const handleClickStreet = (id) => {
         if(selectedIndex !== id){
-          //выделить
+          //выделить, обновление Store
           const street = findStreetInDistrictsData(id);
           props.onAddSelectedStreet(street.id, street.latitude, street.longitude);
 //  setViewByCoordinates(street.latitude, street.longitude, 15);
         }else{
-          //снять выделение
+          //снять выделение, обновление Store
           props.onAddSelectedStreet(undefined, undefined, undefined);
 //  setViewByCoordinates(undefined, undefined, undefined);
         }

@@ -8,15 +8,19 @@ import pinKseon from '../../images/pins/pinKseon.png';
 import pinLso from '../../images/pins/pinLso.png';
 import pinSelect from '../../images/pins/pinSelect.png';
 import { connect } from 'react-redux';
+import { addSelectedStreet } from '../../actions';
 let map;
 
 
 const mapStateToProps = state => state;
 
 
-const mapDispatchToProps = dispatch => {
-  //onSelectionChange: selection => dispatch(createGridAction('selection', selection)),
-};
+const mapDispatchToProps = dispatch => ({
+  onAddSelectedStreet: (addselectedstreet, latitude, longitude) => {
+    console.log(addselectedstreet, latitude, longitude);
+    dispatch(addSelectedStreet(addselectedstreet, latitude, longitude));
+  }
+});
 
 
 //Main
@@ -25,29 +29,33 @@ function MapGis(props){
 	const selectedStreet = props.selectedStreet;
 
 	//установка координат и масштаба на карте
-	const setViewByCoordinates = (latitude=58, longitude=162, sizeMap=5) => {
+	const setViewByCoordinates = (latitude=58, longitude=164, sizeMap=5) => {
+			if(map.getZoom() > sizeMap){
+				sizeMap=map.getZoom();
+			}
 			map.setView([latitude, longitude], sizeMap);
 	};
 	//изменение иконки при выбранном маркере на карте
 	const setIconSelectedPin = (selectedStreet) => {
 		map.eachLayer( (layer) => {
 				if(layer.districtId == selectedStreet.selectedIndex){
-					console.log("select layer.districtId=",layer.districtId);
 					layer.setIcon(alertLevelIcon('SELECT'));
 					layer.setZIndexOffset(1000);
-					console.log(layer.getLatLng());
 				}
 		});
-
 	};
-	//обработчик нажатия
-	const handleClickStreet = (selectedStreet) => {
+	//настроить отображение и иконку для выделенного маркера
+	const setSelectedPin = (selectedStreet) => {
 		if(selectedStreet.selectedIndex !== undefined){
 			setIconSelectedPin(selectedStreet);
 			setViewByCoordinates(selectedStreet.latitude, selectedStreet.longitude, 7);
 		}else{
-			setViewByCoordinates(selectedStreet.latitude, selectedStreet.longitude, 5);
+			setViewByCoordinates();
 		}
+	}
+	//обработчик нажатия, обновление Store
+	const handleClickStreet = (e) => {
+		props.onAddSelectedStreet(e.target.districtId, e.latlng.lat, e.latlng.lng);
 	}
 	//определение района для иконки мркера
 	const alertLevelIcon = (level) => {
@@ -89,8 +97,7 @@ function MapGis(props){
 		          });
 		      DG.control.ruler({position: 'bottomleft'}).addTo(map);
 				}
-
-	};
+		};
 
 	const clearMap = () => {
 		map.eachLayer( (layer) => {
@@ -103,7 +110,7 @@ function MapGis(props){
 	const createMarker = (village, street, icon) => {
 		let marker;
 		marker = DG.marker([ street.latitude, street.longitude], {icon: icon})
-								.on('click', handleClickStreet.bind(this, selectedStreet))
+								.on('click', e => handleClickStreet(e))
 								.bindLabel('<h3>'+  village.name +'</h3>'+', '+  street.name)
 				      	/*.bindPopup(
 				      		DG.popup()
@@ -159,7 +166,7 @@ function MapGis(props){
 			{districtsData.length && !map && createMap()}
 			{districtsData.length && clearMap()}
 			{districtsData.length && addMarkers(districtsData)}
-			{districtsData.length && handleClickStreet(selectedStreet)}
+			{districtsData.length && setSelectedPin(selectedStreet)}
 		</>
 	);
 };
