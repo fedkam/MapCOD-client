@@ -26,7 +26,7 @@ const mapDispatchToProps = dispatch => ({
 //Main
 function MapGis(props){
 	const districtsData = props.data.rows;
-	const selectedStreet = props.selectedStreet;
+	const selectedIndex = props.selectedStreet.selectedIndex;
 
 	//установка координат и масштаба на карте
 	const setViewByCoordinates = (latitude=58, longitude=164, sizeMap=5) => {
@@ -46,14 +46,14 @@ function MapGis(props){
 	};
 	//настроить отображение и иконку для выделенного маркера
 	const setSelectedPin = (selectedStreet) => {
-		if(selectedStreet.selectedIndex !== undefined){
+		if(selectedIndex !== undefined){
 			let LatLng;
 			map.eachLayer( (layer) => {
-					if(layer.districtId == selectedStreet.selectedIndex){
+					if(layer.districtId == selectedIndex){
 						LatLng = layer.getLatLng();
 					}
 			});
-			setIconSelectedPin(selectedStreet.selectedIndex);
+			setIconSelectedPin(selectedIndex);
 			setViewByCoordinates(LatLng.lat, LatLng.lng, 7);
 		}else{
 			setViewByCoordinates();
@@ -61,7 +61,7 @@ function MapGis(props){
 	}
 	//обработчик нажатия, обновление Store
 	const handleClickStreet = (e) => {
-			if(selectedStreet.selectedIndex !== e.target.districtId){
+			if(selectedIndex !== e.target.districtId){
 					props.onAddSelectedStreet(e.target.districtId);
 			}else{
 					props.onAddSelectedStreet(undefined);
@@ -103,7 +103,7 @@ function MapGis(props){
 		          zoom: sizeMap,
 		          zoomControl: false,
 		          geoclicker: false,
-		          prefix:'TestText',
+		          prefix:'',
 		          });
 		      DG.control.ruler({position: 'bottomleft'}).addTo(map);
 				}
@@ -176,7 +176,7 @@ function MapGis(props){
 			{districtsData.length && !map && createMap()}
 			{districtsData.length && clearMap()}
 			{districtsData.length && addMarkers(districtsData)}
-			{districtsData.length && setSelectedPin(selectedStreet)}
+			{districtsData.length && setSelectedPin(selectedIndex)}
 		</>
 	);
 };
