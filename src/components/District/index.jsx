@@ -15,9 +15,8 @@ const mapStateToProps = state => state;
 
 
 const mapDispatchToProps = dispatch => ({
-  onAddSelectedStreet: (addselectedstreet, latitude, longitude) => {
-    console.log(addselectedstreet, latitude, longitude);
-    dispatch(addSelectedStreet(addselectedstreet, latitude, longitude));
+  onAddSelectedStreet: (addselectedstreet) => {
+    dispatch(addSelectedStreet(addselectedstreet));
   }
 });
 
@@ -92,12 +91,10 @@ function District(props){
         if(selectedIndex !== id){
           //выделить, обновление Store
           const street = findStreetInDistrictsData(id);
-          props.onAddSelectedStreet(street.id, street.latitude, street.longitude);
-//  setViewByCoordinates(street.latitude, street.longitude, 15);
+          props.onAddSelectedStreet(street.id);
         }else{
           //снять выделение, обновление Store
-          props.onAddSelectedStreet(undefined, undefined, undefined);
-//  setViewByCoordinates(undefined, undefined, undefined);
+          props.onAddSelectedStreet(undefined);
         }
     };
 

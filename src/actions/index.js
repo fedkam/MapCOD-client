@@ -12,9 +12,7 @@ export const addAllDistricts = addalldistricts => ({
 	addalldistricts
 });
 
-export const addSelectedStreet = (addselectedstreet, latitude, longitude) => ({
+export const addSelectedStreet = (addselectedstreet) => ({
 	type: ADD_SELECTED_STREET,
-	addselectedstreet,
-	latitude,
-	longitude,
+	addselectedstreet
 });

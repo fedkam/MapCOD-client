@@ -16,9 +16,9 @@ const mapStateToProps = state => state;
 
 
 const mapDispatchToProps = dispatch => ({
-  onAddSelectedStreet: (addselectedstreet, latitude, longitude) => {
-    console.log(addselectedstreet, latitude, longitude);
-    dispatch(addSelectedStreet(addselectedstreet, latitude, longitude));
+  onAddSelectedStreet: (addselectedstreet) => {
+    console.log(addselectedstreet);
+    dispatch(addSelectedStreet(addselectedstreet));
   }
 });
 
@@ -36,9 +36,9 @@ function MapGis(props){
 			map.setView([latitude, longitude], sizeMap);
 	};
 	//изменение иконки при выбранном маркере на карте
-	const setIconSelectedPin = (selectedStreet) => {
+	const setIconSelectedPin = (selectedIndex) => {
 		map.eachLayer( (layer) => {
-				if(layer.districtId == selectedStreet.selectedIndex){
+				if(layer.districtId == selectedIndex){
 					layer.setIcon(alertLevelIcon('SELECT'));
 					layer.setZIndexOffset(1000);
 				}
@@ -47,8 +47,14 @@ function MapGis(props){
 	//настроить отображение и иконку для выделенного маркера
 	const setSelectedPin = (selectedStreet) => {
 		if(selectedStreet.selectedIndex !== undefined){
-			setIconSelectedPin(selectedStreet);
-			setViewByCoordinates(selectedStreet.latitude, selectedStreet.longitude, 7);
+			let LatLng;
+			map.eachLayer( (layer) => {
+					if(layer.districtId == selectedStreet.selectedIndex){
+						LatLng = layer.getLatLng();
+					}
+			});
+			setIconSelectedPin(selectedStreet.selectedIndex);
+			setViewByCoordinates(LatLng.lat, LatLng.lng, 7);
 		}else{
 			setViewByCoordinates();
 		}
@@ -56,9 +62,9 @@ function MapGis(props){
 	//обработчик нажатия, обновление Store
 	const handleClickStreet = (e) => {
 			if(selectedStreet.selectedIndex !== e.target.districtId){
-					props.onAddSelectedStreet(e.target.districtId, e.latlng.lat, e.latlng.lng);
+					props.onAddSelectedStreet(e.target.districtId);
 			}else{
-					props.onAddSelectedStreet(undefined, undefined, undefined);
+					props.onAddSelectedStreet(undefined);
 			}
 	}
 	//определение района для иконки мркера

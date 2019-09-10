@@ -10,8 +10,6 @@ export default function selectedStreet(state = initialStateStreet, action){
     return {
       ...state,
       selectedIndex: action.addselectedstreet,
-      latitude: action.latitude,
-      longitude: action.longitude,
     };
   }
   return state;
