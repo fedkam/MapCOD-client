@@ -34,6 +34,8 @@ function MapGis(props){
 				if(layer.districtId == selectedStreet.selectedIndex){
 					console.log("select layer.districtId=",layer.districtId);
 					layer.setIcon(alertLevelIcon('SELECT'));
+					layer.setZIndexOffset(1000);
+					console.log(layer);
 				}
 		});
 
