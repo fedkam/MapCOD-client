@@ -195,6 +195,7 @@ function District(props){
           <List className={classes.root}>
             {addRowsDistricts(districtsData)}
           </List>
+          {}
         ):(
           <div>Опять косяк с передачей данных</div>
         )}
