@@ -141,42 +141,45 @@ function MapGis(props){
 	};
 
 	const addMarkers = (districtsData) => {
-		for(let district of districtsData){
-					if(district['items']){
-						for(let village of district.items){
-							if(village['items']){
-								for(let street of village.items){
-										addMarker(village,
-															street,
-															alertLevelIcon(street.level),
+		if(districtsData.length){
+			for(let district of districtsData){
+						if(district['items']){
+							for(let village of district.items){
+								if(village['items']){
+									for(let street of village.items){
+											addMarker(village,
+																street,
+																alertLevelIcon(street.level),
+																false);
+														//console.log('lvl_1 '+ district.name + 'lvl_2 '+ village.name + 'lvl_3 '+ street.name);
+									}
+								}else{  //здесь ПК итп
+										addMarker(district,
+															village,
+															alertLevelIcon(village.level),
 															false);
-													//console.log('lvl_1 '+ district.name + 'lvl_2 '+ village.name + 'lvl_3 '+ street.name);
 								}
-							}else{  //здесь ПК итп
-									addMarker(district,
-														village,
-														alertLevelIcon(village.level),
-														false);
 							}
 						}
-					}
 			}
+		}
 	};
 
-	/*const test = (districtsData) => {
-		console.log("run useMemo",districtsData);
+	const test = (data) => {
+		console.log("run useMemo",data);
 	}
-	if(districtsData.length){
-		useMemo(() => test(districtsData),districtsData);
-	}*/
+
+
+
 
 	return (
 		<>
 			<div id='map' className='MapGis-map'></div>
 			{districtsData.length && !map && createMap()}
 			{districtsData.length && clearMap()}
-			{districtsData.length && addMarkers(districtsData)}
+			{addMarkers(districtsData)}
 			{districtsData.length && setSelectedPin(selectedIndex)}
+			{useMemo(() => test(selectedIndex),[selectedIndex])}
 		</>
 	);
 };

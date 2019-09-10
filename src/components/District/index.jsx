@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 
 
 const RowDistrict = (props) => {
-    let {handleClick, open, id, child, classes, primary='Test', selectedIndex} = props;
+    let {handleClick, open, id, child, classes, primary='NoData', selectedIndex} = props;
     //console.log(id, open);
     return(
         <div>
