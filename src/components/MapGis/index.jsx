@@ -23,7 +23,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
-//Main
+
 function MapGis(props){
 	const districtsData = props.data.rows;
 	const selectedIndex = props.selectedStreet.selectedIndex;
@@ -38,6 +38,8 @@ function MapGis(props){
 		});
 		return marker;
 	};
+
+
 	//установка координат и масштаба на карте
 	const setViewByCoordinates = (latitude=58, longitude=164, sizeMap=5) => {
 			if(map.getZoom() > sizeMap && sizeMap!==5){
@@ -45,22 +47,29 @@ function MapGis(props){
 			}
 			map.setView([latitude, longitude], sizeMap);
 	};
+
+
 	//изменение иконки при выбранном маркере на карте
 	const setIconSelectedPin = (layer) => {
 		layer['defaultLevel']=layer.options.icon.options.level;
 		layer.setIcon(createIcon('SELECT'));
-		layer.setZIndexOffset(1000);
+		layer.setZIndexOffset(2000);
 		layer.addTo(map);
 	};
+
+
 	//изменение на стандартую иконку маркера
 	const setDefaultIconPin = () => {
 		map.eachLayer( (layer) => {
 				if(layer.defaultLevel){
 					layer.setIcon(createIcon(layer.defaultLevel));
+					layer.setZIndexOffset(1000);
 					delete layer.defaultLevel;
 				}
 		});
 	};
+
+
 	//настроить||сбросить отображение и иконку для выделенного маркера
 	const setSelectedPin = (selectedIndex) => {
 		if(districtsData.length){
@@ -77,13 +86,25 @@ function MapGis(props){
 			}
 		}
 	};
+
+
 	//обработчик нажатия, обновление Store
 	const handleClickStreet = (e) => {
+		let marker = {};
+		marker = findLayerOnMapById(e.target.districtId);
+
+		if(!marker.defaultLevel){
+			props.onAddSelectedStreet(e.target.districtId);
+		}else{
+			props.onAddSelectedStreet(undefined);
+		}
+		/* Как надо сделать! теряется Contessxt изза useMemo если selectedIndex не добавлен, если добален то сраная перерисовка.
 			if(selectedIndex !== e.target.districtId){
 					props.onAddSelectedStreet(e.target.districtId);
 			}else{
 					props.onAddSelectedStreet(undefined);
 			}
+		*/
 	};
 
 	const createIcon = (level) => {
@@ -102,7 +123,6 @@ function MapGis(props){
 			}else if(level === 'SELECT'){
 				icon = pinSelect;
 			}
-
 			return(
 						DG.icon({
 								//Стиль иконки
@@ -114,8 +134,8 @@ function MapGis(props){
 			);
 	};
 
+
 	const createMap = (latitude=58, longitude=162, sizeMap=5) => {
-				//map && map.remove();
 				if(districtsData.length){
 					if(!map){
 			      map = DG.map('map', {
@@ -130,6 +150,7 @@ function MapGis(props){
 				}
 		};
 
+
 	const clearMap = () => {
 		if(districtsData.length){
 			map.eachLayer( (layer) => {
@@ -140,8 +161,8 @@ function MapGis(props){
 		}
 	};
 
-	const createMarker = (village, street, icon) => {
 
+	const createMarker = (village, street, icon) => {
 		let marker;
 		marker = DG.marker([ street.latitude, street.longitude], {icon: icon})
 								.on('click', (e) => handleClickStreet(e))
@@ -156,6 +177,7 @@ function MapGis(props){
 		return marker;
 	};
 
+
 	const addMarker = (village, street, icon, toReturn=false) => {
 			if(toReturn){
 		     	return  createMarker(village, street, icon); //Not use
@@ -164,8 +186,8 @@ function MapGis(props){
 		  }
 	};
 
-	const addMarkers = (districtsData,selectedIndex) => {
-		let test = selectedIndex;
+
+	const addMarkers = (districtsData) => {
 		if(districtsData.length){
 			for(let district of districtsData){
 						if(district['items']){
@@ -190,16 +212,18 @@ function MapGis(props){
 		}
 	};
 	console.log('');
+
 	return (
 		<>
 			<div id='map' className='MapGis-map'></div>
 			{createMap()}
-			{useMemo(() => addMarkers(districtsData,selectedIndex), [districtsData])}
+			{useMemo(() => addMarkers(districtsData), [districtsData])}
 			{useMemo(() => setSelectedPin(selectedIndex), [selectedIndex])}
 			{/*districtsData.length && setSelectedPin(selectedIndex)*/}
 		</>
 	);
 };
+
 
 
 export default connect(
