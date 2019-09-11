@@ -140,7 +140,7 @@ function MapGis(props){
 	const createMarker = (village, street, icon) => {
 		let marker;
 		marker = DG.marker([ street.latitude, street.longitude], {icon: icon})
-								.on('click', e => handleClickStreet(e))
+								.on('click', handleClickStreet.bind(this))
 								.bindLabel('<h3>'+  village.name +'</h3>'+', '+  street.name)
 				      	/*.bindPopup(
 				      		DG.popup()
@@ -189,8 +189,8 @@ function MapGis(props){
 		<>
 			<div id='map' className='MapGis-map'></div>
 			{createMap()}
-			{clearMap()}
-			{districtsData.length && map && addMarkers(districtsData)}
+			{/*clearMap()*/}
+			{useMemo(() => addMarkers(districtsData),[districtsData])}
 			{districtsData.length && setSelectedPin(selectedIndex)}
 			{/*useMemo(() => test(selectedIndex),[selectedIndex])*/}
 		</>
