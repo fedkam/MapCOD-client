@@ -28,6 +28,16 @@ function MapGis(props){
 	const districtsData = props.data.rows;
 	const selectedIndex = props.selectedStreet.selectedIndex;
 
+	//поиск слоя в объекте map
+	const findLayerOnMapById = (id) => {
+		let marker = {};
+		map.eachLayer( (layer) => {
+				if(layer.districtId == id){
+					marker = layer;
+				}
+		});
+		return marker;
+	};
 	//установка координат и масштаба на карте
 	const setViewByCoordinates = (latitude=58, longitude=164, sizeMap=5) => {
 			if(map.getZoom() > sizeMap && sizeMap!==5){
@@ -36,27 +46,32 @@ function MapGis(props){
 			map.setView([latitude, longitude], sizeMap);
 	};
 	//изменение иконки при выбранном маркере на карте
-	const setIconSelectedPin = (selectedIndex) => {
+	const setIconSelectedPin = (layer) => {
+		layer['defaultLevel']=layer.options.icon.options.level;
+		layer.setIcon(createIcon('SELECT'));
+		layer.setZIndexOffset(1000);
+		layer.addTo(map);
+	};
+	//изменение на стандартую иконку маркера
+	const setDefaultIconPin = () => {
 		map.eachLayer( (layer) => {
-				if(layer.districtId == selectedIndex){
-					layer.setIcon(alertLevelIcon('SELECT'));
-					layer.setZIndexOffset(1000);
+				if(layer.defaultLevel){
+					layer.setIcon(createIcon(layer.defaultLevel));
+					delete layer.defaultLevel;
 				}
 		});
 	};
-	//настроить отображение и иконку для выделенного маркера
-	const setSelectedPin = (selectedStreet) => {
+	//настроить||сбросить отображение и иконку для выделенного маркера
+	const setSelectedPin = (selectedIndex) => {
 		if(selectedIndex !== undefined){
-			let LatLng;
-			map.eachLayer( (layer) => {
-					if(layer.districtId == selectedIndex){
-						LatLng = layer.getLatLng();
-					}
-			});
-			setIconSelectedPin(selectedIndex);
+			let marker, LatLng;
+			marker = findLayerOnMapById(selectedIndex);
+			LatLng = marker.getLatLng();
+			setIconSelectedPin(marker);
 			setViewByCoordinates(LatLng.lat, LatLng.lng, 7);
 		}else{
 			setViewByCoordinates();
+			setDefaultIconPin();
 		}
 	}
 	//обработчик нажатия, обновление Store
@@ -67,27 +82,28 @@ function MapGis(props){
 					props.onAddSelectedStreet(undefined);
 			}
 	}
-	//определение района для иконки мркера
-	const alertLevelIcon = (level) => {
-		if(level === 'RASCO'){
-			return createIcon(pinRasco);
-		}else if(level === 'KSEON'){
-			return createIcon(pinKseon);
-		}else if(level === 'MSO'){
-			return createIcon(pinMso)
-		}else if(level === 'LSO'){
-			return createIcon(pinLso);
-		}else if(level === 'SELECT'){
-			return createIcon(pinSelect);
-		}
-	};
 
-	const createIcon = (icon) => {
+	const createIcon = (level) => {
 			let iconSize = 32;     //Размер Иконки
 			let iconPin = iconSize / 2; //точка позиционирования Иконки на карте по оси X
+			let icon = {};
+			//определение района для иконки мркера
+			if(level === 'RASCO'){
+				icon = pinRasco;
+			}else if(level === 'KSEON'){
+				icon = pinKseon;
+			}else if(level === 'MSO'){
+				icon = pinMso;
+			}else if(level === 'LSO'){
+				icon = pinLso;
+			}else if(level === 'SELECT'){
+				icon = pinSelect;
+			}
+
 			return(
 						DG.icon({
 								//Стиль иконки
+								level:level,
 								iconUrl: icon,
 								iconSize: [iconSize, iconSize],
 								iconAnchor: [iconPin, iconSize], //позиционирование
@@ -97,24 +113,28 @@ function MapGis(props){
 
 	const createMap = (latitude=58, longitude=162, sizeMap=5) => {
 				//map && map.remove();
-				if(!map){
-		      map = DG.map('map', {
-		          center: [latitude, longitude],
-		          zoom: sizeMap,
-		          zoomControl: false,
-		          geoclicker: false,
-		          prefix:'',
-		          });
-		      DG.control.ruler({position: 'bottomleft'}).addTo(map);
+				if(districtsData.length){
+					if(!map){
+			      map = DG.map('map', {
+			          center: [latitude, longitude],
+			          zoom: sizeMap,
+			          zoomControl: false,
+			          geoclicker: false,
+			          prefix:'',
+			          });
+			      DG.control.ruler({position: 'bottomleft'}).addTo(map);
+					}
 				}
 		};
 
 	const clearMap = () => {
-		map.eachLayer( (layer) => {
-				if(layer.districtId){
-					layer.remove();
-				}
-		});
+		if(districtsData.length){
+			map.eachLayer( (layer) => {
+					if(layer.districtId){
+						layer.remove();
+					}
+			});
+		}
 	}
 
 	const createMarker = (village, street, icon) => {
@@ -149,14 +169,14 @@ function MapGis(props){
 									for(let street of village.items){
 											addMarker(village,
 																street,
-																alertLevelIcon(street.level),
+																createIcon(street.level),
 																false);
 														//console.log('lvl_1 '+ district.name + 'lvl_2 '+ village.name + 'lvl_3 '+ street.name);
 									}
 								}else{  //здесь ПК итп
 										addMarker(district,
 															village,
-															alertLevelIcon(village.level),
+															createIcon(village.level),
 															false);
 								}
 							}
@@ -164,22 +184,15 @@ function MapGis(props){
 			}
 		}
 	};
-
-	const test = (data) => {
-		console.log("run useMemo",data);
-	}
-
-
-
-
+	console.log('');
 	return (
 		<>
 			<div id='map' className='MapGis-map'></div>
-			{districtsData.length && !map && createMap()}
-			{districtsData.length && clearMap()}
-			{addMarkers(districtsData)}
+			{createMap()}
+			{clearMap()}
+			{districtsData.length && map && addMarkers(districtsData)}
 			{districtsData.length && setSelectedPin(selectedIndex)}
-			{useMemo(() => test(selectedIndex),[selectedIndex])}
+			{/*useMemo(() => test(selectedIndex),[selectedIndex])*/}
 		</>
 	);
 };
@@ -193,3 +206,4 @@ export default connect(
 
 //продумать тройной перебор(обощить)
 //оптимизировать с useMemo
+// ИЗБАВИТЬСЯ от проверки if(istrictsData.length )
