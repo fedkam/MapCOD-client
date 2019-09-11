@@ -63,27 +63,28 @@ function MapGis(props){
 	};
 	//настроить||сбросить отображение и иконку для выделенного маркера
 	const setSelectedPin = (selectedIndex) => {
-		if(selectedIndex !== undefined){
-			let marker, LatLng;
-			marker = findLayerOnMapById(selectedIndex);
-			LatLng = marker.getLatLng();
-			setDefaultIconPin();
-			setIconSelectedPin(marker);
-			setViewByCoordinates(LatLng.lat, LatLng.lng, 7);
-		}else{
-			setViewByCoordinates();
-			setDefaultIconPin();
+		if(districtsData.length){
+			if(selectedIndex !== undefined){
+				let marker, LatLng;
+				marker = findLayerOnMapById(selectedIndex);
+				LatLng = marker.getLatLng();
+				setDefaultIconPin();
+				setIconSelectedPin(marker);
+				setViewByCoordinates(LatLng.lat, LatLng.lng, 7);
+			}else{
+				setViewByCoordinates();
+				setDefaultIconPin();
+			}
 		}
-	}
+	};
 	//обработчик нажатия, обновление Store
-	const handleClickStreet = (e,selectedIndex) => {
-		let test = props.selectedStreet.selectedIndex;
+	const handleClickStreet = (e) => {
 			if(selectedIndex !== e.target.districtId){
 					props.onAddSelectedStreet(e.target.districtId);
 			}else{
 					props.onAddSelectedStreet(undefined);
 			}
-	}
+	};
 
 	const createIcon = (level) => {
 			let iconSize = 32;     //Размер Иконки
@@ -137,13 +138,14 @@ function MapGis(props){
 					}
 			});
 		}
-	}
+	};
 
 	const createMarker = (village, street, icon) => {
+
 		let marker;
 		marker = DG.marker([ street.latitude, street.longitude], {icon: icon})
 								.on('click', (e) => handleClickStreet(e))
-								.bindLabel('<h3>'+  village.name +'</h3>'+', '+  street.name)
+								.bindLabel('<h3>'+  village.name +'</h3>'+', '+  street.name);
 				      	/*.bindPopup(
 				      		DG.popup()
 				      		  .setLatLng([ latitude, longitude])
@@ -162,7 +164,8 @@ function MapGis(props){
 		  }
 	};
 
-	const addMarkers = (districtsData) => {
+	const addMarkers = (districtsData,selectedIndex) => {
+		let test = selectedIndex;
 		if(districtsData.length){
 			for(let district of districtsData){
 						if(district['items']){
@@ -191,10 +194,9 @@ function MapGis(props){
 		<>
 			<div id='map' className='MapGis-map'></div>
 			{createMap()}
-			{/*clearMap()*/}
-			{useMemo(() => addMarkers(districtsData),[districtsData])}
-			{districtsData.length && setSelectedPin(selectedIndex)}
-			{/*useMemo(() => test(selectedIndex),[selectedIndex])*/}
+			{useMemo(() => addMarkers(districtsData,selectedIndex), [districtsData])}
+			{useMemo(() => setSelectedPin(selectedIndex), [selectedIndex])}
+			{/*districtsData.length && setSelectedPin(selectedIndex)*/}
 		</>
 	);
 };
