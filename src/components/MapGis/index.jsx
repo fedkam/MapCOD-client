@@ -67,6 +67,7 @@ function MapGis(props){
 			let marker, LatLng;
 			marker = findLayerOnMapById(selectedIndex);
 			LatLng = marker.getLatLng();
+			setDefaultIconPin();
 			setIconSelectedPin(marker);
 			setViewByCoordinates(LatLng.lat, LatLng.lng, 7);
 		}else{
@@ -75,7 +76,8 @@ function MapGis(props){
 		}
 	}
 	//обработчик нажатия, обновление Store
-	const handleClickStreet = (e) => {
+	const handleClickStreet = (e,selectedIndex) => {
+		let test = props.selectedStreet.selectedIndex;
 			if(selectedIndex !== e.target.districtId){
 					props.onAddSelectedStreet(e.target.districtId);
 			}else{
@@ -140,7 +142,7 @@ function MapGis(props){
 	const createMarker = (village, street, icon) => {
 		let marker;
 		marker = DG.marker([ street.latitude, street.longitude], {icon: icon})
-								.on('click', handleClickStreet.bind(this))
+								.on('click', (e) => handleClickStreet(e))
 								.bindLabel('<h3>'+  village.name +'</h3>'+', '+  street.name)
 				      	/*.bindPopup(
 				      		DG.popup()
