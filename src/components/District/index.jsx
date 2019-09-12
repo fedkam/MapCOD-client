@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -83,62 +83,73 @@ function District(props){
     const [open, setOpen] = useState({});
 
 
-    const handleClickCollapse = e => {
-        console.log("____handleClickCollapse()"," event=", e," open=", open," !open=", !open[e]);
-        //console.log("e",e,e.length);
-        if(e.length != 1){
-          setOpen({[e[0]]:open[e[0]], [e[1]]:!open[e[1]]});
-        }else{
-          setOpen({[e]: !open[e]});
-        }
-    };
-
 
     const handleClickStreet = (id) => {
         if(selectedIndex !== id){
-          //выделить, обновление Store
-          let street = findStreetInDistrictsData(id);
-          props.onAddSelectedStreet(street.id);
+          props.onAddSelectedStreet(id);
         }else{
-          //снять выделение, обновление Store
           props.onAddSelectedStreet(undefined);
         }
     };
 
 
-    const findStreetInDistrictsData = id => {
-        let findedStreet;
-          districtsData.map((district) => {
-            if(district['items']){
-                    district.items.map((village) => {
-                      if(village['items']){
-                            village.items.map((street) => {
-                              if(street.id == id){
-                                findedStreet = street;
+    const findIdHierarchyInDistrictsData = (id) => {
+        let hierarchy = {lvl1:0, lvl2:0, lvl3:0};
+          districtsData.map((lvl1) => {
+            if(lvl1['items']  &&  lvl1.id != id){
+                    lvl1.items.map((lvl2) => {
+                      if(lvl2['items']  &&  lvl2.id != id){
+                            lvl2.items.map((lvl3) => {
+                              if(lvl3.id == id){
+                                hierarchy.lvl1 = lvl1.id;
+                                hierarchy.lvl2 = lvl2.id;
+                                hierarchy.lvl3 = lvl3.id;
                               }
                             })
-                          }else{  //здесь ПК итп
-                            if(village.id == id){
-                              findedStreet = village;
-                            }
-                          }
-                        })
+                      }else{  //здесь ПК итп
+                        if(lvl2.id == id){
+                          hierarchy.lvl1 = lvl1.id;
+                          hierarchy.lvl2 = lvl2.id;
+                        }
+                      }
+                    })
             }else{  //здесь ПК итп
-              if(district.id == id){
-                findedStreet = district;
+              if(lvl1.id == id){
+                hierarchy.lvl1 = lvl1.id;
               }
             }
           })
-          return findedStreet;
+        return hierarchy;
+    };
+
+
+    const setOpenDistrictMenu = (id) => {
+        if(districtsData.length){
+          //цикл , формировать {lvl1, lvl2, lvl3}, проверка только lvl3 или все.
+          let {lvl1, lvl2, lvl3} = findIdHierarchyInDistrictsData(id);
+          let test = {1:"zZz"};
+          let t = 2;
+          let test2 = test[t];
+          let test3 = test[t];
+
+          if(lvl1!=0 && lvl2!=0 && open[lvl1]!==undefined && open[lvl2]==undefined){
+            setOpen({[lvl1]:open[lvl1], [lvl2]:!open[lvl2]});
+          }else if(lvl1!=0 && lvl2==0 && open[lvl1]==undefined){
+            setOpen({ [lvl1] : !open[lvl1]});
+          }
+          let r1=!open[lvl1];
+          let r2=!open[lvl2];
+          console.log(!open[lvl1]);
+        }
+    };
+
+
+    const isEmpty = (obj) => {
+     return  JSON.stringify(obj) == "{}";
     }
 
 
-    const setOpenDistrictMenu = () => {
-        
-    }
-
-
-    const addRowsDistricts = districtsData => {
+    const addRowsDistricts = (districtsData) => {
         return(
               districtsData.map((district) => {
                   let districtId = String(district.id);
@@ -169,7 +180,7 @@ function District(props){
                                 })
                                 villages.push(
                                   <RowDistrict
-                                      handleClick = {handleClickCollapse.bind(this, [districtId, villageId])}
+                                      handleClick = {handleClickStreet.bind(this, villageId)}
                                       id = {villageId}
                                       open = {open[districtId]&&open[villageId]}
                                       primary = {village.name}
@@ -193,7 +204,7 @@ function District(props){
                 }
                 return(
                   <RowDistrict
-                    handleClick = {handleClickCollapse.bind(this, [districtId])}
+                    handleClick = {handleClickStreet.bind(this, districtId)}
                     id = {districtId}
                     open = {open[districtId]}
                     primary = {district.name}
@@ -204,15 +215,20 @@ function District(props){
         );
     }
 
+
     return(
       <div>
         {districtsData.length ? (
-          <List className={classes.root}>
-            {addRowsDistricts(districtsData)}
-          </List>
+          <>
+            <List className={classes.root}>
+              {addRowsDistricts(districtsData)}
+            </List>
+            {setOpenDistrictMenu(selectedIndex)}
+          </>
         ):(
           <div>Опять косяк с передачей данных</div>
         )}
+
       </div>
     )
 }
@@ -229,6 +245,7 @@ export default connect(
 
 
 
-//избавиться от преобразования в String
+//избавиться от преобразования в String при сравнении districtsData и selectedIndex
 //продумать общую функц тройного цикла
 //Переделать ожидание на App
+//без useMemo функцКомпонент упадет в рекурсию изза setOpenDistrictMenu(){...setOpen()...}
