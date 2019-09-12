@@ -11,7 +11,9 @@ import { connect } from 'react-redux';
 import { addSelectedStreet } from '../../actions';
 
 
+
 const mapStateToProps = state => state;
+
 
 
 const mapDispatchToProps = dispatch => ({
@@ -19,6 +21,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(addSelectedStreet(addselectedstreet));
   }
 });
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -38,6 +41,7 @@ const useStyles = makeStyles(theme => ({
       paddingLeft: theme.spacing(9),
     },
 }));
+
 
 
 const RowDistrict = (props) => {
@@ -71,11 +75,13 @@ const RowDistrict = (props) => {
 }
 
 
+
 function District(props){
     const classes = useStyles();
     const districtsData = props.data.rows;
     const selectedIndex = String(props.selectedStreet.selectedIndex);
     const [open, setOpen] = useState({});
+
 
     const handleClickCollapse = e => {
         console.log("____handleClickCollapse()"," event=", e," open=", open," !open=", !open[e]);
@@ -87,16 +93,50 @@ function District(props){
         }
     };
 
+
     const handleClickStreet = (id) => {
         if(selectedIndex !== id){
           //выделить, обновление Store
-          const street = findStreetInDistrictsData(id);
+          let street = findStreetInDistrictsData(id);
           props.onAddSelectedStreet(street.id);
         }else{
           //снять выделение, обновление Store
           props.onAddSelectedStreet(undefined);
         }
     };
+
+
+    const findStreetInDistrictsData = id => {
+        let findedStreet;
+          districtsData.map((district) => {
+            if(district['items']){
+                    district.items.map((village) => {
+                      if(village['items']){
+                            village.items.map((street) => {
+                              if(street.id == id){
+                                findedStreet = street;
+                              }
+                            })
+                          }else{  //здесь ПК итп
+                            if(village.id == id){
+                              findedStreet = village;
+                            }
+                          }
+                        })
+            }else{  //здесь ПК итп
+              if(district.id == id){
+                findedStreet = district;
+              }
+            }
+          })
+          return findedStreet;
+    }
+
+
+    const setOpenDistrictMenu = () => {
+        
+    }
+
 
     const addRowsDistricts = districtsData => {
         return(
@@ -111,6 +151,7 @@ function District(props){
                         district.items.map((village) => {
                           villageId = String(village.id);
                           streets=[];
+
                           if(village['items']){
                                 village.items.map((street) => {
                                   //console.log('lvl_district.name='+ district.name+" districtId="+districtId + ' lvl_2_village.name='+ village.name +" villageId="+villageId+ ' lvl_3 '+ street.name+" streetsId="+streetsId);
@@ -163,32 +204,6 @@ function District(props){
         );
     }
 
-    const findStreetInDistrictsData = id => {
-        let findedStreet;
-          districtsData.map((district) => {
-            if(district['items']){
-                    district.items.map((village) => {
-                      if(village['items']){
-                            village.items.map((street) => {
-                              if(street.id == id){
-                                findedStreet = street;
-                              }
-                            })
-                          }else{  //здесь ПК итп
-                            if(village.id == id){
-                              findedStreet = village;
-                            }
-                          }
-                        })
-            }else{  //здесь ПК итп
-              if(district.id == id){
-                findedStreet = district;
-              }
-            }
-          })
-          return findedStreet;
-    }
-
     return(
       <div>
         {districtsData.length ? (
@@ -201,6 +216,7 @@ function District(props){
       </div>
     )
 }
+
 
 
 export default connect(

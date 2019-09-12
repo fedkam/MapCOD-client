@@ -12,7 +12,9 @@ import { addSelectedStreet } from '../../actions';
 let map;
 
 
+
 const mapStateToProps = state => state;
+
 
 
 const mapDispatchToProps = dispatch => ({
