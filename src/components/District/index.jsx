@@ -125,22 +125,13 @@ function District(props){
 
     const setOpenDistrictMenu = (id) => {
         if(districtsData.length){
-          //цикл , формировать {lvl1, lvl2, lvl3}, проверка только lvl3 или все.
           let {lvl1, lvl2, lvl3} = findIdHierarchyInDistrictsData(id);
-          let test = {1:"zZz"};
-          let t = 2;
-          let test2 = test[t];
-          let test3 = test[t];
 
-          open = {[lvl1]:true};
-          /*if(lvl1!=0 && lvl2!=0 && open[lvl1]!==undefined && open[lvl2]==undefined){
-            setOpen({[lvl1]:open[lvl1], [lvl2]:!open[lvl2]});
-          }else if(lvl1!=0 && lvl2==0 && open[lvl1]==undefined){
-            setOpen({ [lvl1] : !open[lvl1]});
-          }*/
-          let r1=!open[lvl1];
-          let r2=!open[lvl2];
-          console.log(!open[lvl1]);
+          if(lvl1!=0 && lvl2!=0){
+            open = {[lvl1]:!open[lvl1], [lvl2]:!open[lvl2]};
+          }else if(lvl1!=0 && lvl2==0){
+            open = {[lvl1] : !open[lvl1]};
+          }
         }
     };
 
@@ -216,7 +207,7 @@ function District(props){
         );
     }
 
-setOpenDistrictMenu(selectedIndex)
+    setOpenDistrictMenu(selectedIndex)
     return(
       <div>
         {districtsData.length ? (
@@ -224,12 +215,10 @@ setOpenDistrictMenu(selectedIndex)
             <List className={classes.root}>
               {addRowsDistricts(districtsData)}
             </List>
-            
           </>
         ):(
           <div>Опять косяк с передачей данных</div>
         )}
-
       </div>
     )
 }
