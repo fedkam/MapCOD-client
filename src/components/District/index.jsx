@@ -80,8 +80,8 @@ function District(props){
     const classes = useStyles();
     const districtsData = props.data.rows;
     const selectedIndex = String(props.selectedStreet.selectedIndex);
-    const [open, setOpen] = useState({});
-
+    //const [open, setOpen] = useState({});
+    let open={};
 
 
     const handleClickStreet = (id) => {
@@ -132,11 +132,12 @@ function District(props){
           let test2 = test[t];
           let test3 = test[t];
 
-          if(lvl1!=0 && lvl2!=0 && open[lvl1]!==undefined && open[lvl2]==undefined){
+          open = {[lvl1]:true};
+          /*if(lvl1!=0 && lvl2!=0 && open[lvl1]!==undefined && open[lvl2]==undefined){
             setOpen({[lvl1]:open[lvl1], [lvl2]:!open[lvl2]});
           }else if(lvl1!=0 && lvl2==0 && open[lvl1]==undefined){
             setOpen({ [lvl1] : !open[lvl1]});
-          }
+          }*/
           let r1=!open[lvl1];
           let r2=!open[lvl2];
           console.log(!open[lvl1]);
@@ -215,7 +216,7 @@ function District(props){
         );
     }
 
-
+setOpenDistrictMenu(selectedIndex)
     return(
       <div>
         {districtsData.length ? (
@@ -223,7 +224,7 @@ function District(props){
             <List className={classes.root}>
               {addRowsDistricts(districtsData)}
             </List>
-            {setOpenDistrictMenu(selectedIndex)}
+            
           </>
         ):(
           <div>Опять косяк с передачей данных</div>
