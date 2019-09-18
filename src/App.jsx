@@ -125,6 +125,7 @@ import {addRowDistrict, addAllDistricts} from './actions';
 const mapStateToProps = state => state.data;
 
 
+
 const mapDispatchToProps = dispatch => ({
   onAddRowDistrict: (addrowdistrict) => {
     console.log("addrowdistrict " + addrowdistrict);
@@ -135,6 +136,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(addAllDistricts(addalldistricts));
   },
 });
+
+
+
 
 class App extends Component {
     getData(){

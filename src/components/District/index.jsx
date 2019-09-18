@@ -3,9 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from '@material-ui/core/ListItemText';
-import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 import { setViewByCoordinates } from '../MapGis'
 import { connect } from 'react-redux';
 import { addSelectedStreet } from '../../actions';
