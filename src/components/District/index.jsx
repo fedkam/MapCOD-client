@@ -207,12 +207,12 @@ function District(props){
         );
     }
 
-    setOpenDistrictMenu(selectedIndex)
     return(
       <div>
         {districtsData.length ? (
           <>
             <List className={classes.root}>
+              {setOpenDistrictMenu(selectedIndex)}
               {addRowsDistricts(districtsData)}
             </List>
           </>
