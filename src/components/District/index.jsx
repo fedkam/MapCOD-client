@@ -59,7 +59,6 @@ const RowDistrict = (props) => {
           { //если prop child = true рисуем tree
             child &&
               <Collapse
-                  key={id}
                   component="li"
                   in={open}
                   timeout="auto"
@@ -161,6 +160,7 @@ function District(props){
                                   streetsId = String(street.id);
                                   streets.push(
                                     <RowDistrict
+                                        key={streetsId}
                                         handleClick={handleClickStreet.bind(this, streetsId)}
                                         selectedIndex={selectedIndex}
                                         id={streetsId}
@@ -172,6 +172,7 @@ function District(props){
                                 })
                                 villages.push(
                                   <RowDistrict
+                                      key={villageId}
                                       handleClick = {handleClickStreet.bind(this, villageId)}
                                       id = {villageId}
                                       open = {open[districtId]&&open[villageId]}
@@ -183,6 +184,7 @@ function District(props){
                           }else{
                             villages.push(
                               <RowDistrict
+                                  key={villageId}
                                   handleClick = {handleClickStreet.bind(this, villageId)}
                                   selectedIndex={selectedIndex}
                                   id = {villageId}
@@ -196,6 +198,7 @@ function District(props){
                 }
                 return(
                   <RowDistrict
+                    key={districtId}
                     handleClick = {handleClickStreet.bind(this, districtId)}
                     id = {districtId}
                     open = {open[districtId]}
