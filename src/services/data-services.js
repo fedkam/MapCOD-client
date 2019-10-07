@@ -1,5 +1,31 @@
 export default class DataService {
 
+  getTestDistrictData() {
+    console.log("getData()");
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (Math.random() > 0.75) {
+          reject(new Error("Something bad happened"));
+        } else {
+          resolve(this.datas);
+        }
+      }, 3000);
+    });
+  };
+
+  getDistrictData(){
+    fetch('http://localhost:9000/transferData')
+      .then(res => res.json())
+      .then(res => {
+        /*res.rowsData.map((district) => {
+         console.log("componentDidMount()/dis=" + district.name);
+         this.props.onAddRow(district);
+        });*/
+        this.props.onAddAllDistricts(res.rowsData);
+      })
+      .catch(err => err);
+  };
+
   /*let districtsData = {
             {
               id:1,
@@ -112,30 +138,4 @@ export default class DataService {
               ],
             },
   };*/
-
-  getTestDistrictsData() {
-    console.log("getData()");
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (Math.random() > 0.75) {
-          reject(new Error("Something bad happened"));
-        } else {
-          resolve(this.datas);
-        }
-      }, 3000);
-    });
-  };
-
-  getData(){
-    fetch('http://localhost:9000/transferData')
-      .then(res => res.json())
-      .then(res => {
-        /*res.rowsData.map((district) => {
-         console.log("componentDidMount()/dis=" + district.name);
-         this.props.onAddRow(district);
-        });*/
-        this.props.onAddAllDistricts(res.rowsData);
-      })
-      .catch(err => err);
-  };
 }

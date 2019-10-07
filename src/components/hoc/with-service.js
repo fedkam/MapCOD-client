@@ -1,7 +1,7 @@
 import React from "react";
 import { ServiceConsumer } from "../service-context";
 
-const withComponentService = () => Wrapped => {
+const withService = () => Wrapped => {
   return props => {
     return (
       <ServiceConsumer>
@@ -13,4 +13,4 @@ const withComponentService = () => Wrapped => {
   };
 };
 
-export default ServiceConsumer;
+export default withService;
