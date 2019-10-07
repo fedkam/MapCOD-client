@@ -16,3 +16,11 @@ export const addSelectedStreet = (addselectedstreet) => ({
 	type: ADD_SELECTED_STREET,
 	addselectedstreet
 });
+
+
+
+const fetchDistrictData = (districtDataService, dispatch) => {
+	console.log('districtDataService', districtDataService)
+}
+
+export { fetchDistrictData };

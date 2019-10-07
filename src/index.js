@@ -1,16 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from "./App.jsx";
-import * as serviceWorker from './serviceWorker';
-
+import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from 'react-redux';
+import './index.css';
+import App from "./components/App";
+import * as serviceWorker from './serviceWorker';
+import { ServiceProvider } from "./components/service-context";
+import DataService from "./services/data-services";
 
 import store from './store';
 
+const dataServise = new DataService();
+
 ReactDOM.render(
 	<Provider store = {store}>
-		<App />
+		<ServiceProvider value={dataServise}>
+			<Router>
+				<App />
+			</Router>
+		</ServiceProvider>
 	</Provider>,
 	document.getElementById('root')
 );
