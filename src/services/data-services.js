@@ -1,5 +1,4 @@
 export default class DataService {
-
   getTestDistrictData() {
     console.log("getData()");
     return new Promise((resolve, reject) => {

@@ -10,11 +10,11 @@ import DataService from "./services/data-services";
 
 import store from './store';
 
-const dataServise = new DataService();
+const dataService = new DataService();
 
 ReactDOM.render(
 	<Provider store = {store}>
-		<ServiceProvider value={dataServise}>
+		<ServiceProvider value={dataService}>
 			<Router>
 				<App />
 			</Router>

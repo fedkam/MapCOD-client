@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchData } from "../../actions";
+import { fetchDistrictData } from "../../actions";
 import { compose } from "../../utils";
 import { withService } from "../../components/hoc";
 import MapGis from '../../components/MapGis';
@@ -12,23 +12,19 @@ import { addRowDistrict, addAllDistricts } from '../../actions';
 
 
 const NavigationModules = (props) => {
-  const getData = () => {
-    fetch('http://localhost:9000/transferData')
-      .then(res => res.json())
-      .then(res => {
-        /*res.rowsData.map((district) => {
-         console.log("componentDidMount()/dis=" + district.name);
-         this.props.onAddRow(district);
-        });*/
-        props.onAddAllDistricts(res.rowsData);
-      })
-      .catch(err => err);
-  };
-
-  useEffect(() => {
-    getData();
-  });
-
+  // const getData = () => {
+  //   fetch('http://localhost:9000/transferData')
+  //     .then(res => res.json())
+  //     .then(res => {
+  //       /*res.rowsData.map((district) => {
+  //        console.log("componentDidMount()/dis=" + district.name);
+  //        this.props.onAddRow(district);
+  //       });*/
+  //       props.onAddAllDistricts(res.rowsData);
+  //     })
+  //     .catch(err => err);
+  // };
+  console.log('NavigationModules', props);
   return (
     <div className="App-column">
       <div>
@@ -46,14 +42,18 @@ const NavigationModules = (props) => {
 
 const mapStateToProps = state => state.data;
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch, { dataService }) => {
   return {
     onAddRowDistrict: (addrowdistrict) => dispatch(addRowDistrict(addrowdistrict)),
-    onAddAllDistricts: (addalldistricts) => dispatch(addAllDistricts(addalldistricts))
+    onAddAllDistricts: (addalldistricts) => dispatch(addAllDistricts(addalldistricts)),
+    fetchDistrictData: fetchDistrictData(dataService, dispatch)
   }
 };
 
-export default connect(
+export default compose(
+  withService(),
+  connect(
     mapStateToProps,
     mapDispatchToProps
+  )
 )(NavigationModules);

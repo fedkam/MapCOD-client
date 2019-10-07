@@ -20,6 +20,7 @@ export const addSelectedStreet = (addselectedstreet) => ({
 
 
 const fetchDistrictData = (districtDataService, dispatch) => {
+
 	console.log('districtDataService', districtDataService)
 }
 
