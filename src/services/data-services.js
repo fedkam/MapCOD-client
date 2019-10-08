@@ -1,4 +1,6 @@
 export default class DataService {
+  test = 'test';
+
   getTestDistrictData() {
     console.log("getData()");
     return new Promise((resolve, reject) => {
@@ -13,16 +15,7 @@ export default class DataService {
   };
 
   getDistrictData(){
-    fetch('http://localhost:9000/transferData')
-      .then(res => res.json())
-      .then(res => {
-        /*res.rowsData.map((district) => {
-         console.log("componentDidMount()/dis=" + district.name);
-         this.props.onAddRow(district);
-        });*/
-        this.props.onAddAllDistricts(res.rowsData);
-      })
-      .catch(err => err);
+    return fetch('http://localhost:9000/transferData').then(res => res.json());
   };
 
   /*let districtsData = {

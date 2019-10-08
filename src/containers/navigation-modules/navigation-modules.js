@@ -7,7 +7,7 @@ import MapGis from '../../components/MapGis';
 import District from '../../components/District';
 import Info from '../../components/Info';
 
-import { addRowDistrict, addAllDistricts } from '../../actions';
+import { addRowDistrict } from '../../actions';
 
 
 
@@ -25,6 +25,11 @@ const NavigationModules = (props) => {
   //     .catch(err => err);
   // };
   console.log('NavigationModules', props);
+
+  useEffect(() => {
+    props.fetchDistrictData();
+  }, []);
+
   return (
     <div className="App-column">
       <div>
@@ -40,12 +45,11 @@ const NavigationModules = (props) => {
   );
 }
 
-const mapStateToProps = state => state.data;
+const mapStateToProps = state => state;
 
 const mapDispatchToProps = (dispatch, { dataService }) => {
   return {
     onAddRowDistrict: (addrowdistrict) => dispatch(addRowDistrict(addrowdistrict)),
-    onAddAllDistricts: (addalldistricts) => dispatch(addAllDistricts(addalldistricts)),
     fetchDistrictData: fetchDistrictData(dataService, dispatch)
   }
 };

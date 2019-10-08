@@ -1,15 +1,26 @@
+export const FETCH_DISTRICT_DATA_REQUEST = 'FETCH_DISTRICT_DATA_REQUEST';
+export const FETCH_DISTRICT_DATA_SUCCESS = 'FETCH_DISTRICT_DATA_SUCCESS';
+export const FETCH_DISTRICT_DATA_FAILURE = 'FETCH_DISTRICT_DATA_FAILURE';
 export const ADD_ROW_DISTRICT = 'ADD_ROW_DISTRICT';
-export const ADD_ALL_DISTRICTS = 'ADD_ALL_DISTRICTS';
 export const ADD_SELECTED_STREET = 'ADD_SELECTED_STREET';
+
+export const allDistrictDataRequested = () => ({
+	type: FETCH_DISTRICT_DATA_REQUEST
+});
+
+export const allDistrictDataLoaded = addalldistricts => ({
+	type: FETCH_DISTRICT_DATA_SUCCESS,
+	addalldistricts
+});
+
+export const allDistrictDataError = error => ({
+	type: FETCH_DISTRICT_DATA_FAILURE,
+	error
+});
 
 export const addRowDistrict = addRowDistrict => ({
 	type: ADD_ROW_DISTRICT,
 	addRowDistrict
-});
-
-export const addAllDistricts = addalldistricts => ({
-	type: ADD_ALL_DISTRICTS,
-	addalldistricts
 });
 
 export const addSelectedStreet = (addselectedstreet) => ({
@@ -17,11 +28,12 @@ export const addSelectedStreet = (addselectedstreet) => ({
 	addselectedstreet
 });
 
-
-
-const fetchDistrictData = (districtDataService, dispatch) => {
-
-	console.log('districtDataService', districtDataService)
+const fetchDistrictData = (districtDataService, dispatch) => () => {
+	console.log('districtDataService', districtDataService);
+	dispatch(allDistrictDataRequested());
+	districtDataService.getDistrictData()
+										 .then(res => dispatch(allDistrictDataLoaded(res.rowsData)))
+										 .catch(err => dispatch(allDistrictDataError(err)));
 }
 
 export { fetchDistrictData };
