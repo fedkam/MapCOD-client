@@ -6,10 +6,7 @@ import { withService } from "../../components/hoc";
 import MapGis from '../../components/MapGis';
 import District from '../../components/District';
 import Info from '../../components/Info';
-
 import { addRowDistrict } from '../../actions';
-
-
 
 const NavigationModules = (props) => {
   // const getData = () => {

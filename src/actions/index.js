@@ -32,6 +32,7 @@ const fetchDistrictData = (districtDataService, dispatch) => () => {
 	console.log('districtDataService', districtDataService);
 	dispatch(allDistrictDataRequested());
 	districtDataService.getDistrictData()
+										 .then(res => res.json())
 										 .then(res => dispatch(allDistrictDataLoaded(res.rowsData)))
 										 .catch(err => dispatch(allDistrictDataError(err)));
 }

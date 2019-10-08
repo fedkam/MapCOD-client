@@ -15,7 +15,7 @@ export default class DataService {
   };
 
   getDistrictData(){
-    return fetch('http://localhost:9000/transferData').then(res => res.json());
+    return fetch('http://localhost:9000/transferData');
   };
 
   /*let districtsData = {
