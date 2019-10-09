@@ -31,9 +31,8 @@ export const addSelectedStreet = (addselectedstreet) => ({
 const fetchDistrictData = (districtDataService, dispatch) => () => {
 	console.log('districtDataService', districtDataService);
 	dispatch(allDistrictDataRequested());
-	districtDataService.getDistrictData()
-										 .then(res => res.json())
-										 .then(res => dispatch(allDistrictDataLoaded(res.rowsData)))
+	districtDataService.getDistrictData_withAxios()
+										 .then(res => dispatch(allDistrictDataLoaded(res)))
 										 .catch(err => dispatch(allDistrictDataError(err)));
 }
 
