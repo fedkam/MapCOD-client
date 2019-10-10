@@ -216,7 +216,7 @@ function MapGis(props){
 					}
 				}
 		};
-		console.log('');
+		//console.log('');
 
 		return (
 				<>

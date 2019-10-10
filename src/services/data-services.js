@@ -24,10 +24,8 @@ export default class DataService {
 
   getDistrictData_withAxios = async () => {
      let response = await axios('http://localhost:9000/transferData');
-     console.log('res1', res);
-     let res = await response.json();
-     console.log('res2', res);
-      return res.rowsData;
+     let res = response.data;
+     return res.rowsData;
   };
 
   /*let districtsData = {

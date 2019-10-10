@@ -21,8 +21,7 @@ const NavigationModules = (props) => {
   //     })
   //     .catch(err => err);
   // };
-  console.log('NavigationModules', props);
-
+  
   useEffect(() => {
     props.fetchDistrictData();
   }, []);
