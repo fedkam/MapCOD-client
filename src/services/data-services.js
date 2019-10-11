@@ -1,8 +1,8 @@
 import axios from 'axios';
+let url = 'http://localhost:9000/transferData';
 
 export default class DataService {
-  test = 'test';
-
+  
   getTestDistrictData() {
     console.log("getData()");
     return new Promise((resolve, reject) => {
@@ -17,13 +17,13 @@ export default class DataService {
   };
 
   getDistrictData_withFetch = async () => {
-    let response = await fetch('http://localhost:9000/transferData');
+    let response = await fetch(url);
     let res = await response.json();
     return res.rowsData;
   };
 
   getDistrictData_withAxios = async () => {
-     let response = await axios('http://localhost:9000/transferData');
+     let response = await axios(url);
      let res = response.data;
      return res.rowsData;
   };

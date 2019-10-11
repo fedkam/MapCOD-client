@@ -9,19 +9,7 @@ import Info from '../../components/Info';
 import { addRowDistrict } from '../../actions';
 
 const NavigationModules = (props) => {
-  // const getData = () => {
-  //   fetch('http://localhost:9000/transferData')
-  //     .then(res => res.json())
-  //     .then(res => {
-  //       /*res.rowsData.map((district) => {
-  //        console.log("componentDidMount()/dis=" + district.name);
-  //        this.props.onAddRow(district);
-  //       });*/
-  //       props.onAddAllDistricts(res.rowsData);
-  //     })
-  //     .catch(err => err);
-  // };
-  
+
   useEffect(() => {
     props.fetchDistrictData();
   }, []);
