@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchDistrictData } from "../../actions";
 import { compose } from "../../utils";
-import { withService } from "../../components/hoc";
-import MapGis from '../../components/MapGis';
+import { withService } from "../hoc";
+import { DistrictMap } from '../../containers/DistrictMap';
 import { DistrictList } from '../../containers/DistrictList';
 import Info from '../../components/Info';
 import { addRowDistrict } from '../../actions';
@@ -17,7 +17,7 @@ const NavigationModules = (props) => {
   return (
     <div className="App-column">
       <div>
-        <MapGis/>
+        <DistrictMap/>
       </div>
       <div className="App-table">
         <DistrictList/>

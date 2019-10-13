@@ -26,7 +26,7 @@ const mapDispatchToProps = dispatch => ({
 
 
 
-function MapGis(props){
+function DistrictMap(props){
 		const districtsData = props.data.rows;
 		const selectedIndex = props.selectedStreet.selectedIndex;
 
@@ -234,7 +234,7 @@ function MapGis(props){
 export default connect(
 	  mapStateToProps,
 	  mapDispatchToProps
-)(MapGis);
+)(DistrictMap);
 
 
 //продумать тройной перебор(обощить)
