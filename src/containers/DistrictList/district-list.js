@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import List from "@material-ui/core/List";
-import { setViewByCoordinates } from '../../components/MapGis'
+import { setViewByCoordinates } from '../DistrictMap'
 import { connect } from 'react-redux';
 import { addSelectedStreet } from '../../actions';
 import { RowDistrict } from '../../components/RowDistrict';
