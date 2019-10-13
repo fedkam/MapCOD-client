@@ -1,28 +1,10 @@
 import React, { useState, useMemo } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import { setViewByCoordinates } from '../MapGis'
+import { setViewByCoordinates } from '../../components/MapGis'
 import { connect } from 'react-redux';
 import { addSelectedStreet } from '../../actions';
-
-
-
-const mapStateToProps = state => state;
-
-
-
-const mapDispatchToProps = dispatch => ({
-  onAddSelectedStreet: (addselectedstreet) => {
-    dispatch(addSelectedStreet(addselectedstreet));
-  }
-});
-
-
+import { RowDistrict } from '../../components/RowDistrict';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -42,46 +24,11 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-
-
-const RowDistrict = (props) => {
-    let {handleClick, open, id, child, classes, primary='NoData', selectedIndex} = props;
-    //console.log(id, open);
-    return(
-        <div>
-          <ListItem
-            button
-            selected={selectedIndex === id}
-            onClick={handleClick}>
-            <ListItemText primary={primary} className={classes}/>
-            {child && !open && <ExpandMore/>}
-          </ListItem>
-          { //если prop child = true рисуем tree
-            child &&
-              <Collapse
-                  component="li"
-                  in={open}
-                  timeout="auto"
-                  unmountOnExit
-              >
-                <List component="div" disablePadding>
-                  {child}
-                </List>
-              </Collapse>
-          }
-        </div>
-    );
-}
-
-
-
-function District(props){
+function DistrictList(props){
     const classes = useStyles();
     const districtsData = props.data.rows;
     const selectedIndex = String(props.selectedStreet.selectedIndex);
-    //const [open, setOpen] = useState({});
     let open={};
-
 
     const handleClickStreet = (id) => {
         if(selectedIndex !== id){
@@ -90,7 +37,6 @@ function District(props){
           props.onAddSelectedStreet(undefined);
         }
     };
-
 
     const findIdHierarchyInDistrictsData = (id) => {
         let hierarchy = {lvl1:0, lvl2:0, lvl3:0};
@@ -121,7 +67,6 @@ function District(props){
         return hierarchy;
     };
 
-
     const setOpenDistrictMenu = (id) => {
         if(districtsData.length){
           let {lvl1, lvl2, lvl3} = findIdHierarchyInDistrictsData(id);
@@ -134,11 +79,9 @@ function District(props){
         }
     };
 
-
     const isEmpty = (obj) => {
      return  JSON.stringify(obj) == "{}";
     }
-
 
     const addRowsDistricts = (districtsData) => {
         return(
@@ -227,11 +170,18 @@ function District(props){
 }
 
 
+const mapStateToProps = state => state;
+
+const mapDispatchToProps = dispatch => ({
+  onAddSelectedStreet: (addselectedstreet) => {
+    dispatch(addSelectedStreet(addselectedstreet));
+  }
+});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(District);
+)(DistrictList);
 
 
 
@@ -242,3 +192,4 @@ export default connect(
 //продумать общую функц тройного цикла
 //Переделать ожидание на App
 //без useMemo функцКомпонент упадет в рекурсию изза setOpenDistrictMenu(){...setOpen()...}
+//избавиться от List

@@ -4,7 +4,7 @@ import { fetchDistrictData } from "../../actions";
 import { compose } from "../../utils";
 import { withService } from "../../components/hoc";
 import MapGis from '../../components/MapGis';
-import District from '../../components/District';
+import { DistrictList } from '../../containers/DistrictList';
 import Info from '../../components/Info';
 import { addRowDistrict } from '../../actions';
 
@@ -20,7 +20,7 @@ const NavigationModules = (props) => {
         <MapGis/>
       </div>
       <div className="App-table">
-        <District/>
+        <DistrictList/>
       </div>
       <div  className="App-info">
         <Info/>
