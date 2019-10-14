@@ -1,5 +1,5 @@
 import React from 'react';
-import NavigationModules from '../../containers/navigation-modules'
+import NavigationModules from '../../containers/NavigationModules'
 
 
 const HomePage = () => {

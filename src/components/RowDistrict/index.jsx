@@ -1,4 +1,4 @@
-import RowDistrict from './row-district';
+import RowDistrict from './RowDistrict';
 
 export {
   RowDistrict

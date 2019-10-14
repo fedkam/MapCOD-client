@@ -146,18 +146,12 @@ function DistrictList(props){
     }
 
     return(
-      <div>
-        {districtsData.length ? (
-          <>
-            <List className={classes.root}>
-              {setOpenDistrictMenu(selectedIndex)}
-              {addRowsDistricts(districtsData)}
-            </List>
-          </>
-        ):(
-          <div>Опять косяк с передачей данных</div>
-        )}
-      </div>
+      <>
+        <List className={classes.root}>
+          {setOpenDistrictMenu(selectedIndex)}
+          {addRowsDistricts(districtsData)}
+        </List>
+      </>
     )
 }
 
