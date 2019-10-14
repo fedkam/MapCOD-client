@@ -185,11 +185,10 @@ function DistrictMap(props){
 
 		return (
 				<>
-					<div id='map' className='MapGis-map'></div>
+					<div id='map' className='MapGis-map'/>
 					{createMap()}
 					{useMemo(() => addMarkers(districtsData), [districtsData])}
 					{useMemo(() => setSelectedPin(selectedIndex), [selectedIndex])}
-					{/*districtsData.length && setSelectedPin(selectedIndex)*/}
 				</>
 		);
 };

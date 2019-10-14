@@ -6,7 +6,15 @@ import Collapse from '@material-ui/core/Collapse';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
 const RowDistrict = (props) => {
-    let {handleClick, open, id, child, classes, primary='NoData', selectedIndex} = props;
+    let {
+      handleClick,
+      selectedIndex,
+      id,
+      open,
+      primary='NoData',
+      classes,
+      child
+    } = props;
 
     return(
         <div>
