@@ -22,7 +22,6 @@ const NavigationModules = (props) => {
         <DistrictList/>
       </div>
       <div  className="App-info">
-
       </div>
     </div>
   );

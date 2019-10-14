@@ -1,4 +1,4 @@
-import DistrictList from './district-list';
+import DistrictList from './connect-district-list';
 
 export {
   DistrictList

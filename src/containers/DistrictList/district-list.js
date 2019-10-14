@@ -1,8 +1,6 @@
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import List from "@material-ui/core/List";
-import { connect } from 'react-redux';
-import { addSelectedStreet } from '../../actions';
 import { RowDistrict } from '../../components/RowDistrict';
 
 const useStyles = makeStyles(theme => ({
@@ -163,19 +161,8 @@ function DistrictList(props){
     )
 }
 
+export default DistrictList;
 
-const mapStateToProps = state => state;
-
-const mapDispatchToProps = dispatch => ({
-  onAddSelectedStreet: (addselectedstreet) => {
-    dispatch(addSelectedStreet(addselectedstreet));
-  }
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DistrictList);
 
 
 
