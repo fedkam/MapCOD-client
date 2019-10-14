@@ -1,4 +1,4 @@
-import DistrictMap from './connect-district-map';
+import DistrictMap from './Connect-DistrictMap';
 
 export {
   DistrictMap

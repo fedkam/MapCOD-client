@@ -1,4 +1,4 @@
-import DistrictMap from './district-map';
+import DistrictMap from './DistrictMap';
 import { connect } from 'react-redux';
 import { addSelectedStreet } from '../../actions';
 
