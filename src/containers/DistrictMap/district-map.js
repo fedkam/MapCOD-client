@@ -1,5 +1,3 @@
-// src/js/components/MapGis.jsx
-
 import React, {useMemo} from 'react';
 import DG from '2gis-maps';
 import pinRasco from '../../images/pins/pinRasco.png';
@@ -7,9 +5,7 @@ import pinMso from '../../images/pins/pinMso.png';
 import pinKseon from '../../images/pins/pinKseon.png';
 import pinLso from '../../images/pins/pinLso.png';
 import pinSelect from '../../images/pins/pinSelect.png';
-import { connect } from 'react-redux';
-import { addSelectedStreet } from '../../actions';
-let map;
+let map; //-------------------------------------------------   <-- разобраться с этим
 
 
 function DistrictMap(props){
@@ -198,20 +194,7 @@ function DistrictMap(props){
 		);
 };
 
-
-const mapStateToProps = state => state;
-
-const mapDispatchToProps = dispatch => ({
-	  onAddSelectedStreet: (addselectedstreet) => {
-	    dispatch(addSelectedStreet(addselectedstreet));
-	  }
-});
-
-export default connect(
-	  mapStateToProps,
-	  mapDispatchToProps
-)(DistrictMap);
-
+export default DistrictMap;
 
 //продумать тройной перебор(обощить)
 //оптимизировать с useMemo
