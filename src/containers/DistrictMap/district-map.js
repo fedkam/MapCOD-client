@@ -12,20 +12,6 @@ import { addSelectedStreet } from '../../actions';
 let map;
 
 
-
-const mapStateToProps = state => state;
-
-
-
-const mapDispatchToProps = dispatch => ({
-	  onAddSelectedStreet: (addselectedstreet) => {
-	    console.log(addselectedstreet);
-	    dispatch(addSelectedStreet(addselectedstreet));
-	  }
-});
-
-
-
 function DistrictMap(props){
 		const districtsData = props.data.rows;
 		const selectedIndex = props.selectedStreet.selectedIndex;
@@ -34,13 +20,12 @@ function DistrictMap(props){
 		const findLayerOnMapById = (id) => {
 				let marker;
 				map.eachLayer( (layer) => {
-						if(layer.districtId == id){
+						if(layer.districtId === id){
 							marker = layer;
 						}
 				});
 				return marker;
 		};
-
 
 		//установка координат и масштаба на карте
 		const setViewByCoordinates = (latitude=58, longitude=164, sizeMap=5) => {
@@ -50,7 +35,6 @@ function DistrictMap(props){
 				map.setView([latitude, longitude], sizeMap);
 		};
 
-
 		//изменение иконки при выбранном маркере на карте
 		const setIconSelectedPin = (layer) => {
 				layer['defaultLevel']=layer.options.icon.options.level;
@@ -58,7 +42,6 @@ function DistrictMap(props){
 				layer.setZIndexOffset(2000);
 				layer.addTo(map);
 		};
-
 
 		//изменение на стандартую иконку маркера
 		const setDefaultIconPin = () => {
@@ -70,7 +53,6 @@ function DistrictMap(props){
 						}
 				});
 		};
-
 
 		//настроить||сбросить отображение и иконку для выделенного маркера
 		const setSelectedPin = (selectedIndex) => {
@@ -91,14 +73,13 @@ function DistrictMap(props){
 				}
 		};
 
-
 		//обработчик нажатия, обновление Store
 		const handleClickStreet = (e) => {
 				let marker = {};
 				marker = findLayerOnMapById(e.target.districtId);
 
 				if(!marker.defaultLevel){
-					props.onAddSelectedStreet(e.target.districtId);
+					props.onAddSelectedStreet( e.target.districtId );
 				}else{
 					props.onAddSelectedStreet(undefined);
 				}
@@ -155,33 +136,24 @@ function DistrictMap(props){
 				}
 			};
 
-
-		const clearMap = () => {
-				if(districtsData.length){
-					map.eachLayer( (layer) => {
-							if(layer.districtId){
-								layer.remove();
-							}
-					});
-				}
-		};
-
+		// const clearMap = () => {
+		// 		if(districtsData.length){
+		// 			map.eachLayer( (layer) => {
+		// 					if(layer.districtId){
+		// 						layer.remove();
+		// 					}
+		// 			});
+		// 		}
+		// };
 
 		const createMarker = (village, street, icon) => {
 				let marker;
 				marker = DG.marker([ street.latitude, street.longitude], {icon: icon})
 										.on('click', (e) => handleClickStreet(e))
 										.bindLabel('<h3>'+  village.name +'</h3>'+', '+  street.name);
-						      	/*.bindPopup(
-						      		DG.popup()
-						      		  .setLatLng([ latitude, longitude])
-						      		  .setHeaderContent( headerContent)
-						      		  .setContent( contentVilladge + ' ' + contentStreet)
-						      	);*/
 				marker['districtId'] = street.id;
 				return marker;
 		};
-
 
 		const addMarker = (village, street, icon, toReturn=false) => {
 				if(toReturn){
@@ -190,7 +162,6 @@ function DistrictMap(props){
 			      createMarker(village, street, icon).addTo(map);
 			  }
 		};
-
 
 		const addMarkers = (districtsData) => {
 				if(districtsData.length){
@@ -203,7 +174,6 @@ function DistrictMap(props){
 																		street,
 																		createIcon(street.level),
 																		false);
-																//console.log('lvl_1 '+ district.name + 'lvl_2 '+ village.name + 'lvl_3 '+ street.name);
 											}
 										}else{  //здесь ПК итп
 												addMarker(district,
@@ -216,7 +186,6 @@ function DistrictMap(props){
 					}
 				}
 		};
-		//console.log('');
 
 		return (
 				<>
@@ -230,6 +199,13 @@ function DistrictMap(props){
 };
 
 
+const mapStateToProps = state => state;
+
+const mapDispatchToProps = dispatch => ({
+	  onAddSelectedStreet: (addselectedstreet) => {
+	    dispatch(addSelectedStreet(addselectedstreet));
+	  }
+});
 
 export default connect(
 	  mapStateToProps,

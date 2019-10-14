@@ -5,7 +5,6 @@ import { compose } from "../../utils";
 import { withService } from "../hoc";
 import { DistrictMap } from '../../containers/DistrictMap';
 import { DistrictList } from '../../containers/DistrictList';
-import Info from '../../components/Info';
 import { addRowDistrict } from '../../actions';
 
 const NavigationModules = (props) => {
@@ -23,7 +22,7 @@ const NavigationModules = (props) => {
         <DistrictList/>
       </div>
       <div  className="App-info">
-      
+
       </div>
     </div>
   );

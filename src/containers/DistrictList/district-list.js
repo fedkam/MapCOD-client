@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import List from "@material-ui/core/List";
-import { setViewByCoordinates } from '../DistrictMap'
 import { connect } from 'react-redux';
 import { addSelectedStreet } from '../../actions';
 import { RowDistrict } from '../../components/RowDistrict';
@@ -27,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 function DistrictList(props){
     const classes = useStyles();
     const districtsData = props.data.rows;
-    const selectedIndex = String(props.selectedStreet.selectedIndex);
+    const selectedIndex = props.selectedStreet.selectedIndex;
     let open={};
 
     const handleClickStreet = (id) => {
@@ -41,25 +40,25 @@ function DistrictList(props){
     const findIdHierarchyInDistrictsData = (id) => {
         let hierarchy = {lvl1:0, lvl2:0, lvl3:0};
           districtsData.map((lvl1) => {
-            if(lvl1['items']  &&  lvl1.id != id){
+            if(lvl1['items']  &&  lvl1.id !== id){
                     lvl1.items.map((lvl2) => {
-                      if(lvl2['items']  &&  lvl2.id != id){
+                      if(lvl2['items']  &&  lvl2.id !== id){
                             lvl2.items.map((lvl3) => {
-                              if(lvl3.id == id){
+                              if(lvl3.id === id){
                                 hierarchy.lvl1 = lvl1.id;
                                 hierarchy.lvl2 = lvl2.id;
                                 hierarchy.lvl3 = lvl3.id;
                               }
                             })
                       }else{  //здесь ПК итп
-                        if(lvl2.id == id){
+                        if(lvl2.id === id){
                           hierarchy.lvl1 = lvl1.id;
                           hierarchy.lvl2 = lvl2.id;
                         }
                       }
                     })
             }else{  //здесь ПК итп
-              if(lvl1.id == id){
+              if(lvl1.id === id){
                 hierarchy.lvl1 = lvl1.id;
               }
             }
@@ -69,24 +68,20 @@ function DistrictList(props){
 
     const setOpenDistrictMenu = (id) => {
         if(districtsData.length){
-          let {lvl1, lvl2, lvl3} = findIdHierarchyInDistrictsData(id);
+          let {lvl1, lvl2} = findIdHierarchyInDistrictsData(id);
 
-          if(lvl1!=0 && lvl2!=0){
+          if(lvl1!==0 && lvl2!==0){
             open = {[lvl1]:!open[lvl1], [lvl2]:!open[lvl2]};
-          }else if(lvl1!=0 && lvl2==0){
+          }else if(lvl1!==0 && lvl2===0){
             open = {[lvl1] : !open[lvl1]};
           }
         }
     };
 
-    const isEmpty = (obj) => {
-     return  JSON.stringify(obj) == "{}";
-    }
-
     const addRowsDistricts = (districtsData) => {
         return(
               districtsData.map((district) => {
-                  let districtId = String(district.id);
+                  let districtId = district.id;
                   let villageId=null;
                   let streetsId=null;
                   let villages=[]; //контенер для сел
@@ -94,13 +89,12 @@ function DistrictList(props){
 
                   if(district['items']){
                         district.items.map((village) => {
-                          villageId = String(village.id);
+                          villageId = village.id;
                           streets=[];
 
                           if(village['items']){
                                 village.items.map((street) => {
-                                  //console.log('lvl_district.name='+ district.name+" districtId="+districtId + ' lvl_2_village.name='+ village.name +" villageId="+villageId+ ' lvl_3 '+ street.name+" streetsId="+streetsId);
-                                  streetsId = String(street.id);
+                                  streetsId = street.id;
                                   streets.push(
                                     <RowDistrict
                                         key={streetsId}

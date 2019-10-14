@@ -1,11 +1,8 @@
-
-
 import React from "react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
 const RowDistrict = (props) => {
