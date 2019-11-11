@@ -19,25 +19,51 @@ export default class DataService {
     let response = [
             {
               "id":1,
-              "name":"Алеутский район",
+              "name":"Петропавловск-Камчатский",
+              "items":[
+  							{
+  								"id": 2,
+  								"name": "ул. Площадь Ленина, 1",
+  								"level": "MSO",
+  								"latitude": 53.022944,
+  								"longitude": 158.647101
+  							}
+  						]
+            },
+            {
+              "id":3,
+              "name":"Красивые места",
               "items":[
                 {
-                  "id":2,
-                  "name":"с. Никольское",
+                  "id":4,
+                  "name":"Вулканы",
                   "items":[
                     {
-                      "id": 3,
-                      "name": "ул. 50 лет Октября, 32",
+                      "id": 5,
+                      "name": "Авачиский (2741 метр)",
                       "level": "KSEON",
-                      "latitude": 55.196937,
-                      "longitude": 165.995093
+                      "latitude": 53.25718,
+                      "longitude": 158.83355
                     },
                     {
-                      "id": 4,
-                      "name": "ул. 50 лет Октября, 13",
+                      "id": 6,
+                      "name": "Корякский (3456 метра)",
                       "level": "KSEON",
-                      "latitude": 55.2,
-                      "longitude": 166.0
+                      "latitude": 53.31011,
+                      "longitude": 158.685092
+                    }
+                  ]
+                },
+                {
+                  "id":7,
+                  "name":"Скалы",
+                  "items":[
+                    {
+                      "id": 8,
+                      "name": "Три брата",
+                      "level": "RASCO",
+                      "latitude": 52.892898,
+                      "longitude": 158.688376
                     }
                   ]
                 }
@@ -48,12 +74,8 @@ export default class DataService {
 
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        if (Math.random() > 0.75) {
-          reject(new Error("Something bad happened"));
-        } else {
-          resolve(response);
-        }
-      }, 3000);
+        resolve(response);
+      }, 1000);
     });
   };
 }
