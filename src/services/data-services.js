@@ -40,7 +40,7 @@ export default class DataService {
                   "items":[
                     {
                       "id": 5,
-                      "name": "Авачиский (2741 метр)",
+                      "name": "Авачинский (2741 метр)",
                       "level": "KSEON",
                       "latitude": 53.25718,
                       "longitude": 158.83355
