@@ -30,14 +30,14 @@ export const addSelectedStreet = (addselectedstreet) => ({
 
 const fetchDistrictData = (districtDataService, dispatch) => () => {
 	dispatch(allDistrictDataRequested());
-	//____________Server
-	// districtDataService.getDistrictData_withAxios()
-	// 									 .then(res => dispatch(allDistrictDataLoaded(res)))
-	// 									 .catch(err => dispatch(allDistrictDataError(err)));
-	//____________LocalData
-	districtDataService.getTestDistrictData()
+	//												____________Server
+	districtDataService.getDistrictData_withAxios()
 										 .then(res => dispatch(allDistrictDataLoaded(res)))
-  									 .catch(err => dispatch(allDistrictDataError(err)));
+										 .catch(err => dispatch(allDistrictDataError(err)));
+	//							 					____________LocalData
+	// districtDataService.getTestDistrictData()
+	// 									 .then(res => dispatch(allDistrictDataLoaded(res)))
+  // 									 .catch(err => dispatch(allDistrictDataError(err)));
 }
 
 export { fetchDistrictData };

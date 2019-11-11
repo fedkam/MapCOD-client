@@ -6,22 +6,7 @@ import {
 } from "../actions";
 
 const initialDataState = {
-  rows: [
-          /*{
-            id:30201,
-            name:"Алеутский район",
-            items:[
-              {
-                id:30201000001,
-                name:"A"
-              },
-            ],
-          },
-          {
-            id:722,
-            name:"Елизовский район",
-          }*/
-  ],
+  rows: [],
   isLoadingDistrictData: true,
   isErrorLoadingDistrictData: null
 };
@@ -53,26 +38,8 @@ export default function data(state = initialDataState , action){
         ...state,
         rows: [...state.rows, action.addrowdistrict]
       };
-    // case ADD_ALL_DISTRICTS:
-    //   return {
-    //     ...state,
-    //     rows: action.addalldistricts
-    //   };
     default:
       return state;
   }
-  //
-  // if (action.type === ADD_ROW_DISTRICT) {
-  //   //console.log('reducer data()= ', action);
-  //   return {
-  //     ...state,
-  //     rows: [...state.rows, action.addrowdistrict]
-  //   };
-  // }else if (action.type === ADD_ALL_DISTRICTS){
-  //   return {
-  //     ...state,
-  //     rows: action.addalldistricts
-  //   };
-  //}
 
 };
