@@ -79,32 +79,32 @@ function DistrictMap(props){
 				}else{
 					props.onAddSelectedStreet(undefined);
 				}
-
-				/* Как надо сделать! теряется Context изза useMemo если selectedIndex не добавлен, если добален то сраная перерисовка.
-					if(selectedIndex !== e.target.districtId){
-							props.onAddSelectedStreet(e.target.districtId);
-					}else{
-							props.onAddSelectedStreet(undefined);
-					}
-				*/
 		};
 
 		const createIcon = (level) => {
 				let iconSize = 32;     //Размер Иконки
 				let iconPin = iconSize / 2; //точка позиционирования Иконки на карте по оси X
 				let icon = {};
+
 				//определение района для иконки мркера
-				if(level === 'RASCO'){
-					icon = pinRasco;
-				}else if(level === 'KSEON'){
-					icon = pinKseon;
-				}else if(level === 'MSO'){
-					icon = pinMso;
-				}else if(level === 'LSO'){
-					icon = pinLso;
-				}else if(level === 'SELECT'){
-					icon = pinSelect;
+				switch (level) {
+					case 'RASCO':
+						icon = pinRasco;
+						break;
+					case 'KSEON':
+						icon = pinKseon;
+						break;
+					case 'MSO':
+						icon = pinMso;
+						break;
+					case 'LSO':
+						icon = pinLso;
+						break;
+					case 'SELECT':
+						icon = pinSelect;
+						break;
 				}
+
 				return(
 							DG.icon({
 									//Стиль иконки
