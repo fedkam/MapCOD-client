@@ -147,7 +147,7 @@ function DistrictMap(props){
 				marker = DG.marker([ street.latitude, street.longitude], {icon: icon})
 										.on('click', (e) => handleClickStreet(e))
 										.bindLabel('<h3>'+  village.name +'</h3>'+', '+  street.name);
-				marker['districtId'] = street.id;
+				marker['districtId'] = street._id;
 				return marker;
 		};
 

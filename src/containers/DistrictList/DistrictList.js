@@ -38,26 +38,26 @@ function DistrictList(props){
     const findIdHierarchyInDistrictsData = (id) => {
         let hierarchy = {lvl1:0, lvl2:0, lvl3:0};
           districtsData.map((lvl1) => {
-            if(lvl1['items']  &&  lvl1.id !== id){
+            if(lvl1['items']  &&  lvl1._id !== id){
                     lvl1.items.map((lvl2) => {
-                      if(lvl2['items']  &&  lvl2.id !== id){
+                      if(lvl2['items']  &&  lvl2._id !== id){
                             lvl2.items.map((lvl3) => {
-                              if(lvl3.id === id){
-                                hierarchy.lvl1 = lvl1.id;
-                                hierarchy.lvl2 = lvl2.id;
-                                hierarchy.lvl3 = lvl3.id;
+                              if(lvl3._id === id){
+                                hierarchy.lvl1 = lvl1._id;
+                                hierarchy.lvl2 = lvl2._id;
+                                hierarchy.lvl3 = lvl3._id;
                               }
                             })
                       }else{  //здесь ПК итп
-                        if(lvl2.id === id){
-                          hierarchy.lvl1 = lvl1.id;
-                          hierarchy.lvl2 = lvl2.id;
+                        if(lvl2._id === id){
+                          hierarchy.lvl1 = lvl1._id;
+                          hierarchy.lvl2 = lvl2._id;
                         }
                       }
                     })
             }else{  //здесь ПК итп
-              if(lvl1.id === id){
-                hierarchy.lvl1 = lvl1.id;
+              if(lvl1._id === id){
+                hierarchy.lvl1 = lvl1._id;
               }
             }
           })
@@ -79,7 +79,7 @@ function DistrictList(props){
     const addRowsDistricts = (districtsData) => {
         return(
               districtsData.map((district) => {
-                  let districtId = district.id;
+                  let districtId = district._id;
                   let villageId=null;
                   let streetsId=null;
                   let villages=[]; //контенер для сел
@@ -87,12 +87,12 @@ function DistrictList(props){
 
                   if(district['items']){
                         district.items.map((village) => {
-                          villageId = village.id;
+                          villageId = village._id;
                           streets=[];
 
                           if(village['items']){
                                 village.items.map((street) => {
-                                  streetsId = street.id;
+                                  streetsId = street._id;
                                   streets.push(
                                     <RowDistrict
                                         key={streetsId}

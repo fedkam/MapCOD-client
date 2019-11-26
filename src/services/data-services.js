@@ -1,5 +1,5 @@
 import axios from 'axios';
-let url = 'http://localhost:9000/transferData';
+let url = 'http://localhost:9000/transferData/getdistrictdatamongo';
 
 export default class DataService {
 
