@@ -1,5 +1,7 @@
 import axios from 'axios';
-let url = 'http://localhost:9000/transferData/getdistrictdatamongo';
+
+let url = 'http://localhost:9000/transferData/getDistrictDataFromServerFile'; //Data from server Test-FILE
+//let url = 'http://localhost:9000/transferData/getDistrictDDataFromMongoDB'; //Data from MongoDB
 
 export default class DataService {
 
@@ -18,11 +20,11 @@ export default class DataService {
   getTestDistrictData() {
     let response = [
             {
-              "id":1,
+              "_id":1,
               "name":"Петропавловск-Камчатский",
               "items":[
   							{
-  								"id": 2,
+  								"_id": 2,
   								"name": "ул. Площадь Ленина, 1",
   								"level": "MSO",
   								"latitude": 53.022944,
@@ -31,22 +33,22 @@ export default class DataService {
   						]
             },
             {
-              "id":3,
+              "_id":3,
               "name":"Красивые места",
               "items":[
                 {
-                  "id":4,
+                  "_id":4,
                   "name":"Вулканы",
                   "items":[
                     {
-                      "id": 5,
+                      "_id": 5,
                       "name": "Авачинский (2741 метр)",
                       "level": "KSEON",
                       "latitude": 53.25718,
                       "longitude": 158.83355
                     },
                     {
-                      "id": 6,
+                      "_id": 6,
                       "name": "Корякский (3456 метра)",
                       "level": "KSEON",
                       "latitude": 53.31011,
@@ -55,11 +57,11 @@ export default class DataService {
                   ]
                 },
                 {
-                  "id":7,
+                  "_id":7,
                   "name":"Скалы",
                   "items":[
                     {
-                      "id": 8,
+                      "_id": 8,
                       "name": "Три брата",
                       "level": "RASCO",
                       "latitude": 52.892898,
@@ -70,8 +72,7 @@ export default class DataService {
               ]
             }
           ];
-    console.log("get TEST data = ", response);
-
+    //console.log("get TEST data = ", response);
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(response);
