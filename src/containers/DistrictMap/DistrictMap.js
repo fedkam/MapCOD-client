@@ -61,7 +61,7 @@ function DistrictMap(props){
 						LatLng = marker.getLatLng();
 						setDefaultIconPin();
 						setIconSelectedPin(marker);
-						setViewByCoordinates(LatLng.lat, LatLng.lng, 7);
+						setViewByCoordinates(LatLng.lat, LatLng.lng, 12);
 					}else{
 						setViewByCoordinates();
 						setDefaultIconPin();
