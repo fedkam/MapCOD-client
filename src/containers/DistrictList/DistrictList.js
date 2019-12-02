@@ -6,7 +6,6 @@ import { RowDistrict } from '../../components/RowDistrict';
 const useStyles = makeStyles(theme => ({
     root: {
       width: '100%',
-      height: '100vh',
       overflow: 'auto',
       backgroundColor: theme.palette.background.paper,
     },

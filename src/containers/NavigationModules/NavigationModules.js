@@ -21,7 +21,7 @@ const NavigationModules = (props) => {
       <div className="App-table">
         <DistrictList/>
       </div>
-      <div  className="App-info">
+      <div className="App-info">
       </div>
     </div>
   );

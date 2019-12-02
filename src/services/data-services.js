@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-let url = 'http://localhost:9000/transferData/getDistrictDataFromServerFile'; //Data from server Test-FILE
-//let url = 'http://localhost:9000/transferData/getDistrictDDataFromMongoDB'; //Data from MongoDB
+//let url = 'http://localhost:9000/transferData/getDistrictDataFromServerFile'; //Data from server Test-FILE
+let url = 'http://localhost:9000/transferData/getDistrictDDataFromMongoDB'; //Data from MongoDB
 
 export default class DataService {
 
